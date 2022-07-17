@@ -1,0 +1,103 @@
+*:not(i){
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.badge{
+    font-size: 0.75em!important;
+    font-family: 'Roboto', sans-serif!important;
+}
+
+.hidden{
+    display:none!important;
+}
+.btn-dark-blue {
+    background: #7474BF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #348AC7, #7474BF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #348AC7, #7474BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.btn-dark-green{
+    background: #294850!important;
+}
+
+.btn-shrimpy {
+    background: #e43a15;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #e65245, #e43a15);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #e65245, #e43a15); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    color: #fff;
+    border: 3px solid #eee;
+}
+
+.real-cognita-teal{
+    background-image: linear-gradient(to right top, #294850, #245e67, #17767a, #038e8a, #03a696)!important;
+    color: #fff!important;
+}
+
+.real-cognita-orange{
+    background-color: #DD6838!important;
+    color: #fff!important;
+}
+
+.amsify-select-tag{
+    background-color: #348AC7!important;
+    color: #fff!important;
+}
+
+.buttons-html5, .column-toggle{
+    background-color: #294850!important;
+    color: #fff!important;
+    border-color: #294850!important;
+}
+
+.toggle-column .form-check-label{
+    font-size: 12px!important;
+}
+
+.user-details{
+    margin-left: 10px;
+    padding: 10px;
+}
+.btn-light{
+    border: black!important;
+}
+
+/* Base styling*/
+
+/* Popover styling */
+
+
+.popover__title {
+  font-size: 24px;
+
+}
+
+.popover__wrapper {
+  position: relative;
+  margin-top: 1.5rem;
+  display: inline-block;
+}
+.popover__content {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 260;
+  transform: translate(0, 10px);
+  background-color: #ffffff;
+  padding: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  width: 180;
+}
+
+/* .popover__wrapper:hover .popover__content {
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -20px);
+  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+} */
+.popover__message {
+  text-align: center;
+}
