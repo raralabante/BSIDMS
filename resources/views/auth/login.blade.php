@@ -31,7 +31,7 @@
 	<div class="form-container sign-in-container">
 		<form method="POST" action="{{ route('login') }}">
             @csrf
-			<h1>Sign in Here</h1>
+			<h1>Sign in</h1>
 
 			<!-- <div class="social-container">
 				<a href="#" class="social"><i class="fa-solid fa-compass-drafting"></i></a>
