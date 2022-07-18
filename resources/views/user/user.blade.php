@@ -69,7 +69,7 @@
   
   
     $(document).ready( function () {
-      $(".user_maintenance").addClass('sidebar_active');
+      $(".users").addClass('sidebar_active');
       const toastLiveExample = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(toastLiveExample);
       

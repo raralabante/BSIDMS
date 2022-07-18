@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@extends('layouts.sidebar')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="container">
@@ -128,6 +128,7 @@
 <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
 <script>
 $( document ).ready(function() {
+    $(".register").addClass('sidebar_active');
     $( "#department" ).change(function() {
         $.ajax({
             headers: {

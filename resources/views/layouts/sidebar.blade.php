@@ -36,7 +36,7 @@
               <ul class="collapse list-unstyled" id="draftingSubmenu">
 
                
-             
+                @if (!empty($role_name))
                 @foreach ($role_name as $role) 
                         @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" )
                             <li>
@@ -69,22 +69,64 @@
                             </li>
                         @endif
                 @endforeach
+                @endif
               </ul>
           </li>
-
-          @foreach ($role_name as $role) 
-            @if ($role == "Administrator")
-                <li>
-                    <a class="user_maintenance" href="{{route('user')}}"><i class="fa-solid fa-user-gear"></i>&nbsp;&nbsp;User Maintenance</a>
+          
+            @if (!empty($role_name))
+                @foreach ($role_name as $role) 
+                @if ($role == "Administrator")
+                <li class="active">
+                    <a role="button" id="usersMenu" href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-user-gear"></i>&nbsp;&nbsp;User Maintenance</a>
+                    <ul class="collapse list-unstyled" id="userSubmenu">
+                        <li>
+                            <a class="register" href="{{route('register')}}"><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;Register</a>
+                        </li>
+                        <li>
+                            <a class="users" href="{{route('user')}}"><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Users</a>
+                        </li>
+                    </ul>
                 </li>
+                
+                @endif
+                @endforeach
             @endif
-          @endforeach
+
+            @if (!empty($role_name))
+            @foreach ($role_name as $role) 
+            @if ($role == "Administrator")
+            <li class="active">
+                <a role="button" id="filesMenu" href="#filesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-file-circle-exclamation"></i>&nbsp;&nbsp;File Maintenance</a>
+                <ul class="collapse list-unstyled" id="filesSubmenu">
+                    <li>
+                        <a class="brand" href="{{route('brand')}}"><i class="fa-solid fa-b"></i>&nbsp;&nbsp;Brands</a>
+                    </li>
+                    <li>
+                        <a class="category" href="{{route('categories')}}"><i class="fa-solid fa-diagram-project"></i>&nbsp;&nbsp;Categories</a>
+                    </li>
+                    <li>
+                        <a class="customer" href="{{route('customer')}}"><i class="fa-solid fa-user-tie"></i>&nbsp;&nbsp;Customers</a>
+                    </li>
+                    <li>
+                        <a class="job_type" href="{{route('job_type')}}"><i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;Job Types</a>
+                    </li>
+                    <li>
+                        <a class="type" href="{{route('type')}}"><i class="fa-solid fa-t"></i>&nbsp;&nbsp;Types</a>
+                    </li>
+                </ul>
+            </li>
+            
+            @endif
+            @endforeach
+        @endif
+
           <li>
             <a class=""><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;FAQ </a>
            
         </li>
       </ul>
      
+      
       <ul class="list-unstyled">
           <li>
               <a class="" href="{{ route('logout') }}"
@@ -132,17 +174,26 @@ $( document ).ready(function() {
 
     //toggle submenu
     if(module == "draftingmaster")
-    $("#draftingMenu").click();
+    {
+        $("#draftingMenu").click();
+
+    }
+    else if (module == "users" || module == "register"){
+        $("#usersMenu").click();
+    }
+    else if (module == "brands" || module == "customers" || module == "jobtypes"|| module == "types" || module == "categories"){
+        $("#filesMenu").click();
+    }
 
     //remove duplicate submenu
     var seen = {};
     $('ul li').each(function() {
-        var txt = $(this).text();
-        if (seen[txt])
-            $(this).remove();
-        else
-            seen[txt] = true;
-    });
+            var txt = $(this).text();
+            if (seen[txt])
+                $(this).remove();
+            else
+                seen[txt] = true;
+        });
 
 });
 

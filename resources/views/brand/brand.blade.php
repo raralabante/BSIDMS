@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@extends('layouts.sidebar')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="content" class="p-4 p-md-5 pt-5">
@@ -44,6 +45,7 @@
 <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
 <script>
     $(document).ready( function () {
+      $("#filesSubmenu .brand").addClass("sidebar_active");
       const toastLiveExample = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(toastLiveExample);
 

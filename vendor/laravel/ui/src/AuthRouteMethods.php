@@ -29,7 +29,7 @@ class AuthRouteMethods
 
                 // Registration Routes...
                 if ($options['register'] ?? true) {
-                    $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+                    $this->get('register', 'Auth\RegisterController@showRegistrationForm')->middleware('role:Administrator')->name('register');
                     $this->post('register', 'Auth\RegisterController@register');
                 }
 
