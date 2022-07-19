@@ -29,7 +29,7 @@ a:focus {
     background: #fff;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
+
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -174,12 +174,13 @@ a.article:hover {
 }
 
 #sidebarCollapse{
-    background-color: #245E67;
+    background-color: #212529;
     color: #fff;
+    border: 0px;
 }
 
 #sidebarCollapse:hover{
-    background-color: #0c292e;
+    background-color: #373838;
     color: #fff;
 }
 
@@ -190,3 +191,6 @@ a.article:hover {
 
     color: #fff;
 }
+
+
+/* TEST */

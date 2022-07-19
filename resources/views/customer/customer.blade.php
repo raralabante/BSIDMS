@@ -34,11 +34,13 @@
     @endif
 
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <form method="POST" action="{{ route('customer.insert') }}" onsubmit="add_customer_btn.disabled = true; return true;">
             @csrf
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name" aria-describedby="add_customer_btn" name="customer_name" required autocomplete="off">
+                <input type="text" class="form-control" placeholder="Company Name" name="customer_name" required autocomplete="off">
+                  <select class="form-select" name="team" id="team" required>
+                  </select>
                 <button class="btn btn-success" type="submit" id="add_customer_btn"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;ADD CUSTOMER</button>
             </div>
           </form>
@@ -67,10 +69,30 @@
           columns: [
               {data: 'id', title: 'ID', className: "dt-right" },
               {data: 'name', title: 'Name'},
+              {data: 'team', title: 'Team'},
               {data: 'delete_customer', title: 'Action'},
           ],
           order: [[0, 'desc']],
       });
+
+      $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+               type:'POST',
+               url: '/register/loadteam',
+               data:{department:"DFT"},
+               success:function(data) {
+                var team = $("#team");
+                    team.empty();
+                    team.append($("<option selected disabled/>").text("Select Team"));
+                    $.each(data, function(i, item) {
+                        team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
+                    });
+                
+
+                 }
+            });
 
       $('#customers_tbl').on('click', '.delete-customer-btn', function (){
         var customer_id = $(this).data("id");

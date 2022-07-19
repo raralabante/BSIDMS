@@ -8,25 +8,25 @@
         /* Other styles here */
     }
 </style>
+
 <div class="wrapper">
   <!-- Sidebar  -->
   <nav id="sidebar">
-      <div class="sidebar-header">
-          {{-- <h3>Bootstrap Sidebar</h3> --}}
+      {{-- <div class="sidebar-header">
+     
           <img src="{{ asset('images/realcognita-gif-logo.gif') }}" width="200px">
-      </div>
+      </div> --}}
       <div class="user-details">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
           <span><i class="fa-solid fa-earth-africa"></i>  {{Auth::user()->department}} ({{Auth::user()->team}})</span><br>
           
           <i class="fa-solid fa-briefcase"></i>
        
-              @foreach (Auth::user()->permissions as $permission) {
-                  {{ 
-                  
+              @foreach (Auth::user()->permissions as $permission) 
+                  &lt;{{
                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
-                    }}
-              }
+                  }}&gt;
+              
               @endforeach
       </div>
       <ul class="list-unstyled components">
@@ -141,14 +141,15 @@
           </li>
       </ul>
 
-      
+  
+
   </nav>
 
   <!-- Page Content  -->
   <div id="content">
 
      
-              <button type="button" id="sidebarCollapse" class="btn btn-info">
+              {{-- <button type="button" id="sidebarCollapse" class="btn btn-info">
                 <img id="hamburger" src="{{ asset('images/logo_white.png') }}" alt="">
                 
               </button>
@@ -157,6 +158,7 @@
                   <img id="hamburger" src="{{ asset('images/logo_white.png') }}" alt="">
               </button>
 
+              
          
       <main class="py-4">
           @yield('content')
@@ -194,6 +196,29 @@ $( document ).ready(function() {
             else
                 seen[txt] = true;
         });
+
+        $(document).ready(function()
+			{
+			$("#notificationLink").click(function()
+			{
+			$("#notificationContainer").fadeToggle(300);
+			$("#notification_count").fadeOut("slow");
+			return false;
+			});
+
+			//Document Click hiding the popup 
+			$(document).click(function()
+			{
+			$("#notificationContainer").hide();
+			});
+
+			//Popup on click
+			$("#notificationContainer").click(function()
+			{
+			return false;
+			});
+
+			});
 
 });
 

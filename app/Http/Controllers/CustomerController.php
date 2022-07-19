@@ -38,8 +38,15 @@ class CustomerController extends Controller
       //   'customer_name' => 'required|max:2',
       // ]);
       
+      $request->validate([
+        'customer_name' => 'required|max:255',
+        'team' => 'required|max:255'
+      
+      ]);
+
         $newCustomer = Customer::firstOrNew([
             'name' => $request->customer_name,
+            'team' => $request->team,
         ]);
 
         if($newCustomer->id == null){
@@ -55,7 +62,8 @@ class CustomerController extends Controller
       if ($request->ajax()) {
         $query = Customer::select(
                   'id',
-                  'name')
+                  'name',
+                  'team')
                   ->orderBy('id','DESC');
         return datatables()->eloquent($query)
           ->editColumn('delete_customer', function (Customer $customer) {
@@ -63,6 +71,7 @@ class CustomerController extends Controller
               <i class="fa-solid fa-trash-can"></i>&nbsp;&nbsp;DELETE
               </button>';
             })
+            
             ->rawColumns(['delete_customer'])
             ->toJson();
       }

@@ -1,6 +1,8 @@
 @extends('layouts.app')
+
 @extends('layouts.sidebar')
 @section('content')
+@extends('layouts.navbar')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
   .ui-widget, #drafters{
@@ -9,6 +11,7 @@
 .ui-menu{
   z-index: 10000!important;
 }
+
 
 </style>
 
@@ -43,7 +46,8 @@
           </div>
       @endif
 
-     
+  
+
       <div class="row">
         <div class="col-md-6 input-group mb-3">
           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_job_modal"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;ADD JOB</button>
@@ -129,10 +133,11 @@
         </div>
       </div>
       
-      
- 
-      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
-      </table>
+
+          <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
+          </table>
+
+     
       
         <div class="modal fade" id="add_job_modal" tabindex="-1" aria-labelledby="add_job_modal" aria-hidden="true">
           <div class="modal-dialog modal-lg">
@@ -548,6 +553,7 @@
         });
     
       var drafting_master_tbl = $('#drafting_master_tbl').DataTable({
+        scrollX: true,
           ajax: "{{ route('drafting_master.list') }}",
           dom: 'Bfrtip',
           // colReorder: true,

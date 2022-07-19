@@ -31,6 +31,7 @@ return new class extends Migration
             $table->dateTime('six_stars_submitted_at')->nullable();
             $table->dateTime('six_stars_received_at')->nullable();
             $table->dateTime('submitted_at')->nullable();
+            $table->dateTime('submitted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -367,6 +367,9 @@ class DraftingMasterController extends Controller
                   DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
                   'created_at'
         )
+        ->whereIn('customer_name',function($query){
+          $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+       })
         ->where('status','!=','Submitted')
         ->where('status','!=','Cancelled');
                  
@@ -540,7 +543,7 @@ class DraftingMasterController extends Controller
     $drafting_masters = DraftingMaster::find($request->id);
             if($drafting_masters->status == "Ready To Submit"){
               return DraftingMaster::where('id','=', $request->id)
-              ->update(['status' => "Submitted",'submitted_at' => now()]);
+              ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
             }
             else{
               return 0;
@@ -579,7 +582,11 @@ class DraftingMasterController extends Controller
                 DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
                 'created_at',
                 'submitted_at'
-      )->where('status','=',$request->status);
+      )
+      ->whereIn('customer_name',function($query){
+        $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+     })
+      ->where('status','=',$request->status);
                
       return datatables()->eloquent($query)
           ->editColumn('drafters', function (DraftingMaster $draftingmaster) {

@@ -32,12 +32,14 @@
     /> --}}
     <!-- Basic Style for Tags Input -->
     <link rel="stylesheet" type="text/css" href="{{ asset('suggest-tags/amsify.suggestags.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 <!-- Suggest Tags Js -->
 
 </head>
 <body>
     <div id="app">
+
+        
         {{-- <nav class="navbar navbar-expand-md navbar-light real-cognita-teal shadow-sm">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
