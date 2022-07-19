@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @extends('layouts.sidebar')
-@section('content')
 @extends('layouts.navbar')
+@section('content')
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
   .ui-widget, #drafters{
@@ -54,6 +55,8 @@
         </div>
       </div>
       
+     
+
       <div class="popover__wrapper">
         <div class="popover__content">
           <div class=" p-2 toggle-column">

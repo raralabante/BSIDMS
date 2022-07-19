@@ -3,6 +3,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
+body {
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+
 .badge{
     font-size: 0.75em!important;
     font-family: 'Roboto', sans-serif!important;
@@ -102,6 +107,3 @@
   text-align: center;
 }
 
-.myNav{
-    background-color: red!important;
-}

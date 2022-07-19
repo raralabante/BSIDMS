@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @extends('layouts.sidebar')
+@extends('layouts.navbar')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>

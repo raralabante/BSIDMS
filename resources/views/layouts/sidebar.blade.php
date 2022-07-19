@@ -1,4 +1,5 @@
 <style>
+    
     #hamburger {
         
         height: 30px;
@@ -9,7 +10,7 @@
     }
 </style>
 
-<div class="wrapper">
+<div class="wrapper" style="display:none;">
   <!-- Sidebar  -->
   <nav id="sidebar">
       {{-- <div class="sidebar-header">
@@ -155,8 +156,8 @@
               </button>
               <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   {{-- <i class="fas fa-align-justify"></i> --}}
-                  <img id="hamburger" src="{{ asset('images/logo_white.png') }}" alt="">
-              </button>
+                  {{-- <img id="hamburger" src="{{ asset('images/logo_white.png') }}" alt=""> --}}
+              {{-- </button> --}}
 
               
          
@@ -170,6 +171,7 @@
 
 <script type="text/javascript">
 $( document ).ready(function() {
+    $(".wrapper").show();
     var module = $(location).attr('pathname');
     module.indexOf(1);
     module = module.split("/")[1];
@@ -197,28 +199,6 @@ $( document ).ready(function() {
                 seen[txt] = true;
         });
 
-        $(document).ready(function()
-			{
-			$("#notificationLink").click(function()
-			{
-			$("#notificationContainer").fadeToggle(300);
-			$("#notification_count").fadeOut("slow");
-			return false;
-			});
-
-			//Document Click hiding the popup 
-			$(document).click(function()
-			{
-			$("#notificationContainer").hide();
-			});
-
-			//Popup on click
-			$("#notificationContainer").click(function()
-			{
-			return false;
-			});
-
-			});
 
 });
 
