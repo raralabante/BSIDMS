@@ -33,7 +33,7 @@ class LoginController extends Controller
    
     protected function authenticated(Request $request, $user)
     {
-        
+      
         foreach (Auth::user()->permissions as $permission) {
             $role_name = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
             error_log($role_name);
@@ -49,6 +49,7 @@ class LoginController extends Controller
             }
           
         }
+       
     }
 
     public function logout(Request $request)

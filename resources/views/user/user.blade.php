@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @extends('layouts.sidebar')
+@extends('layouts.navbar')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="content" class="p-4 p-md-5 pt-5">
-    <div class="container">
+    <div class="container-fluid">
     <div class="row justify-content-center">
+     
       @if(session()->has('success'))
       <div class="alert alert-success d-flex align-items-center" role="alert">
           <i class="fas fa-check"></i>&nbsp;
@@ -22,9 +24,8 @@
           </div>
         </div>
       @endif
-      
-        <table id="users_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
-        </table>
+      <table id="users_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
+      </table>
 
     
 </div>

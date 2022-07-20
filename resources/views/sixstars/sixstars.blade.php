@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @extends('layouts.sidebar')
+@extends('layouts.navbar')
 @section('content')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -9,15 +10,20 @@
   }
 </style>
 
-      <body class="">
+      <body>
         <div class="container-fluid p-5">
           <h1>SIX STARS</h1>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="input-group">
                     <input type="text" id="job_number" class="form-control" placeholder="JOB ORDER #" aria-label="Recipient's username" aria-describedby="add_six_stars" autocomplete="off" autofocus required>
                     <button type="button" id="add_six_stars" class="btn btn-success"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;ADD SIX STARS</button>
                   </div>
+            </div>
+            <div class="col-md-12">
+              <br><br>
+              <table id="sixstars_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
+              </table>
             </div>
           </div>
           @if(session()->has('success'))
@@ -47,9 +53,7 @@
               </ul>
             </div>
         @endif
-        <br><br>
-          <table id="sixstars_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
-          </table>
+
         </div>
 
         
@@ -63,24 +67,6 @@
       const toast = new bootstrap.Toast(successToast);
       const warningToast = document.getElementById('warningToast')
       const toastWarning = new bootstrap.Toast(warningToast);
-
-    //   $.ajax({
-    //           url:  '/sixstars/getforsixstars',
-    //           type:"GET",
-    //           success:function(data) {
-
-    //             $( "#job_number" ).autocomplete({
-    //                 source: data,
-                   
-    //                 select: function( event, ui ) {
-    //                     $( "#job_number" ).val( ui.item.label );
-    //                     $( "#drafting_masters_id" ).val( ui.item.value );
-    //                     return false;
-    //                 }
-    //                 })
-                   
-    //              }
-    //       });
 
     $.ajax({
               url:  location.pathname + '/getforsixstars',

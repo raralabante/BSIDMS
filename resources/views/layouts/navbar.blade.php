@@ -1,6 +1,6 @@
 
-<nav class="navbar navbar-expand-lg bg-dark">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-dark navbar-default" style="display:none;">
+    <div class="container-fluid m-1">
 
       <a class="navbar-brand" href="#"><img src="{{ asset('images/realcognita-gif-logo.gif') }}" width="180px"></a>
       <button type="button" id="sidebarCollapse" class="btn btn-info p-3">
@@ -19,28 +19,86 @@
             
 
         </ul>
-        <div class="d-flex" role="">
-
-            <button type="button" id="sidebarCollapse" class="btn p-3 position-relative">
-              
+        <div class="d-flex ">
+            {{-- <button type="button" id="sidebarCollapse" class="btn p-3 m-10">
                 <i class="fa-solid fa-bell fa-xl"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    99+
-                  </span>
-              </button>
+               
+              </button> --}}
+                <button type="button" id="" class="btn p-2">
+                  <a class=""><i class="fa-solid fa-circle-question text-white fa-xl"></i></a>
+                  </button>
+
+                  <div class="p-2">
+                    <ul class="nav navbar-nav" style="margin-right: 20px;">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
+                          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                              99+
+                            </span></a>
+                        <ul class="dropdown-menu notify-drop" style="right: 0; left: auto;">
+                          <div class="notify-drop-title">
+                            <div class="row">
+                              <div class="col-md-6 col-sm-6 col-xs-6">Notifications</div>
+                             
+                            </div>
+                          </div>
+                          <!-- end notify title -->
+                          <!-- notify content -->
+                          <div class="drop-content">
+                       
+                            @foreach($activities_by_id as $activity_id)
+      
+                            <li>
+                              @if($activity_id->status == 0)
+                              <a href="" class="rIcon"><i class="fa-solid fa-circle text-primary"></i></a>
+                              @else
+                                <a href="" class="rIcon"><i class="fa-solid fa-circle text-secondary"></i></a>
+                              @endif
+                              <p> {{ $activity_id->description }}</p>
+                              <span class="time">{{ $activity_id->created_at }}</span>
+                            </li>
+                            @endforeach
+
+                            @foreach($activities as $activity)
+                            <li>
+                              @if($activity->status == 0)
+                              <a href="" class="rIcon"><i class="fa-solid fa-circle text-primary"></i></a>
+                              @else
+                                <a href="" class="rIcon"><i class="fa-solid fa-circle text-secondary"></i></a>
+                              @endif
+                              <p> {{ $activity->description }}</p>
+                              <span class="time">{{ $activity->created_at }}</span>
+                            </li>
+                            @endforeach
+
+                            
+                    
+                          </div>
+                          <div class="notify-drop-footer text-center">
+                            <a href=""><i class="fa fa-eye"></i> See More</a>
+                          </div>
+                        </ul>
+                      </li>
+                    
+                    </ul>
+                    </div>
+                  
+             
+            
               
-              <div class="btn-group profile">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="#">Menu item1</a></li>
-                  <li><a class="dropdown-item" href="#">Menu itemasdasd</a></li>
-                  <li><a class="dropdown-item" href="#">Menu item3</a></li>
-                </ul>
-              </div>
-           
+
         </div>
       </div>
     </div>
   </nav>
+  <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
+  <script src="{{ asset('moment-js/moment.js') }}"></script>
+  <script type="text/javascript">
+    
+
+    $( ".time" ).each(function( index ) {
+     $(this).text(moment($(this).text(), "YYYY-MM-DD hh:mm:ss").fromNow());
+    });
+
+
+  </script>

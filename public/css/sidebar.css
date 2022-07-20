@@ -117,7 +117,7 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-ul ul a {
+#sidebar ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #183d42;
@@ -129,8 +129,8 @@ ul ul a {
 ----------------------------------------------------- */
 
 #content {
-    /* width: 100%;
-    padding: 20px; */
+    width: 100%;
+    padding: 20px;
     min-height: 100vh;
     min-width: 100vh;
    
@@ -148,7 +148,7 @@ ul ul a {
     color: #fff;
 }
 
-.sidebar_active{ 
+#sidebar .sidebar_active{ 
     background: #e43a15;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #e65245, #e43a15);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #e65245, #e43a15); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */

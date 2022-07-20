@@ -1,14 +1,3 @@
-<style>
-    
-    #hamburger {
-        
-        height: 30px;
-        width: 30px;
-        display: block;
-        color: #ffffff
-        /* Other styles here */
-    }
-</style>
 
 <div class="wrapper" style="display:none;">
   <!-- Sidebar  -->
@@ -32,48 +21,6 @@
       </div>
       <ul class="list-unstyled components">
 
-          <li class="active">
-              <a role="button" id="draftingMenu" href="#draftingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-pen-ruler"></i>&nbsp;&nbsp;Drafting</a>
-              <ul class="collapse list-unstyled" id="draftingSubmenu">
-
-               
-                @if (!empty($role_name))
-                @foreach ($role_name as $role) 
-                        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" )
-                            <li>
-                                <a class="drafting_master" href="{{route('drafting_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Drafting Master</a>
-                            </li>
-                        @endif
-                        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" )
-                            <li>
-                                <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Drafts</a>
-                            </li>
-                        @endif
-                        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker")
-                            <li>
-                                <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Drafts Check</a>
-                            </li>
-                        @endif
-                        @if ($role == "Administrator" || $role == "Drafting Manager")
-                            <li>
-                                <a class="submitted"  href="{{route('drafting_master.submitted_jobs')}}"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submitted</a>
-                            </li>
-                        @endif
-                        @if ($role == "Administrator" || $role == "Drafting Manager")
-                            <li>
-                                <a class="cancelled"  href="{{route('drafting_master.cancelled_jobs')}}"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Cancelled</a>
-                            </li>
-                        @endif
-                        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Six Stars")
-                            <li>
-                                <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
-                            </li>
-                        @endif
-                @endforeach
-                @endif
-              </ul>
-          </li>
-          
             @if (!empty($role_name))
                 @foreach ($role_name as $role) 
                 @if ($role == "Administrator")
@@ -121,10 +68,48 @@
             @endforeach
         @endif
 
-          <li>
-            <a class=""><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;FAQ </a>
-           
+        <li class="active">
+            <a role="button" id="draftingMenu" href="#draftingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-pen-ruler"></i>&nbsp;&nbsp;Drafting</a>
+            <ul class="collapse list-unstyled" id="draftingSubmenu">
+
+             
+              @if (!empty($role_name))
+              @foreach ($role_name as $role) 
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" )
+                          <li>
+                              <a class="drafting_master" href="{{route('drafting_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Drafting Master</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" )
+                          <li>
+                              <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Drafts</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker")
+                          <li>
+                              <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Drafts Check</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager")
+                          <li>
+                              <a class="submitted"  href="{{route('drafting_master.submitted_jobs')}}"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submitted</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager")
+                          <li>
+                              <a class="cancelled"  href="{{route('drafting_master.cancelled_jobs')}}"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Cancelled</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Six Stars")
+                          <li>
+                              <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
+                          </li>
+                      @endif
+              @endforeach
+              @endif
+            </ul>
         </li>
+          
       </ul>
      
       
@@ -171,7 +156,7 @@
 
 <script type="text/javascript">
 $( document ).ready(function() {
-    $(".wrapper").show();
+    $(".wrapper,.navbar").show();
     var module = $(location).attr('pathname');
     module.indexOf(1);
     module = module.split("/")[1];

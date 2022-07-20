@@ -69,9 +69,6 @@ body {
     border: black!important;
 }
 
-/* Base styling*/
-
-/* Popover styling */
 
 
 .popover__title {
@@ -96,13 +93,7 @@ body {
   width: 180;
 }
 
-/* .popover__wrapper:hover .popover__content {
-  z-index: 10;
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, -20px);
-  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-} */
+
 .popover__message {
   text-align: center;
 }
