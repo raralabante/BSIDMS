@@ -40,6 +40,12 @@ class SixStarsController extends Controller
             $drafting_masters->status = "In Six Stars";
             $drafting_masters->six_stars_submitted_at == now();
             $drafting_masters->save();
+
+            $description = "Job# " . $job_number. " is now in Six Stars.";
+            app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+            app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+            app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+
             return 1;
         }
         else{
@@ -82,7 +88,11 @@ class SixStarsController extends Controller
         Ammends::create([
             'drafting_masters_id' => $request->id,
         ]);
-      
+
+        $description = "Job# " . $draft->job_number. " has been ammended.";
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
         }
        
     }
@@ -93,6 +103,12 @@ class SixStarsController extends Controller
         $draft->status = 'Ready To Submit';
         $draft->six_stars_received_at == now();
         $draft->save();
+
+        $description = "Job# " . $draft->job_number. " is now ready to submit.";
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+
       }
 
       

@@ -261,9 +261,18 @@ class MyDraftsController extends Controller
 
       
       if(empty($job_drafting_status)){
+
+        
+              
         $draft = DraftingMaster::findOrFail($request->id);
         $draft->status = 'Ready For Check';
         $draft->save();
+
+        $description = "Job# " . $draft->job_number . " is now ready for checking.";
+
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
         // Self::jobStopper();
       }
  

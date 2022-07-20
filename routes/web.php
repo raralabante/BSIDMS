@@ -65,7 +65,7 @@ Route::get('/categories/list/deletecategories/{id}', [App\Http\Controllers\Categ
 Route::GET('/categories/getcategories', [App\Http\Controllers\CategoriesController::class, 'getCategories'])->name('categories.getCategories');
 
 //Drafting Master
-Route::get('/draftingmaster', [App\Http\Controllers\DraftingMasterController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL')->name('drafting_master');
+Route::get('/draftingmaster', [App\Http\Controllers\DraftingMasterController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Admin')->name('drafting_master');
 Route::get('/draftingmaster/list', [App\Http\Controllers\DraftingMasterController::class, 'draftingMasterList'])->name('drafting_master.list');
 Route::post('/draftingmaster/insert', [App\Http\Controllers\DraftingMasterController::class, 'insert'])->name('drafting_master.insert');
 Route::get('/draftingmaster/fetch/{id}', [App\Http\Controllers\DraftingMasterController::class, 'fetch'])->name('drafting_master.fetch');
@@ -81,10 +81,10 @@ Route::get('/draftingmaster/canceljob/{id}', [App\Http\Controllers\DraftingMaste
 Route::get('/draftingmaster/list/{status}', [App\Http\Controllers\DraftingMasterController::class, 'fetchByStatusList'])->name('drafting_master_fetch_by_status_list.list');
 
 //Drafting Master Submitted
-Route::get('/draftingmaster/submitted', [App\Http\Controllers\DraftingMasterController::class, 'index_submitted'])->middleware('role:Administrator,Drafting Manager,Drafting TL')->name('drafting_master.submitted_jobs');
+Route::get('/draftingmaster/submitted', [App\Http\Controllers\DraftingMasterController::class, 'index_submitted'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Manager')->name('drafting_master.submitted_jobs');
 
 //Drafting Master Cancelled
-Route::get('/draftingmaster/cancelled', [App\Http\Controllers\DraftingMasterController::class, 'index_cancelled'])->name('drafting_master.cancelled_jobs');
+Route::get('/draftingmaster/cancelled', [App\Http\Controllers\DraftingMasterController::class, 'index_cancelled'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Manager')->name('drafting_master.cancelled_jobs');
 
 
 //My Drafts
@@ -111,7 +111,7 @@ Route::get('/shiftingschedule', [App\Http\Controllers\ShiftingScheduleController
 Route::post('/shiftingschedule/update', [App\Http\Controllers\ShiftingScheduleController::class, 'updateSchedule'])->name('shifting_schedule.update');
 
 //SixStars
-Route::get('/draftingmaster/sixstars', [App\Http\Controllers\SixStarsController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Six Stars')->name('sixstars');
+Route::get('/draftingmaster/sixstars', [App\Http\Controllers\SixStarsController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Six Stars,Drafting Admin')->name('sixstars');
 Route::get('/draftingmaster/sixstars/getforsixstars', [App\Http\Controllers\SixStarsController::class, 'getForSixStars'])->name('sixstars.get_for_six_stars');
 Route::get('/draftingmaster/sixstars/addsixstars/{id}', [App\Http\Controllers\SixStarsController::class, 'addSixStars'])->name('sixstars.add_six_stars');
 Route::get('/draftingmaster/sixstars/list', [App\Http\Controllers\SixStarsController::class, 'sixStarsList'])->name('sixstars.list');

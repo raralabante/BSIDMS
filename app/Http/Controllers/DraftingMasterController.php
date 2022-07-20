@@ -555,6 +555,10 @@ class DraftingMasterController extends Controller
    public function submitJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);
             if($drafting_masters->status == "Ready To Submit"){
+              $description = "(COMPLETED) Job# " . $drafting_masters->job_number . " has been submitted.";
+              Self::addActivity($description,3 );
+              Self::addActivity($description,4 );
+              Self::addActivity($description,9 );
               return DraftingMaster::where('id','=', $request->id)
               ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
             }
@@ -567,10 +571,9 @@ class DraftingMasterController extends Controller
     $drafting_masters = DraftingMaster::find($request->id);
             if($drafting_masters->status != "Submitted"){
 
-              $job_number = DraftingMaster::where('id','=',$request->id)->first()->job_number;
-
-              $description = "Job# " . $job_number . " has been cancelled.";
+              $description = "Job# " . $drafting_masters->job_number . " has been cancelled.";
               Self::addActivity($description,3 );
+              Self::addActivity($description,4 );
               Self::addActivity($description,9 );
               return DraftingMaster::where('id','=', $request->id)
               ->update(['status' => "Cancelled"]);
