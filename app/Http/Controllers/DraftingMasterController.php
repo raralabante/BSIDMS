@@ -304,6 +304,10 @@ class DraftingMasterController extends Controller
                   'created_at' => now(),
                 )
               );
+
+              $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$user_id,10); //10=DRAFTER
+
         }
           return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
         }
@@ -330,6 +334,8 @@ class DraftingMasterController extends Controller
               );
         }
     }
+        $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
+        Self::addActivityById($description,$user_id,10); //10=DRAFTER
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
       }
     }
@@ -362,6 +368,10 @@ class DraftingMasterController extends Controller
             )
          );
 
+            $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
+
+
             return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
         }
         else{
@@ -385,6 +395,10 @@ class DraftingMasterController extends Controller
               'created_at' => now(),
             )
          );
+
+         $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
+            
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
       }
 
