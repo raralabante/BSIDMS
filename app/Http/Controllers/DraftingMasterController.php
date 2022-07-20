@@ -612,6 +612,7 @@ class DraftingMasterController extends Controller
       return datatables()->eloquent($query)
           ->editColumn('drafters', function (DraftingMaster $draftingmaster) {
             $drafters_arr = [];
+            
             $jobtimehistory = JobTimeHistory::select(
               'user_id')
               ->where('drafting_masters_id', '=', $draftingmaster->id)
@@ -622,7 +623,10 @@ class DraftingMasterController extends Controller
                   User::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'))
                   ->where('id', '=', $r->user_id)->first();
 
-                array_push($drafters_arr,  $drafter->full_name);
+                  if(!empty($drafter)){
+                    array_push($drafters_arr,  $drafter->full_name);
+                  }
+                
             }
             
 

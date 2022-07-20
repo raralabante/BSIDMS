@@ -75,32 +75,32 @@
              
               @if (!empty($role_name))
               @foreach ($role_name as $role) 
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" )
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin" )
                           <li>
                               <a class="drafting_master" href="{{route('drafting_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Drafting Master</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" )
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" || $role == "Drafting Admin" )
                           <li>
                               <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Drafts</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker")
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker" || $role == "Drafting Admin")
                           <li>
                               <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Drafts Check</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager")
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin")
                           <li>
                               <a class="submitted"  href="{{route('drafting_master.submitted_jobs')}}"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submitted</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager")
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin" )
                           <li>
                               <a class="cancelled"  href="{{route('drafting_master.cancelled_jobs')}}"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Cancelled</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Six Stars")
+                      @if ($role == "Administrator" || $role == "Six Stars" )
                           <li>
                               <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
                           </li>

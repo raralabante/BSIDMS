@@ -282,6 +282,12 @@ class MyDraftsCheckController extends Controller
       $draft->save();
       Self::jobStopper();
       JobTimeHistory::where('drafting_masters_id','=',$request->id)->delete();
+      
+      $description = "Job# " . $draft->job_number . " has been rejected.";
+      app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+        app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+
   }
 
 }
