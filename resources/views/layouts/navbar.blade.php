@@ -46,7 +46,7 @@
                           <!-- notify content -->
                           <div class="drop-content">
                        
-                            @foreach($activities_by_id as $activity_id)
+                            {{-- @foreach($activities_by_id as $activity_id)
       
                             <li>
                               @if($activity_id->status == 0)
@@ -57,7 +57,7 @@
                               <p> {{ $activity_id->description }}</p>
                               <span class="time">{{ $activity_id->created_at }}</span>
                             </li>
-                            @endforeach
+                            @endforeach --}}
 
                             @foreach($activities as $activity)
                             <li>

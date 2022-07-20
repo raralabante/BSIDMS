@@ -42,18 +42,25 @@ class AppServiceProvider extends ServiceProvider
                 ->whereIn('role_activities.role',function($query){
                     $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
                 })
-            ->get();
+                ->orderBy('created_at','DESC')
+                ;
 
             $activities = Activity::select('activities.description','activities.created_at','activities.status')
                 ->leftJoin('role_activities','role_activities.activity_id','activities.id')
                 ->where('activities.department','=', Auth::user()->department)
                 ->where('activities.team','=', Auth::user()->team)
+                ->where('activities.user_id' , '!=', Auth::user()->id)
+                
                 ->whereNull('role_activities.user_id')
                 ->whereIn('role_activities.role',function($query){
                     $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
                 })
-            ->get();
-            View::share('activities_by_id', $activities_by_id);
+                ->union($activities_by_id)
+                ->orderBy('created_at','DESC')
+                
+                ->get();
+                
+            
             View::share('activities', $activities);
         }
       

@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Categories;
 use App\Models\DraftingMaster;
 use App\Models\Timesheet;
-use App\Models\Customer;
 use App\Models\JobDraftingStatus;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Activity;
+use App\Models\RoleActivity;
 use App\Models\JobTimeHistory;
 use App\Models\User;
 use Error;
@@ -75,7 +75,6 @@ class DraftingMasterController extends Controller
       else{
         $status = "Assigned";
       }
-
         $newJob = DraftingMaster::create([
             'customer_name' => $request->customer_name,
             'job_number' => strtoupper($request->job_number),
@@ -92,22 +91,27 @@ class DraftingMasterController extends Controller
             'status' => $status,
         ]);
       
+        
+        $description = "(DRAFTING) Job# " . $request->job_number . " has been assigned to you.";
         if(!empty($drafters)){
           $drafters_arr = explode (",", $drafters); 
-        foreach($drafters_arr as $draft){
-          JobTimeHistory::insert(
-             array(
-               'user_id' => $draft,
-               'drafting_masters_id' => $newJob->id,
-               'type' => 'DRAFTING',
-               'created_at' => now(),
-             )
-          );
-        }
-       
+          foreach($drafters_arr as $draft){
+            JobTimeHistory::insert(
+              array(
+                'user_id' => $draft,
+                'drafting_masters_id' => $newJob->id,
+                'type' => 'DRAFTING',
+                'created_at' => now(),
+              )
+            );
+            
+            Self::addActivityById($description,$draft,10); //10=DRAFTER
+          }
+          
       }
-
+      
       $newJob->save();
+      
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' has been added.');
     }
 
@@ -191,6 +195,7 @@ class DraftingMasterController extends Controller
     protected function assignDrafters(Request $request)
     {
  
+      
       $request->validate([
         'drafters' => 'required|max:255',
       ]);
@@ -198,9 +203,11 @@ class DraftingMasterController extends Controller
       $edit_job = DraftingMaster::where('id','=',$request->draft_id)->get()->first();
       $edit_job->status = "Assigned";
       $edit_job->save();
-      
+   
+ 
       $drafters = $request->drafters;
 
+      $description = "(DRAFTING) Job# " . $edit_job->job_number . " has been assigned to you.";
       if(!empty($drafters)){
         $drafters_arr = explode (",", $drafters); 
       foreach($drafters_arr as $user_id){
@@ -212,8 +219,10 @@ class DraftingMasterController extends Controller
              'created_at' => now(),
            )
         );
+        Self::addActivityById($description,$user_id,10); //10=DRAFTER
       }
-     
+            
+
     }
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' drafters has been assigned.');
     }
@@ -233,6 +242,10 @@ class DraftingMasterController extends Controller
              'created_at' => now(),
            )
         );
+
+        $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,11); //10=DRAFTER
+
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' checker has been assigned.');
     }
 
@@ -553,6 +566,12 @@ class DraftingMasterController extends Controller
    public function cancelJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);
             if($drafting_masters->status != "Submitted"){
+
+              $job_number = DraftingMaster::where('id','=',$request->id)->first()->job_number;
+
+              $description = "Job# " . $job_number . " has been cancelled.";
+              Self::addActivity($description,3 );
+              Self::addActivity($description,9 );
               return DraftingMaster::where('id','=', $request->id)
               ->update(['status' => "Cancelled"]);
             }
@@ -562,7 +581,6 @@ class DraftingMasterController extends Controller
    }
 
    public function fetchByStatusList(Request $request) {
-
 
     if ($request->ajax()) {
       $query = DraftingMaster::select(
@@ -658,5 +676,49 @@ class DraftingMasterController extends Controller
     }
   }
 
-   
+   public function addActivityById($description,$user_id,$target_role){
+
+    $activity = Activity::create(
+      array(
+        'user_id' => Auth::user()->id,
+        'department' => Auth::user()->department,
+        'team' => Auth::user()->team,
+        'description' => $description,
+        'status' => 0,
+      )
+    );
+
+      RoleActivity::insert(
+        array(
+          'activity_id' => $activity->id,
+          'role' => $target_role,
+          'user_id' => $user_id,
+          'created_at' => now(),
+        )
+      );
+    $activity->save();
+   }
+
+   public function addActivity($description,$target_role){
+
+    $activity = Activity::create(
+      array(
+        'user_id' => Auth::user()->id,
+        'department' => Auth::user()->department,
+        'team' => Auth::user()->team,
+        'description' => $description,
+        'status' => 0,
+      )
+    );
+
+      RoleActivity::insert(
+        array(
+          'activity_id' => $activity->id,
+          'role' => $target_role,
+          'created_at' => now(),
+        )
+      );
+    $activity->save();
+   }
+
 }

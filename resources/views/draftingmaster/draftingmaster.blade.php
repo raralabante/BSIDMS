@@ -55,7 +55,8 @@
         </div>
       </div>
       
-      
+      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
+      </table>
      
 
       <div class="popover__wrapper">
@@ -137,12 +138,6 @@
         </div>
       </div>
       
-
-          <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
-          </table>
-
-     
-      
         <div class="modal fade" id="add_job_modal" tabindex="-1" aria-labelledby="add_job_modal" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -181,7 +176,7 @@
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Address</span>
-                  <input id="address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" name="address" required>
+                  <input id="address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" name="address" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
@@ -211,7 +206,7 @@
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Floor Area</span>
-                  <input id="floor_area" type="text" class="form-control" placeholder="Floor Area" aria-label="Floor Area" aria-describedby="basic-addon1" name="floor_area" onkeyup="value=value.replace(/[^0-9^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/^0+/, '')">
+                  <input id="floor_area" type="text" class="form-control" placeholder="Floor Area" aria-label="Floor Area" aria-describedby="basic-addon1" name="floor_area" autocomplete="off" onkeyup="value=value.replace(/[^0-9^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/^0+/, '')">
                 </div>
 
                 <div class="input-group mb-3">
@@ -268,7 +263,7 @@
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Client Name</span>
-                  <input id="edit_client_name" type="text" class="form-control" placeholder="Client Name" aria-label="Client Name" aria-describedby="basic-addon1" name="edit_client_name" required>
+                  <input id="edit_client_name" type="text" class="form-control" placeholder="Client Name" aria-label="Client Name" aria-describedby="basic-addon1" name="edit_client_name" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
@@ -303,12 +298,12 @@
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Floor Area</span>
-                  <input id="edit_floor_area" type="text" class="form-control" placeholder="Floor Area" aria-label="Floor Area" aria-describedby="basic-addon1" name="edit_floor_area" onkeyup="value=value.replace(/[^0-9^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/^0+/, '')">
+                  <input id="edit_floor_area" type="text" class="form-control" placeholder="Floor Area" aria-label="Floor Area" aria-describedby="basic-addon1" name="edit_floor_area" autocomplete="off" onkeyup="value=value.replace(/[^0-9^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/^0+/, '')">
                 </div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Prospect/Sample</span>
-                  <input id="edit_prospect" type="text" class="form-control" placeholder="Prospect/Sample" aria-label="Prospect/Sample" aria-describedby="basic-addon1" name="edit_prospect">
+                  <input id="edit_prospect" type="text" class="form-control" placeholder="Prospect/Sample" aria-label="Prospect/Sample" aria-describedby="basic-addon1" name="edit_prospect" autocomplete="off">
                 </div>
                 
               </div>

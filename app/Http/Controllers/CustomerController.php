@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use Error;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 class CustomerController extends Controller
 {
     /**
@@ -28,9 +29,6 @@ class CustomerController extends Controller
     {
 		  return view('customer.customer');
     }
-
-
-
 
     protected function insert(Request $request)
     {
@@ -85,6 +83,7 @@ class CustomerController extends Controller
     public function getCustomers(){
       $name = Customer::select(
         'name')
+        ->where('team','=',Auth::user()->team)
         ->orderBy('name', 'ASC')->get();
         return response()->json($name);
     }
