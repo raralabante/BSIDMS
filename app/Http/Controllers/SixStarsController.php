@@ -38,7 +38,7 @@ class SixStarsController extends Controller
 
         if(!empty($drafting_masters)){
             $drafting_masters->status = "In Six Stars";
-            $drafting_masters->six_stars_submitted_at == now();
+            $drafting_masters->six_stars_submitted_at = now();
             $drafting_masters->save();
 
             $description = "Job# " . $job_number. " is now in Six Stars.";

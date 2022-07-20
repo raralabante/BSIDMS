@@ -12,7 +12,6 @@
 
       <body>
         <div class="container-fluid p-5">
-          <h1>SIX STARS</h1>
           <div class="row">
             <div class="col-md-4">
                 <div class="input-group">

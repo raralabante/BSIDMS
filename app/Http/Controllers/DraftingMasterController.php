@@ -347,15 +347,44 @@ class DraftingMasterController extends Controller
 
       if(!empty($assigned_user_and_active)){ //IF THERE IS ASSIGNED USER AND ACTIVE
         if(!empty($check_new_user_status)){ // CHECK IF NEW ASSIGNED USER IS ALREADY ASSIGED
+          error_log('1');
+
+          JobTimeHistory::where('drafting_masters_id','=',$request->edit_draft_id)
+            ->where('type','=','CHECKING')->delete();
+
+          JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
+          JobTimeHistory::insert(
+            array(
+              'user_id' => $request->checker,
+              'drafting_masters_id' => $request->edit_draft_id,
+              'type' => 'CHECKING',
+              'created_at' => now(),
+            )
+         );
+
             return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
         }
         else{
           //IF THE NEW ASSIGNED USER IS  NOT YET ASSIGNED
+          error_log('2');
           return redirect()->back()->with('error', 'Error while editing checker for Client Job# ' . $request->edit_job_number. ' a checker is currently active');
         }
        
       }
       else{ //IF THERE IS NO ASSIGNED USER
+        error_log('3');
+        JobTimeHistory::where('drafting_masters_id','=',$request->edit_draft_id)
+            ->where('type','=','CHECKING')->delete();
+
+          JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
+          JobTimeHistory::insert(
+            array(
+              'user_id' => $request->checker,
+              'drafting_masters_id' => $request->edit_draft_id,
+              'type' => 'CHECKING',
+              'created_at' => now(),
+            )
+         );
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
       }
 

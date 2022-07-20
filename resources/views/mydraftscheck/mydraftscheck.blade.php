@@ -11,7 +11,6 @@
 
       <body class="">
         <div class="container-fluid p-5">
-          <h1>MY DRAFTS CHECK</h1>
           @if(session()->has('success'))
         <div class="alert alert-success d-flex align-items-center" role="alert">
             <i class="fas fa-check"></i>&nbsp;

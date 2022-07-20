@@ -769,7 +769,7 @@
                 url:  location.pathname +  '/canceljob/' + draft_id,
                 type:"GET",
                 success:function(response){
-                    $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted.");
+                    $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been cancelled.");
                     toast.show();
                   drafting_master_tbl.ajax.reload();
                 }

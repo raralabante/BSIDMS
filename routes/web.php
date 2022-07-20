@@ -111,7 +111,7 @@ Route::get('/shiftingschedule', [App\Http\Controllers\ShiftingScheduleController
 Route::post('/shiftingschedule/update', [App\Http\Controllers\ShiftingScheduleController::class, 'updateSchedule'])->name('shifting_schedule.update');
 
 //SixStars
-Route::get('/draftingmaster/sixstars', [App\Http\Controllers\SixStarsController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Six Stars,Drafting Admin')->name('sixstars');
+Route::get('/draftingmaster/sixstars', [App\Http\Controllers\SixStarsController::class, 'index'])->middleware('role:Administrator,Six Stars')->name('sixstars');
 Route::get('/draftingmaster/sixstars/getforsixstars', [App\Http\Controllers\SixStarsController::class, 'getForSixStars'])->name('sixstars.get_for_six_stars');
 Route::get('/draftingmaster/sixstars/addsixstars/{id}', [App\Http\Controllers\SixStarsController::class, 'addSixStars'])->name('sixstars.add_six_stars');
 Route::get('/draftingmaster/sixstars/list', [App\Http\Controllers\SixStarsController::class, 'sixStarsList'])->name('sixstars.list');

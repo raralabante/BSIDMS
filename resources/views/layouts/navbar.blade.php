@@ -31,7 +31,7 @@
                   <div class="p-2">
                     <ul class="nav navbar-nav" style="margin-right: 20px;">
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
+                        <a id="notification_bell" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
                           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                               99+
                             </span></a>
@@ -71,22 +71,15 @@
                             </li>
                             @endforeach
 
-                            
-                    
                           </div>
                           <div class="notify-drop-footer text-center">
-                            <a href=""><i class="fa fa-eye"></i> See More</a>
+                            {{-- <a href=""><i class="fa fa-eye"></i> See More</a> --}}
                           </div>
                         </ul>
                       </li>
                     
                     </ul>
                     </div>
-                  
-             
-            
-              
-
         </div>
       </div>
     </div>
@@ -100,5 +93,22 @@
      $(this).text(moment($(this).text(), "YYYY-MM-DD hh:mm:ss").fromNow());
     });
 
-
+    $("#notification_bell").click(function(){
+      $.ajax({
+        url:  '/submitjob/' + draft_id,
+        type:"GET",
+        success:function(response){
+          if(response == 0){
+            $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " is not yet ready for submission.");
+            toastWarning.show();
+          }
+          else{
+            $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted.");
+            toast.show();
+          }
+          
+          drafting_master_tbl.ajax.reload();
+        }
+      });
+    });
   </script>
