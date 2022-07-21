@@ -19,15 +19,11 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-        $departments = Pivot::select(
-			'code_value',
-            'desc1')
-            ->where('code_name','=','DEPARTMENT')
-			->orderBy('code_value', 'ASC')->get();
+        
 
         
             
-        return view('auth.register',compact('departments'));
+        return view('auth.register');
     }
 
     /**

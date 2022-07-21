@@ -62,3 +62,12 @@
     color:#2E89FF;
     font-size: 11px;
   }
+
+  #user_profile .dropdown-menu{
+    background-color: #212529;
+  }
+  #user_profile .dropdown-menu a:hover{
+    background-color: #2C2C2C;
+    color: #fff;
+  }
+

@@ -41,9 +41,24 @@
           @csrf
         <div class="modal-body">
           <i class="fa-solid fa-hashtag"></i>&nbsp;<span id="user_id">USER ID</span><br>
-            <i class="fa-solid fa-user-tie"></i>&nbsp;&nbsp;<label id="user_fullname">USER FULLNAME</label>
+            <i class="fa-solid fa-user-tie"></i>&nbsp;&nbsp;<label id="user_fullname">USER FULLNAME</label><br>
+            <i class="fa-solid fa-earth-africa"></i>&nbsp;&nbsp;<label id="user_department">DEPARTMENT</label>
             <hr>
-            <div id="roles_div">
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input type="hidden" name="edit_draft_id" id="edit_draft_id">
+                <input type="hidden" name="edit_job_number" id="edit_job_number">
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Team</span>
+                  <select class="form-select col-md-6 @error('team') is-invalid @enderror" name="team" id="team">
+                    <option value="" disabled selected>Select Team</option>
+                </select>
+                </div>
+              </div>
+            </div>
+            
+            <div id="roles_div mb-3">
               <input type="hidden" id="user_id_val" name="user_id">
               @foreach($user_roles as $roles)
               <div class="form-check">
@@ -54,6 +69,9 @@
               </div>
               @endforeach
             </div>
+
+              
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -76,13 +94,16 @@
       
       $('#users_tbl').on('click', '.edit-role-btn', function (){
         var user_id = $(this).data("id");
-        var user_fullname = $(this).data("first_name") + " " + $(this).data("last_name")
-        
+        var user_fullname = $(this).data("first_name") + " " + $(this).data("last_name");
+        var user_department = $(this).data("department");
+        var user_team = $(this).data("team");
+
         $("#edit_role_modal #user_id").text(user_id);
         $("#edit_role_modal #user_id_val").val(user_id);
         
         $("#edit_role_modal #user_fullname").text(user_fullname);
-       
+        $("#edit_role_modal #user_department").text(user_department);
+
         $.ajax({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -96,7 +117,30 @@
                 });
                  }
             });
+
+
+            $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+               type:'POST',
+               url:  '/register/loadteam',
+               async: true,
+               data:{department:user_department},
+               success:function(data) {
+                var team = $("#team");
+                    team.empty();
+                    $.each(data, function(i, item) {
+                        team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
+                    });
+                    $("#team").val(user_team).change();
+                 }
+            });
+           
+            
           });
+
+          
 
       var users_table = $('#users_tbl').DataTable({
         colReorder: true,
@@ -110,7 +154,8 @@
               {data: 'department', title: 'Department'},
               {data: 'team', title: 'Team'},
               {data: 'edit_role', title: 'Action'},
-          ]
+          ],
+          order: [[0, 'desc']],
       });
         
       $('a.toggle-vis').on('click', function (e) {

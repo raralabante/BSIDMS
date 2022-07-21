@@ -6,7 +6,7 @@
      
           <img src="{{ asset('images/realcognita-gif-logo.gif') }}" width="200px">
       </div> --}}
-      <div class="user-details">
+      <div class="user-details ">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
           <span><i class="fa-solid fa-earth-africa"></i>  {{Auth::user()->department}} ({{Auth::user()->team}})</span><br>
           
@@ -14,11 +14,12 @@
        
               @foreach (Auth::user()->permissions as $permission) 
                   &lt;{{
-                    $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
+                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
                   }}&gt;
               
               @endforeach
       </div>
+      <hr>
       <ul class="list-unstyled components">
 
             @if (!empty($role_name))
@@ -71,8 +72,6 @@
         <li class="active">
             <a role="button" id="draftingMenu" href="#draftingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-pen-ruler"></i>&nbsp;&nbsp;Drafting</a>
             <ul class="collapse list-unstyled" id="draftingSubmenu">
-
-             
               @if (!empty($role_name))
               @foreach ($role_name as $role) 
                       @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin" )
@@ -113,7 +112,7 @@
       </ul>
      
       
-      <ul class="list-unstyled">
+      {{-- <ul class="list-unstyled">
           <li>
               <a class="" href="{{ route('logout') }}"
               onclick="event.preventDefault();
@@ -125,9 +124,9 @@
                @csrf
            </form>
           </li>
-      </ul>
+      </ul> --}}
 
-  
+      <p class="text-center">© 2022 BSI-DMS v1.0.0</p>
 
   </nav>
 

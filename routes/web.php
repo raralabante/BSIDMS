@@ -26,8 +26,11 @@ Route::get('/users/list', [App\Http\Controllers\UserController::class, 'userList
 Route::post('/users/list/loadroles', [App\Http\Controllers\UserController::class, 'loadRoles'])->name('user.loadRoles');
 Route::post('/users/list/updateroles', [App\Http\Controllers\UserController::class, 'updateRoles'])->name('user.updateRoles');
 Route::get('/users/list/deleteuser/{id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('user.deleteUser');
-Route::GET('/users/getuser', [App\Http\Controllers\UserController::class, 'getUser'])->name('user.getUser');
+Route::GET('/users/getdrafters', [App\Http\Controllers\UserController::class, 'getDrafters'])->name('user.getDrafters');
 Route::GET('/users/getcheckers', [App\Http\Controllers\UserController::class, 'getCheckers'])->name('user.getCheckers');
+Route::GET('/users/readactivities', [App\Http\Controllers\UserController::class, 'readActivities'])->name('user.readActivities');
+Route::GET('/users/getactivities', [App\Http\Controllers\UserController::class, 'getActivities'])->name('user.getActivities');
+
 
 //Customers
 Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->middleware('role:Administrator')->name('customer');

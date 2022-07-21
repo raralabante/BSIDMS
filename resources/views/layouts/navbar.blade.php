@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-default" style="display:none;">
     <div class="container-fluid m-1">
-
+      
       <a class="navbar-brand" href="#"><img src="{{ asset('images/realcognita-gif-logo.gif') }}" width="180px"></a>
       <button type="button" id="sidebarCollapse" class="btn btn-info p-3">
       
@@ -11,9 +11,12 @@
         <i class="fa-solid fa-bars"></i>
         
       </button>
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             
@@ -24,53 +27,30 @@
                 <i class="fa-solid fa-bell fa-xl"></i>
                
               </button> --}}
-                <button type="button" id="" class="btn p-2">
-                  <a class=""><i class="fa-solid fa-circle-question text-white fa-xl"></i></a>
-                  </button>
+            
+              <button type="button" id="" class="btn p-3" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa-solid fa-lightbulb fa-xl text-white"></i>
+              </button>
 
-                  <div class="p-2">
-                    <ul class="nav navbar-nav" style="margin-right: 20px;">
+                  <button type="button" id="" class="btn p-3">
+                    <a class=""><i class="fa-solid fa-circle-question text-white fa-xl"></i></a>
+                  </button>
+         
+                  <div class="m-1">
+                    <ul class="nav navbar-nav p-2">
                       <li class="dropdown">
-                        <a id="notification_bell" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
-                          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                              99+
+                        <a type="button" id="notification_bell" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
+                          <span id="notification_count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{$count}}
                             </span></a>
                         <ul class="dropdown-menu notify-drop" style="right: 0; left: auto;">
                           <div class="notify-drop-title">
                             <div class="row">
                               <div class="col-md-6 col-sm-6 col-xs-6">Notifications</div>
-                             
                             </div>
                           </div>
-                          <!-- end notify title -->
-                          <!-- notify content -->
-                          <div class="drop-content">
-                       
-                            {{-- @foreach($activities_by_id as $activity_id)
-      
-                            <li>
-                              @if($activity_id->status == 0)
-                              <a href="" class="rIcon"><i class="fa-solid fa-circle text-primary"></i></a>
-                              @else
-                                <a href="" class="rIcon"><i class="fa-solid fa-circle text-secondary"></i></a>
-                              @endif
-                              <p> {{ $activity_id->description }}</p>
-                              <span class="time">{{ $activity_id->created_at }}</span>
-                            </li>
-                            @endforeach --}}
-
-                            @foreach($activities as $activity)
-                            <li>
-                              @if($activity->status == 0)
-                              <a href="" class="rIcon"><i class="fa-solid fa-circle text-primary"></i></a>
-                              @else
-                                <a href="" class="rIcon"><i class="fa-solid fa-circle text-secondary"></i></a>
-                              @endif
-                              <p> {{ $activity->description }}</p>
-                              <span class="time">{{ $activity->created_at }}</span>
-                            </li>
-                            @endforeach
-
+                          <div id="notification_list" class="drop-content">
+                            
                           </div>
                           <div class="notify-drop-footer text-center">
                             {{-- <a href=""><i class="fa fa-eye"></i> See More</a> --}}
@@ -80,35 +60,114 @@
                     
                     </ul>
                     </div>
+
+                    <div id="user_profile" class="m-1">
+                      <div class="dropdown ">
+                        <button class="btn dropdown-toggle p-3 " type="button" data-toggle="dropdown" aria-expanded="false">
+                          <i class="fa-solid fa-user-tie text-white fa-xl"></i>
+                        </button>
+
+                      <ul class="dropdown-menu" style="right: 0; left: auto; ">
+                        <li>
+                          <a class="text-white dropdown-item" href="{{ route('logout') }}"
+                          onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                           <i class="fa-solid fa-power-off"></i>{{ __('  Logout') }}
+                       </a>
+            
+                       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                           @csrf
+                       </form>
+                      </li>
+                       
+                      </ul>
+                    </div>
+                    </div>
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header real-cognita-teal">
+            <h5 class="modal-title" id="exampleModalLabel">REPORT A PROBLEM?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="border p-4">
+              <span class="badge rounded-pill bg-primary p-2"><strong>DEVELOPERS</strong></span><br><br>
+              <span><strong>Edrick John Gabagat</strong> </span><br>
+              <span><i class="fa-solid fa-envelope text-primary"></i>&nbsp;&nbsp;<a class="text-primary" href = "mailto: gabaejs@realcognita.com"><u>gabaejs@realcognita.com</u> </a></span><br>
+              
+              
+              <span><strong>Rafael Labante</strong>  </span><br>
+              <span><i class="fa-solid fa-envelope text-primary"></i>&nbsp;&nbsp;<a class="text-primary" href = "mailto: rafaell@realcognita.com"><u>rafaell@realcognita.com</u> </a></span><br>
+              
+            </div>
+            
+            
+
+            
+           
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </nav>
   <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
   <script src="{{ asset('moment-js/moment.js') }}"></script>
   <script type="text/javascript">
     
+$(document).ready(function(){
+  
+  // $( ".time" ).each(function( index ) {
+  //    $(this).text(moment($(this).text(), "YYYY-MM-DD hh:mm:ss").fromNow());
+  //   });
 
-    $( ".time" ).each(function( index ) {
-     $(this).text(moment($(this).text(), "YYYY-MM-DD hh:mm:ss").fromNow());
-    });
-
+    
     $("#notification_bell").click(function(){
       $.ajax({
-        url:  '/submitjob/' + draft_id,
-        type:"GET",
-        success:function(response){
-          if(response == 0){
-            $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " is not yet ready for submission.");
-            toastWarning.show();
-          }
-          else{
-            $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted.");
-            toast.show();
-          }
-          
-          drafting_master_tbl.ajax.reload();
-        }
-      });
+            url:  '/users/getactivities',
+            type:"GET",
+            async: true,
+            success:function(response){
+              $("#notification_list").empty();
+              $.each(response, function(index, item) {
+                  if(item.status == 0){
+                    $("#notification_list").append("<li><a class='rIcon'><i class='fa-solid fa-circle text-primary'></i></a>"
+                      + "<p>" + item.description + "</p><span class='time'>"+moment(item.created_at, "YYYY-MM-DD hh:mm:ss").fromNow()+"</span></li>");
+                  }
+                  else{
+                    $("#notification_list").append("<li><a  class='rIcon'><i class='fa-solid fa-circle text-secondary'></i></a>"
+                    + "<p>" + item.description + "</p><span class='time'>"+moment(item.created_at, "YYYY-MM-DD hh:mm:ss").fromNow()+"</span></li>");
+                  }
+                  // $("#notification_list").append("<p>" + item.description + "</p><span class='time'>"+moment(item.created_at, "YYYY-MM-DD hh:mm:ss").fromNow()+"</span></li>");
+                 
+              });
+              
+            }
+          });
+          $.ajax({
+                url:  '/users/readactivities',
+                type:"GET",
+                success:function(response){
+                 $("#notification_count").text("0");
+                }
+              });
+      
     });
+
+   
+
+   
+
+
+
+});
+    
   </script>

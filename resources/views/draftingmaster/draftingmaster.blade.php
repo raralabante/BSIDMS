@@ -47,18 +47,14 @@
           </div>
       @endif
 
-  
-
       <div class="row">
         <div class="col-md-6 input-group mb-3">
           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_job_modal"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;ADD JOB</button>
         </div>
       </div>
       
-      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
-      </table>
      
-
+     
       <div class="popover__wrapper">
         <div class="popover__content">
           <div class=" p-2 toggle-column">
@@ -137,7 +133,11 @@
           </div>
         </div>
       </div>
-      
+
+      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
+      </table>
+
+
         <div class="modal fade" id="add_job_modal" tabindex="-1" aria-labelledby="add_job_modal" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -454,7 +454,7 @@
       const toastWarning = new bootstrap.Toast(warningToast);
 
       $.ajax({
-            url:  '/users/getuser',
+            url:  '/users/getdrafters',
             type:"GET",
             success:function(data) {
               $('.amsify').amsifySuggestags({

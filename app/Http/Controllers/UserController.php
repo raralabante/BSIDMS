@@ -85,7 +85,7 @@ class UserController extends Controller
             ->editColumn('edit_role', function (User $user) {
                 // return '<a href="#" class="view-summary" data-id="' . $joborder->id . '" data-company="' . $joborder->company_name . '" data-toggle="modal" data-target="#viewSummary">VIEW</a>';
                 return '<button class="btn btn-primary edit-role-btn btn-sm" data-toggle="modal" data-target="#edit_role_modal" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
-                data-last_name="'. $user->last_name .'">
+                data-last_name="'. $user->last_name .'" data-department="'. $user->department .'" data-team="'. $user->team .'">
                 <i class="fa-solid fa-user-pen"></i>&nbsp;&nbsp;EDIT
               </button>
               <button class="btn btn-danger delete-user-btn btn-sm" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
@@ -124,9 +124,9 @@ class UserController extends Controller
     public function updateroles(Request $request){
         // error_log(dd($request));
         $userRole = $request->input('rolename');
-
+        
         if(empty($userRole)){
-            return redirect()->back()->with('error', 'Error while editing User ID #' . $request->user_id . '.');
+            return redirect()->back()->with('error', 'Role cannot be empty' . $request->user_id . '.');
         }
         else{
             Permission::where(['user_id'=>$request->user_id])->delete();
@@ -138,6 +138,8 @@ class UserController extends Controller
                    )
                 );
             }
+
+            User::where('id','=',$request->user_id)->update(['team' => $request->team]);
             return redirect()->back()->with('success', 'User ID #' . $request->user_id . ' has been edited.');
         }
     }
@@ -154,23 +156,84 @@ class UserController extends Controller
     //   
     }
 
-    public function getUser(){
+    public function getDrafters(){
         $name = User::select(
-          'id as value',
-          User::raw('CONCAT(first_name, " ", last_name) AS tag'))
-          ->orderBy('first_name', 'ASC')->get();
-          return $name;
+            'users.id as value', 
+            User::raw('CONCAT(users.first_name, " ", users.last_name) AS tag'))
+            ->leftJoin('role_user','role_user.user_id','users.id')
+            ->where('role_user.role_id','=',10)
+            ->where('users.department','=',Auth::user()->department)
+            ->where('users.team','=',Auth::user()->team)
+            ->orderBy('users.first_name', 'ASC')->get();
+            return $name;
       }
     
     public function getCheckers(){
-    $name = User::select(
-       
-        'id as value', 
-        User::raw('CONCAT(first_name, " ", last_name) AS label'))
-        ->orderBy('first_name', 'ASC')->get();
-        return $name;
+        $name = User::select(
+            'users.id as value', 
+            User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+            ->leftJoin('role_user','role_user.user_id','users.id')
+            ->where('role_user.role_id','=',11)
+            ->where('users.department','=',Auth::user()->department)
+            ->where('users.team','=',Auth::user()->team)
+            ->orderBy('users.first_name', 'ASC')->get();
+            return $name;
     }
 
-
+    public function readActivities(Request $request){
     
+        Activity::select('activities.status')
+            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+            ->where('activities.department','=', Auth::user()->department)
+            ->where('activities.team','=', Auth::user()->team)
+            ->where('role_activities.user_id','=',Auth::user()->id)
+            ->whereIn('role_activities.role',function($query){
+                $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+            })->update(['activities.status' => 1]);
+
+        Activity::select('activities.status')
+            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+            ->where('activities.department','=', Auth::user()->department)
+            ->where('activities.team','=', Auth::user()->team)
+            ->where('activities.user_id' , '!=', Auth::user()->id)
+            
+            ->whereNull('role_activities.user_id')
+            ->whereIn('role_activities.role',function($query){
+                $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+            })->update(['activities.status' => 1]);
+
+            
+            return 1;
+        }
+
+        public function getActivities(Request $request){
+            $activities_by_id = Activity::select('activities.description','activities.created_at','activities.status')
+                ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+                ->where('activities.department','=', Auth::user()->department)
+                ->where('activities.team','=', Auth::user()->team)
+                ->where('role_activities.user_id','=',Auth::user()->id)
+                ->whereIn('role_activities.role',function($query){
+                    $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+                })
+                ->orderBy('created_at','DESC')
+                ;
+
+            $activities = Activity::select('activities.description','activities.created_at','activities.status')
+                ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+                ->where('activities.department','=', Auth::user()->department)
+                ->where('activities.team','=', Auth::user()->team)
+                ->where('activities.user_id' , '!=', Auth::user()->id)
+                
+                ->whereNull('role_activities.user_id')
+                ->whereIn('role_activities.role',function($query){
+                    $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+                })
+                ->union($activities_by_id)
+                ->orderBy('created_at','DESC')
+                ->take(10)
+                ->get();
+
+                return $activities;
+        }
+
 }
