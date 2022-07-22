@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\JobType;
 use Error;
-
+use App\Events\Message;
 class JobTypeController extends Controller
 {
     /**
@@ -37,6 +37,7 @@ class JobTypeController extends Controller
 
         if($newjob_type->id == null){
           $newjob_type->save();
+          event(new Message(''));
           return redirect()->back()->with('success', $newjob_type->name . ' has been added.');
         }
         else{
@@ -63,6 +64,7 @@ class JobTypeController extends Controller
     }
 
     public function deleteJobType(Request $request){
+      event(new Message(''));
         JobType::find($request->id)->delete();
     //   
     }

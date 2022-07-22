@@ -97,8 +97,8 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
 
-            $count = count($activities_count);
-            View::share('count', $count);
+            $notification_count = count($activities_count);
+            View::share('notification_count', $notification_count);
             // View::share('activities', $activities);
             
         }

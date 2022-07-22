@@ -21,7 +21,6 @@
       </div>
       <hr>
       <ul class="list-unstyled components">
-
             @if (!empty($role_name))
                 @foreach ($role_name as $role) 
                 @if ($role == "Administrator")

@@ -453,6 +453,9 @@
       const warningToast = document.getElementById('warningToast');
       const toastWarning = new bootstrap.Toast(warningToast);
 
+      
+
+    
       $.ajax({
             url:  '/users/getdrafters',
             type:"GET",
@@ -553,6 +556,7 @@
     
       var drafting_master_tbl = $('#drafting_master_tbl').DataTable({
         scrollX: true,
+        scrollY: true,
           ajax: "{{ route('drafting_master.list') }}",
           dom: 'Bfrtip',
           // colReorder: true,
@@ -680,7 +684,7 @@
                 $('#edit_drafter_modal #edit_drafters').val(response.users_id);
                 
                 $.ajax({
-                      url:'/users/getuser',
+                      url:'/users/getdrafters',
                       type:"GET",
                       success:function(data) {
                         $('.amsify').amsifySuggestags({
@@ -820,6 +824,18 @@
               $(".popover__content").css("visibility","hidden");
             }
           }); 
+
+          Pusher.logToConsole = true;
+
+          var pusher = new Pusher('89eec464cd4d14a2238d', {
+            cluster: 'ap1'
+          });
+
+          var channel = pusher.subscribe('my-channel');
+          channel.bind('my-event', function(data) {
+            drafting_master_tbl.ajax.reload();
+
+          });
 
         
     });

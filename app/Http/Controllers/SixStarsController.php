@@ -6,7 +6,7 @@ use App\Models\DraftingMaster;
 use App\Models\JobTimeHistory;
 use Illuminate\Http\Request;
 use App\Models\Ammends;
-
+use App\Events\Message;
 class SixStarsController extends Controller
 {
     public function __construct()
@@ -45,7 +45,7 @@ class SixStarsController extends Controller
             app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
             app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
             app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
-
+            event(new Message(''));
             return 1;
         }
         else{
@@ -93,6 +93,7 @@ class SixStarsController extends Controller
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+        event(new Message(''));
         }
        
     }
@@ -108,7 +109,7 @@ class SixStarsController extends Controller
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
-
+        event(new Message(''));
       }
 
       

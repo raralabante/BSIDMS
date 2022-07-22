@@ -53,11 +53,12 @@
       const warningToast = document.getElementById('warningToast')
       const toastWarning = new bootstrap.Toast(warningToast);
 
+
       var mydrafts_tbl = $('#mydrafts_tbl').DataTable({
           ajax: "{{ route('my_drafts.list') }}",
           dom: 'Bfrtip',
-          processing: true,
-        serverSide: true,
+        //   processing: true,
+        // serverSide: true,
         buttons: [
             'copyHtml5',
             'excelHtml5',
@@ -159,6 +160,19 @@
       });
 
           
+      });
+
+      
+      Pusher.logToConsole = true;
+
+      var pusher = new Pusher('89eec464cd4d14a2238d', {
+        cluster: 'ap1'
+      });
+
+      var channel = pusher.subscribe('my-channel');
+      channel.bind('my-event', function(data) {
+        mydrafts_tbl.ajax.reload();
+
       });
 
 

@@ -3,10 +3,7 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body {
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-  }
+
 
 .badge{
     font-size: 0.75em!important;
@@ -97,4 +94,3 @@ body {
 .popover__message {
   text-align: center;
 }
-

@@ -30,7 +30,7 @@ Route::GET('/users/getdrafters', [App\Http\Controllers\UserController::class, 'g
 Route::GET('/users/getcheckers', [App\Http\Controllers\UserController::class, 'getCheckers'])->name('user.getCheckers');
 Route::GET('/users/readactivities', [App\Http\Controllers\UserController::class, 'readActivities'])->name('user.readActivities');
 Route::GET('/users/getactivities', [App\Http\Controllers\UserController::class, 'getActivities'])->name('user.getActivities');
-
+Route::GET('/users/countactivities', [App\Http\Controllers\UserController::class, 'countActivities'])->name('user.countActivities');
 
 //Customers
 Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->middleware('role:Administrator')->name('customer');

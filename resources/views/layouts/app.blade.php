@@ -237,6 +237,7 @@
     {{-- <script src=" {{ asset('bootstrap-tags/dist/bootstrap-tagsinput.css') }}"></script> --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script> --}}
     <script src="{{ asset('suggest-tags/jquery.amsify.suggestags.js') }}"></script>
+    <script src="{{ asset('pusher-js/pusher.min.js') }}"></script>
      <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {

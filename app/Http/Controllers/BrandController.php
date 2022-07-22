@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use Error;
-
+use App\Events\Message;
 class BrandController extends Controller
 {
     /**
@@ -37,6 +37,7 @@ class BrandController extends Controller
 
         if($newBrand->id == null){
           $newBrand->save();
+          event(new Message(''));
           return redirect()->back()->with('success', $newBrand->name . ' has been added.');
         }
         else{
@@ -64,6 +65,7 @@ class BrandController extends Controller
 
     public function deleteBrand(Request $request){
         Brand::find($request->id)->delete();
+        event(new Message(''));
     //   
     }
 

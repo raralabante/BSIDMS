@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Type;
 use Error;
-
+use App\Events\Message;
 class TypeController extends Controller
 {
     /**
@@ -37,6 +37,7 @@ class TypeController extends Controller
 
         if($newtype->id == null){
           $newtype->save();
+          event(new Message(''));
           return redirect()->back()->with('success', $newtype->name . ' has been added.');
         }
         else{
@@ -63,6 +64,7 @@ class TypeController extends Controller
     }
 
     public function deleteType(Request $request){
+      event(new Message(''));
         type::find($request->id)->delete();
     //   
     }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Timesheet;
 use Carbon\Carbon;
 use Error;
-
+use App\Events\Message;
 class MyDraftsController extends Controller
 {
     /**
@@ -261,9 +261,6 @@ class MyDraftsController extends Controller
 
       
       if(empty($job_drafting_status)){
-
-        
-              
         $draft = DraftingMaster::findOrFail($request->id);
         $draft->status = 'Ready For Check';
         $draft->save();
@@ -273,6 +270,7 @@ class MyDraftsController extends Controller
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+        event(new Message(''));
         // Self::jobStopper();
       }
  

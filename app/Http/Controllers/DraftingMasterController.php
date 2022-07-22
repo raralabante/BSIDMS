@@ -16,6 +16,7 @@ use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use App\Events\Message;
 class DraftingMasterController extends Controller
 {
     /**
@@ -50,7 +51,7 @@ class DraftingMasterController extends Controller
 
     protected function insert(Request $request)
     {
-      $status = "";
+      
        $request->validate([
         'customer_name' => 'required|max:255|exists:customers,name',
         'job_number' => 'required|max:255|unique:App\Models\DraftingMaster,job_number',
@@ -63,6 +64,10 @@ class DraftingMasterController extends Controller
         'job_type' => 'nullable|exists:App\Models\JobType,name',
         'category' => 'nullable|exists:App\Models\Categories,name',
       ]);
+
+      event(new Message(''));
+
+      $status = "";
 
       if($request->six_stars == null){
         $request->six_stars = 0;
@@ -91,7 +96,6 @@ class DraftingMasterController extends Controller
             'status' => $status,
         ]);
       
-        
         $description = "(DRAFTING) Job# " . $request->job_number . " has been assigned to you.";
         if(!empty($drafters)){
           $drafters_arr = explode (",", $drafters); 
@@ -188,14 +192,13 @@ class DraftingMasterController extends Controller
       $edit_job->six_stars = $request->edit_six_stars;
 
       $edit_job->save();
-
+      event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' has been updated.');
     }
 
     protected function assignDrafters(Request $request)
     {
- 
-      
+
       $request->validate([
         'drafters' => 'required|max:255',
       ]);
@@ -224,6 +227,7 @@ class DraftingMasterController extends Controller
             
 
     }
+        event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' drafters has been assigned.');
     }
 
@@ -245,7 +249,7 @@ class DraftingMasterController extends Controller
 
         $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10=DRAFTER
-
+            event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' checker has been assigned.');
     }
 
@@ -284,6 +288,7 @@ class DraftingMasterController extends Controller
       error_log('ACTIVE USERS COUNT: '. count($active_users));
       error_log('NEW ASSIGNED USERS COUNT: '. count($new_assigned_user));
 
+      
       if(count($active_users) > 0){ //IF THERE ARE ACTIVE USERS
         if(count($new_assigned_user) == 0){ //IF NEW ASSIGNED USER IS ACTIVE
           error_log("1");
@@ -309,6 +314,7 @@ class DraftingMasterController extends Controller
             Self::addActivityById($description,$user_id,10); //10=DRAFTER
 
         }
+        event(new Message(''));
           return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
         }
        
@@ -336,6 +342,7 @@ class DraftingMasterController extends Controller
     }
         $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
         Self::addActivityById($description,$user_id,10); //10=DRAFTER
+        event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
       }
     }
@@ -399,6 +406,7 @@ class DraftingMasterController extends Controller
          $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
             
+            event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
       }
 
@@ -602,6 +610,7 @@ class DraftingMasterController extends Controller
               Self::addActivity($description,3 );
               Self::addActivity($description,4 );
               Self::addActivity($description,9 );
+              event(new Message(''));
               return DraftingMaster::where('id','=', $request->id)
               ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
             }
@@ -618,6 +627,7 @@ class DraftingMasterController extends Controller
               Self::addActivity($description,3 );
               Self::addActivity($description,4 );
               Self::addActivity($description,9 );
+              event(new Message(''));
               return DraftingMaster::where('id','=', $request->id)
               ->update(['status' => "Cancelled"]);
             }

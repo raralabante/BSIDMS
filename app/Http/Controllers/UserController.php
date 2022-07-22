@@ -10,7 +10,7 @@ use App\Models\Activity;
 
 use App\Models\Pivot;
 use Illuminate\Support\Facades\Auth;
-
+use App\Events\Message;
 use Error;
 
 class UserController extends Controller
@@ -140,6 +140,7 @@ class UserController extends Controller
             }
 
             User::where('id','=',$request->user_id)->update(['team' => $request->team]);
+            event(new Message(''));
             return redirect()->back()->with('success', 'User ID #' . $request->user_id . ' has been edited.');
         }
     }
@@ -152,6 +153,7 @@ class UserController extends Controller
         // delete related   
         $user->permissions()->delete();
         $user->delete();
+        event(new Message(''));
        return redirect()->back()->with('success', 'User ID #' . $id. ' has been deleted.');
     //   
     }
@@ -234,6 +236,36 @@ class UserController extends Controller
                 ->get();
 
                 return $activities;
+        }
+
+        public function countActivities(Request $request){
+            $activities_by_id_count = Activity::select('activities.description','activities.created_at','activities.status')
+            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+            ->where('activities.department','=', Auth::user()->department)
+            ->where('activities.team','=', Auth::user()->team)
+            ->where('role_activities.user_id','=',Auth::user()->id)
+            ->where('activities.status','=', 0)
+            ->whereIn('role_activities.role',function($query){
+                $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+            })
+            ->orderBy('created_at','DESC')
+            ;
+
+        $activities_count = Activity::select('activities.description','activities.created_at','activities.status')
+            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+            ->where('activities.department','=', Auth::user()->department)
+            ->where('activities.team','=', Auth::user()->team)
+            ->where('activities.user_id' , '!=', Auth::user()->id)
+            ->where('activities.status','=', 0)
+            ->whereNull('role_activities.user_id')
+            ->whereIn('role_activities.role',function($query){
+                $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+            })
+            ->union($activities_by_id_count)
+            ->orderBy('created_at','DESC')
+            ->get();
+
+                return count($activities_count);
         }
 
 }

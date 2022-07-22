@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Timesheet;
 use Carbon\Carbon;
 use Error;
-
+use App\Events\Message;
 class MyDraftsCheckController extends Controller
 {
     /**
@@ -274,6 +274,7 @@ class MyDraftsCheckController extends Controller
 
       $draft->save();
         Self::jobStopper();
+        event(new Message(''));
     }
     
     public function rejectCheck(Request $request) {
@@ -287,7 +288,7 @@ class MyDraftsCheckController extends Controller
       app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
-
+        event(new Message(''));
   }
 
 }

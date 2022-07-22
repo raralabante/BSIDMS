@@ -13,6 +13,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pivot;
+use App\Events\Message;
 class RegisterController extends Controller
 {
     /*
@@ -80,6 +81,7 @@ class RegisterController extends Controller
             'department' => $data['department'],
             'team' => $data['team'],
         ]);
+        event(new Message(''));
     }
 
     protected function loadTeam(Request $request){
@@ -103,7 +105,7 @@ class RegisterController extends Controller
         if ($response = $this->registered($request, $user)) {
             return $response;
         }
-
+        event(new Message(''));
         return $request->wantsJson()
                     ? new JsonResponse([], 201)
                     : redirect($this->redirectPath())->with('success', $user->first_name . ' ' . $user->last_name . ' has been added.');

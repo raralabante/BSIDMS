@@ -186,6 +186,18 @@
           }
       });
       });
+      
+      Pusher.logToConsole = true;
+
+          var pusher = new Pusher('89eec464cd4d14a2238d', {
+            cluster: 'ap1'
+          });
+
+          var channel = pusher.subscribe('my-channel');
+          channel.bind('my-event', function(data) {
+            sixstars_tbl.ajax.reload();
+
+          });
 
     });
 </script>
