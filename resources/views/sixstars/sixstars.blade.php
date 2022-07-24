@@ -122,7 +122,8 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/list/submit/' + draft_id,
+                  
+                  url:  "{{route('sixstars.submit_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   mydraftscheck_tbl.ajax.reload();
@@ -140,7 +141,9 @@
         $("#add_six_stars").click(function(){
             var job_number = $("#job_number").val();
             $.ajax({
-                url:  location.pathname +  '/addsixstars/' + job_number,
+              
+
+              url:  "{{route('sixstars.add_six_stars','')}}"+"/"+job_number,
                 type:"GET",
                 success:function(response){
                  if(response == 1){
@@ -172,7 +175,8 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/list/ammend/' + draft_id,
+                  
+                  url:  "{{route('sixstars.ammend_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                     sixstars_tbl.ajax.reload();

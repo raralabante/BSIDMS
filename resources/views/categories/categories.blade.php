@@ -76,7 +76,8 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deletecategories/' + categories_id,
+                  
+                  url:  "{{route('categories.deleteCategories','')}}"+"/"+categories_id,
                   type:"GET",
                   success:function(response){
                     categoriess_tbl.ajax.reload();

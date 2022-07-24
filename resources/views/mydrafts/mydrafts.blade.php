@@ -107,7 +107,9 @@
         var job_number = $(this).data("job_number");
         
           $.ajax({
-                url:  location.pathname +  '/list/setstatus/' + draft_id,
+
+            
+            url:  "{{route('my_drafts.setStatusOnOff','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   
@@ -145,7 +147,8 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/list/setjobstatus/' + draft_id,
+                  
+                  url:  "{{route('my_drafts.setJobStatus','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted for checking.");

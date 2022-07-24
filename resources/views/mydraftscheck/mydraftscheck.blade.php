@@ -106,7 +106,10 @@
         var job_number = $(this).data("job_number");
         
           $.ajax({
-                url:  location.pathname +  '/list/setstatus/' + draft_id,
+           
+
+
+            url:  "{{route('my_drafts_check.setStatusOnOff','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   if(response == 0){
@@ -133,6 +136,7 @@
         var job_number = $(this).data("job_number");
         var six_stars = $(this).data("six_stars");
    
+        
         $.confirm({
           icon: 'fa-solid fa-paper-plane',
           draggable: false,
@@ -145,7 +149,8 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/list/setjobstatus/' + draft_id + '/' + six_stars,
+                  
+                  url: '/BSIDMS/public/draftingmaster/mydraftscheck/list/setjobstatus/' + draft_id + '/' + six_stars,
                 type:"GET",
                 success:function(response){
                   mydraftscheck_tbl.ajax.reload();
@@ -176,7 +181,9 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/list/reject/' + draft_id,
+                  
+                  
+                  url:  "{{route('my_drafts_check.rejectCheck','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   mydraftscheck_tbl.ajax.reload();

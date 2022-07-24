@@ -130,7 +130,7 @@ $(document).ready(function(){
 
     $("#notification_bell").click(function(){
       $.ajax({
-            url:  '/users/getactivities',
+            url:  '{{route("user.getActivities")}}',
             type:"GET",
             async: true,
             success:function(response){
@@ -150,11 +150,11 @@ $(document).ready(function(){
             }
           });
           $.ajax({
-                url:  '/users/readactivities',
+            url:  '{{route("user.readActivities")}}',
                 type:"GET",
                 success:function(response){
                   $.ajax({
-                    url:  '/users/countactivities',
+                    url:  '{{route("user.countActivities")}}',
                     type:"GET",
                     success:function(response){
                     $("#notification_count").text(response);

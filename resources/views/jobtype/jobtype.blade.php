@@ -80,7 +80,7 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deletejobtype/' + job_type_id,
+                  url:  "{{route('job_type.deleteJobType','')}}"+"/"+job_type_id,
                   type:"GET",
                   success:function(response){
                     job_types_tbl.ajax.reload();

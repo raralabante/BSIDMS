@@ -76,7 +76,8 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deletetype/' + type_id,
+                  url:  "{{route('type.deleteType','')}}"+"/"+type_id,
+
                   type:"GET",
                   success:function(response){
                     types_tbl.ajax.reload();

@@ -457,7 +457,7 @@
 
     
       $.ajax({
-            url:  '/users/getdrafters',
+        url:  '{{route("user.getDrafters")}}',
             type:"GET",
             success:function(data) {
               $('.amsify').amsifySuggestags({
@@ -470,7 +470,7 @@
 
       var company_list = [];
         $.ajax({
-              url:  '/customers/getcustomers',
+          url:  '{{route("customer.getCustomers")}}',
               type:"GET",
               success:function(data) {
                 $.each(data, function(i, item) {
@@ -481,7 +481,7 @@
 
       var jobtype_list = [];
         $.ajax({
-              url:  '/jobtypes/getjobtypes',
+          url:  '{{route("job_type.getJobTypes")}}',
               type:"GET",
               success:function(data) {
                 $.each(data, function(i, item) {
@@ -492,7 +492,7 @@
 
       var type_list = [];
         $.ajax({
-              url:  '/types/gettypes',
+          url:  '{{route("type.getTypes")}}',
               type:"GET",
               success:function(data) {
                 $.each(data, function(i, item) {
@@ -503,7 +503,7 @@
 
       var categories_list = [];
         $.ajax({
-              url:  '/categories/getcategories',
+          url:  '{{route("categories.getCategories")}}',
               type:"GET",
               success:function(data) {
                 $.each(data, function(i, item) {
@@ -514,7 +514,7 @@
         
       var brands_list = [];
         $.ajax({
-              url:  '/brands/getbrands',
+          url:  '{{route("brand.getBrands")}}',
               type:"GET",
               success:function(data) {
                 $.each(data, function(i, item) {
@@ -524,7 +524,7 @@
           });
 
         $.ajax({
-              url:  '/users/getcheckers',
+          url:  '{{route("user.getCheckers")}}',
               type:"GET",
               success:function(data) {
                 $('#assign_checker, #edit_checker').empty();
@@ -625,7 +625,9 @@
         var job_number = $(this).data("job_number");
         $("#edit_job_modal h5").html("<i class='fa-solid fa-pen'></i> &nbsp;EDIT CLIENT JOB# " + job_number);
           $.ajax({
-              url:  location.pathname +  '/fetch/' + draft_id,
+
+            
+            url:  "{{route('drafting_master.fetch','')}}"+"/"+draft_id,
               type:"GET",
               success:function(response){
             
@@ -678,13 +680,14 @@
         $("#edit_drafter_modal #edit_job_number").val(job_number);
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
-              url:  location.pathname +  '/fetch/drafters/' + draft_id,
+          
+              url:  "{{route('drafting_master.fetch_drafters','')}}"+"/"+draft_id,
               type:"GET",
               success:function(response){
                 $('#edit_drafter_modal #edit_drafters').val(response.users_id);
                 
                 $.ajax({
-                      url:'/users/getdrafters',
+                  url:  '{{route("user.getDrafters")}}',
                       type:"GET",
                       success:function(data) {
                         $('.amsify').amsifySuggestags({
@@ -707,7 +710,8 @@
         $("#edit_checker_modal #edit_job_number").val(job_number);
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
-              url:  location.pathname +  '/fetch/checker/' + draft_id,
+          
+          url:  "{{route('drafting_master.fetch_checker','')}}"+"/"+draft_id,
               type:"GET",
               success:function(response){
                 $("#edit_checker").val(response.users_id);
@@ -732,7 +736,7 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/submitjob/' + draft_id,
+                  url:  "{{route('drafting_master.submit_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   if(response == 0){
@@ -770,7 +774,9 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                url:  location.pathname +  '/canceljob/' + draft_id,
+
+                  
+                  url:  "{{route('drafting_master.cancel_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                     $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been cancelled.");

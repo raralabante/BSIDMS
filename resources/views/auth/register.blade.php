@@ -132,7 +132,9 @@ $( document ).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
                type:'POST',
-               url:  location.pathname +  '/loadteam',
+
+               
+               url:  "{{route('register.loadTeam')}}",
                data:{department:$(this).val()},
                success:function(data) {
                 var team = $("#team");

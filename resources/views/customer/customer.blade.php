@@ -111,7 +111,8 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deletecustomer/' + customer_id,
+                  url:  "{{route('customer.deleteCustomer','')}}"+"/"+customer_id,
+                  
                   type:"GET",
                   success:function(response){
                     customers_tbl.ajax.reload();

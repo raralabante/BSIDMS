@@ -16,16 +16,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div class="btn-group">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                          Dropdown
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <li><a class="dropdown-item" href="#">Menu item1</a></li>
-                          <li><a class="dropdown-item" href="#">Menu itemasdasd</a></li>
-                          <li><a class="dropdown-item" href="#">Menu item3</a></li>
-                        </ul>
-                      </div>
                     {{ __('You are logged in!') }}
                 </div>
             </div>

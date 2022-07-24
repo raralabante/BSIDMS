@@ -109,7 +109,9 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
                type:'POST',
-               url:  location.pathname +  '/list/loadroles',
+
+               
+               url:  "{{route('user.loadRoles')}}",
                data:{id:user_id},
                success:function(data) {
                 $.each(data, function(i, item) {
@@ -124,7 +126,8 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
                type:'POST',
-               url:  '/register/loadteam',
+               
+               url:  "{{route('register.loadTeam')}}",
                async: true,
                data:{department:user_department},
                success:function(data) {
@@ -185,7 +188,8 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deleteuser/' + user_id,
+                  
+                  url:  "{{route('user.deleteUser','')}}"+"/"+user_id,
                   type:"GET",
                   success:function(response){
                     users_table.ajax.reload();

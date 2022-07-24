@@ -76,10 +76,9 @@
               btnClass: 'btn-red',
               confirm: function(){
                 $.ajax({
-                  url:  location.pathname +  '/list/deletebrand/' + brand_id,
+                  url:  "{{route('brand.deleteBrand','')}}"+"/"+brand_id,
                   type:"GET",
                   success:function(response){
-                    brands_tbl.ajax.reload();
                     $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> " + brand_name + " has been deleted.");
                     toast.show();
                   }

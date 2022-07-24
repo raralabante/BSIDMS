@@ -58,7 +58,7 @@ Route::get('/jobtypes', [App\Http\Controllers\JobTypeController::class, 'index']
 Route::get('/jobtypes/list', [App\Http\Controllers\JobTypeController::class, 'jobTypeList'])->name('job_type.list');
 Route::post('/jobtypes/insert', [App\Http\Controllers\JobTypeController::class, 'insert'])->name('job_type.insert');
 Route::get('/jobtypes/list/deletejobtype/{id}', [App\Http\Controllers\JobTypeController::class, 'deleteJobType'])->name('job_type.deleteJobType');
-Route::GET('/jobtypes/getjobtypes', [App\Http\Controllers\JobTypeController::class, 'getJobTypes'])->name('customer.getJobTypes');
+Route::GET('/jobtypes/getjobtypes', [App\Http\Controllers\JobTypeController::class, 'getJobTypes'])->name('job_type.getJobTypes');
 
 // Categories
 Route::get('/categories', [App\Http\Controllers\CategoriesController::class, 'index'])->middleware('role:Administrator')->name('categories');
