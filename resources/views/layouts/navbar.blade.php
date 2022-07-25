@@ -112,9 +112,9 @@
                 </div>
                 
               </div>
-              <div class="col-md-6">
+              {{-- <div class="col-md-6">
                 <img src="{{ asset('images/problem.jpg') }}" alt="" height="auto" width="375px">
-              </div>
+              </div> --}}
             </div>
           </div>
         </div>

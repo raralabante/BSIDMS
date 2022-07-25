@@ -22,7 +22,9 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $shifting_schedule = ShiftingSchedule::find(1)->first();
+        $shifting_schedule = ShiftingSchedule::select(ShiftingSchedule::raw('DATE_FORMAT(morning_end, "%H:%i") as morning_end')
+        ,ShiftingSchedule::raw('DATE_FORMAT(afternoon_end, "%H:%i") as afternoon_end'))
+        ->where('id','=','1')->first();
         $schedule->command('auto:off')->dailyAt($shifting_schedule->morning_end);
         $schedule->command('auto:off')->dailyAt($shifting_schedule->afternoon_end);
 

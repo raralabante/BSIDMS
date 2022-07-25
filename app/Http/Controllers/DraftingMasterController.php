@@ -414,29 +414,53 @@ class DraftingMasterController extends Controller
         
     public function draftingMasterList(Request $request) {
       if ($request->ajax()) {
-        $query = DraftingMaster::select(
-                  'id',
-                  'customer_name',
-                  'client_name',
-                  'job_number',
-                  'address',
-                  'type',
-                  'ETA',
-                  'brand',
-                  'job_type',
-                  'category',
-                  'floor_area',
-                  'prospect',
-                  'status',
-                  DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
-                  'created_at'
-        )
-        ->whereIn('customer_name',function($query){
-          $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
-       })
-        ->where('status','!=','Submitted')
-        ->where('status','!=','Cancelled');
-                 
+        $query = "";
+        if(Auth::user()->hasRole('Administrator')){
+          $query = DraftingMaster::select(
+            'id',
+            'customer_name',
+            'client_name',
+            'job_number',
+            'address',
+            'type',
+            'ETA',
+            'brand',
+            'job_type',
+            'category',
+            'floor_area',
+            'prospect',
+            'status',
+            DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
+            'created_at'
+              )
+              ->where('status','!=','Submitted')
+              ->where('status','!=','Cancelled');
+                    }
+        else{
+          $query = DraftingMaster::select(
+            'id',
+            'customer_name',
+            'client_name',
+            'job_number',
+            'address',
+            'type',
+            'ETA',
+            'brand',
+            'job_type',
+            'category',
+            'floor_area',
+            'prospect',
+            'status',
+            DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
+            'created_at'
+              )
+              ->whereIn('customer_name',function($query){
+                $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+            })
+              ->where('status','!=','Submitted')
+              ->where('status','!=','Cancelled');
+        }
+
         return datatables()->eloquent($query)
           ->editColumn('delete_draft', function (DraftingMaster $draftingmaster) {
             // return '<a href="#" class="view-summary" data-id="' . $joborder->id . '" data-company="' . $joborder->company_name . '" data-toggle="modal" data-target="#viewSummary">VIEW</a>';
@@ -639,28 +663,54 @@ class DraftingMasterController extends Controller
    public function fetchByStatusList(Request $request) {
 
     if ($request->ajax()) {
-      $query = DraftingMaster::select(
-                'id',
-                'customer_name',
-                'client_name',
-                'job_number',
-                'address',
-                'type',
-                'ETA',
-                'brand',
-                'job_type',
-                'category',
-                'floor_area',
-                'prospect',
-                'status',
-                DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
-                'created_at',
-                'submitted_at'
-      )
-      ->whereIn('customer_name',function($query){
-        $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
-     })
-      ->where('status','=',$request->status);
+      $query = "";
+      
+      if(Auth::user()->hasRole('Administrator')){
+        $query = DraftingMaster::select(
+          'id',
+          'customer_name',
+          'client_name',
+          'job_number',
+          'address',
+          'type',
+          'ETA',
+          'brand',
+          'job_type',
+          'category',
+          'floor_area',
+          'prospect',
+          'status',
+          DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
+          'created_at',
+          'submitted_at'
+          )
+          ->where('status','=',$request->status);
+      }
+      else{
+        $query = DraftingMaster::select(
+          'id',
+          'customer_name',
+          'client_name',
+          'job_number',
+          'address',
+          'type',
+          'ETA',
+          'brand',
+          'job_type',
+          'category',
+          'floor_area',
+          'prospect',
+          'status',
+          DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
+          'created_at',
+          'submitted_at'
+          )
+          ->whereIn('customer_name',function($query){
+            $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+          })
+          ->where('status','=',$request->status);
+      }
+      
                
       return datatables()->eloquent($query)
           ->editColumn('drafters', function (DraftingMaster $draftingmaster) {
@@ -673,7 +723,8 @@ class DraftingMasterController extends Controller
 
               foreach($jobtimehistory as $r){
                 $drafter = User::select(
-                  User::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'))
+
+                   User::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'))
                   ->where('id', '=', $r->user_id)->first();
 
                   if(!empty($drafter)){
@@ -702,7 +753,10 @@ class DraftingMasterController extends Controller
                     User::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'))
                     ->where('id', '=', $jobtimehistory->user_id)->first();
 
-                    $checker_fullname = $checker->full_name;
+                    if(!empty($checker)){
+                      $checker_fullname = $checker->full_name;
+                    }
+                    
                 }
                 return  '<button class="btn btn-dark-green text-white">'.$checker_fullname.'</button>';
                     

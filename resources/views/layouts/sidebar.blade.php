@@ -9,7 +9,7 @@
       <div class="user-details ">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
           <span><i class="fa-solid fa-earth-africa"></i>  {{Auth::user()->department}} ({{Auth::user()->team}})</span><br>
-          
+          <span><i class="fa-solid fa-envelope"></i>  {{Auth::user()->email}}</span><br>
           <i class="fa-solid fa-briefcase"></i>
        
               @foreach (Auth::user()->permissions as $permission) 

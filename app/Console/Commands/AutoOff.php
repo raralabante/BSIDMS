@@ -7,7 +7,7 @@ use App\Models\DraftingMaster;
 use App\Models\JobDraftingStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Timesheet;
-
+use App\Events\Message;
 class AutoOff extends Command
 {
     /**
@@ -33,5 +33,8 @@ class AutoOff extends Command
     {
         JobDraftingStatus::query()->update(['status' => 0]);
         Timesheet::whereNull('job_stop')->update(['job_stop' => now()]);
+        event(new Message(''));
+        
+
     }
 }

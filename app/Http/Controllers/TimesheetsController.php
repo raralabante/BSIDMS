@@ -64,7 +64,11 @@ class TimesheetsController extends Controller
                 return datatables()->eloquent($query)
                 ->editColumn('user_id', function (Timesheet $timesheet) {
                     $full_name = User::find($timesheet->user_id);
-                    return $full_name->first_name . " " . $full_name->last_name;
+
+                    if(!empty($full_name)){
+                        return $full_name->first_name . " " . $full_name->last_name;
+                    }
+                   
 
                     })
                 ->editColumn('type', function (Timesheet $timesheet) {

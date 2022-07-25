@@ -132,11 +132,12 @@
       });
 
       $('#mydraftscheck_tbl').on('click', '.submit', function (){
+
         var draft_id = $(this).data("id");
         var job_number = $(this).data("job_number");
         var six_stars = $(this).data("six_stars");
    
-        
+
         $.confirm({
           icon: 'fa-solid fa-paper-plane',
           draggable: false,
@@ -149,7 +150,8 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                  
+                
+                  // url: location.path +  '/mydraftscheck/list/setjobstatus/' + draft_id + '/' + six_stars,
                   url: '/BSIDMS/public/draftingmaster/mydraftscheck/list/setjobstatus/' + draft_id + '/' + six_stars,
                 type:"GET",
                 success:function(response){

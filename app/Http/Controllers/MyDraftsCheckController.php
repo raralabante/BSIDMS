@@ -278,7 +278,7 @@ class MyDraftsCheckController extends Controller
     }
     
     public function rejectCheck(Request $request) {
-      $draft = DraftingMaster::where('id','=',$request->id);
+      $draft = DraftingMaster::findOrFail($request->id);
       $draft->status = 'Unassigned';
       $draft->save();
       Self::jobStopper();
