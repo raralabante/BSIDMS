@@ -193,6 +193,12 @@ class UserController extends Controller
                 $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
             })->update(['activities.status' => 1]);
 
+        Activity::select('activities.description','activities.created_at','activities.status')
+            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+            ->where('activities.user_id','=',0)
+            ->update(['activities.status' => 1])
+            ;
+
         Activity::select('activities.status')
             ->leftJoin('role_activities','role_activities.activity_id','activities.id')
             ->where('activities.department','=', Auth::user()->department)
@@ -220,6 +226,14 @@ class UserController extends Controller
                 ->orderBy('created_at','DESC')
                 ;
 
+            $activities_global = Activity::select('activities.description','activities.created_at','activities.status')
+                ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+                ->where('activities.user_id','=',0)
+                ->orderBy('created_at','DESC')
+                
+                ;
+
+
             $activities = Activity::select('activities.description','activities.created_at','activities.status')
                 ->leftJoin('role_activities','role_activities.activity_id','activities.id')
                 ->where('activities.department','=', Auth::user()->department)
@@ -230,7 +244,7 @@ class UserController extends Controller
                 ->whereIn('role_activities.role',function($query){
                     $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
                 })
-                ->union($activities_by_id)
+                ->union($activities_by_id)->union($activities_global)
                 ->orderBy('created_at','DESC')
                 ->take(10)
                 ->get();
@@ -251,19 +265,26 @@ class UserController extends Controller
             ->orderBy('created_at','DESC')
             ;
 
-        $activities_count = Activity::select('activities.description','activities.created_at','activities.status')
-            ->leftJoin('role_activities','role_activities.activity_id','activities.id')
-            ->where('activities.department','=', Auth::user()->department)
-            ->where('activities.team','=', Auth::user()->team)
-            ->where('activities.user_id' , '!=', Auth::user()->id)
-            ->where('activities.status','=', 0)
-            ->whereNull('role_activities.user_id')
-            ->whereIn('role_activities.role',function($query){
-                $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
-            })
-            ->union($activities_by_id_count)
-            ->orderBy('created_at','DESC')
-            ->get();
+            $activities_global_count = Activity::select('activities.description','activities.created_at','activities.status')
+                ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+                ->where('activities.user_id','=',0)
+                ->where('activities.status','=', 0)
+                ->orderBy('created_at','DESC')
+                ;
+
+            $activities_count = Activity::select('activities.description','activities.created_at','activities.status')
+                ->leftJoin('role_activities','role_activities.activity_id','activities.id')
+                ->where('activities.department','=', Auth::user()->department)
+                ->where('activities.team','=', Auth::user()->team)
+                ->where('activities.user_id' , '!=', Auth::user()->id)
+                ->where('activities.status','=', 0)
+                ->whereNull('role_activities.user_id')
+                ->whereIn('role_activities.role',function($query){
+                    $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
+                })
+                ->union($activities_by_id_count)->union($activities_global_count)
+                ->orderBy('created_at','DESC')
+                ->get();
 
                 return count($activities_count);
         }

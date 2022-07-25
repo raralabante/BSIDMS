@@ -37,13 +37,17 @@
                   </button>
          
                   <div class="m-1">
-                    <ul class="nav navbar-nav p-2">
+                    <ul class="nav navbar-nav">
                       <li class="dropdown">
-                        <a type="button" id="notification_bell" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white"></i>
+                       
+
+                        
                           @if($notification_count == 0)
-                          <span id="notification_count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger hidden">{{$notification_count}}</span></a>
+                          <button type="button" id="notification_bell" href="#" class="dropdown-toggle btn p-3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-white "></i>
+                          <span id="notification_count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger pulsing hidden">{{$notification_count}}</span></button>
                           @else
-                          <span id="notification_count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">{{$notification_count}}</span></a>
+                          <button type="button" id="notification_bell" href="#" class="dropdown-toggle btn p-3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-bell fa-xl text-danger "></i>
+                          <span id="notification_count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger pulsing ">{{$notification_count}}</span></button>
                           @endif
                             
                         <ul class="dropdown-menu notify-drop" style="right: 0; left: auto;">
@@ -127,7 +131,7 @@
   <script type="text/javascript">
     
 $(document).ready(function(){
-
+  $("#page_title").text("{{ config('app.name', 'Laravel') }} " +  "(" + $("#notification_count").text() + ")");
     $("#notification_bell").click(function(){
       $.ajax({
             url:  '{{route("user.getActivities")}}',
@@ -136,13 +140,15 @@ $(document).ready(function(){
             success:function(response){
               $("#notification_list").empty();
               $.each(response, function(index, item) {
+                
                   if(item.status == 0){
+                    
                     $("#notification_list").append("<li><a class='rIcon'><i class='fa-solid fa-circle text-primary'></i></a>"
-                      + "<p>" + item.description + "</p><span class='time'>"+moment(item.created_at, "YYYY-MM-DD hh:mm:ss").fromNow()+"</span></li>");
+                      + "<p>" + item.description + "</p><span class='time'>"+moment(moment(item.created_at).format()).fromNow()+"</span></li>");
                   }
                   else{
                     $("#notification_list").append("<li><a  class='rIcon'><i class='fa-solid fa-circle text-secondary'></i></a>"
-                    + "<p>" + item.description + "</p><span class='time'>"+moment(item.created_at, "YYYY-MM-DD hh:mm:ss").fromNow()+"</span></li>");
+                    + "<p>" + item.description + "</p><span class='time'>"+moment(moment(item.created_at).format()).fromNow()+"</span></li>");
                   }
                  
               });
@@ -157,12 +163,22 @@ $(document).ready(function(){
                     url:  '{{route("user.countActivities")}}',
                     type:"GET",
                     success:function(response){
-                    $("#notification_count").text(response);
+                      if(response == 0 ){
+                          $("#notification_bell i").addClass("text-white").removeClass("text-danger");
+                
+                          $("#notification_count").text(response).addClass("hidden");
+                         
+                        }
+                        else{
+                          $("#notification_bell i").removeClass("text-white").addClass("text-danger");
+                         
+                          $("#notification_count").text(response).removeClass("hidden");
+                        }
+                        $("#page_title").text("{{ config('app.name', 'Laravel') }} " +  "(" + response + ")");
                     }
                   });
                 }
               });
-
     });
 
     Pusher.logToConsole = true;
@@ -177,7 +193,15 @@ $(document).ready(function(){
               url:  '/users/countactivities',
               type:"GET",
               success:function(response){
-              $("#notification_count").text(response);
+                if(response == 0 ){
+                  $("#notification_bell i").addClass("text-white").removeClass("text-danger");
+                  $("#notification_count").text(response).addClass("hidden");
+                }
+                else{
+                  $("#notification_bell i").removeClass("text-white").addClass("text-danger");
+                  $("#notification_count").text(response).removeClass("hidden");
+                }
+                $("#page_title").text("{{ config('app.name', 'Laravel') }} " +  "(" + response + ")");
               }
             });
 
