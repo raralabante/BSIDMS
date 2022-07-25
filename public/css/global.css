@@ -95,7 +95,7 @@
   text-align: center;
 }
 
-.dropdown-toggle:after { content: none!important }
+#notification_bell .dropdown-toggle:after { content: none!important }
 
 .pulsing {
 
