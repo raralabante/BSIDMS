@@ -100,8 +100,8 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
-                <div class="border p-4">
+              <div class="col-md-12">
+                <div class="border p-4 text-center">
                   <h3 class="text-center">HOW CAN WE HELP?</h3>
                   <p class="text-center">Tell us your problem so we can get you the right help and support.</p><br>
                   <span class="badge rounded-pill bg-primary p-2"><strong>DEVELOPERS</strong></span><br><br>
