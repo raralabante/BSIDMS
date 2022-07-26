@@ -126,7 +126,7 @@
                   url:  "{{route('sixstars.submit_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
-                  mydraftscheck_tbl.ajax.reload();
+                  sixstars_tbl.ajax.reload();
                   $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted.");
                     toast.show();
                 }
@@ -155,6 +155,7 @@
                     $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " does not exist.");
                     toastWarning.show();
                  }
+                 $("#job_number").val("");
                 }
               });
         });

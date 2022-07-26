@@ -27,6 +27,7 @@ class SixStarsController extends Controller
     public function getForSixStars(){
         $for_six_stars = DraftingMaster::select(
             'job_number as value')
+            ->where('six_stars','=',1)
          ->where('status','=','Ready For Six Stars')->get();
         return $for_six_stars;
     }
@@ -34,7 +35,10 @@ class SixStarsController extends Controller
     public function addSixStars(Request $request){
         $job_number = $request->id;
 
-        $drafting_masters = DraftingMaster::select('id','status')->where('job_number','=',$job_number)->first();
+        $drafting_masters = DraftingMaster::select('id','status')
+        ->where('job_number','=',$job_number)
+        ->where('status','=','Ready For Six Stars')
+        ->where('six_stars','=',1)->first();
 
         if(!empty($drafting_masters)){
             $drafting_masters->status = "In Six Stars";

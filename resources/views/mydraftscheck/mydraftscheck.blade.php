@@ -152,7 +152,7 @@
                 $.ajax({
                 
                   // url: location.path +  '/mydraftscheck/list/setjobstatus/' + draft_id + '/' + six_stars,
-                  url: '/BSIDMS/public/draftingmaster/mydraftscheck/list/setjobstatus/' + draft_id + '/' + six_stars,
+                  url:  "{{route('my_drafts_check.setJobStatus','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
                   mydraftscheck_tbl.ajax.reload();

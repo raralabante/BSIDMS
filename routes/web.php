@@ -101,7 +101,7 @@ Route::get('/draftingmaster/mydrafts/list/setjobstatus/{id}', [App\Http\Controll
 Route::get('/draftingmaster/mydraftscheck', [App\Http\Controllers\MyDraftsCheckController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker')->name('my_drafts_check');
 Route::get('/draftingmaster/mydraftscheck/list', [App\Http\Controllers\MyDraftsCheckController::class, 'myDraftsCheckList'])->name('my_drafts_check.list');
 Route::get('/draftingmaster/mydraftscheck/list/setstatus/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'setStatusOnOff'])->name('my_drafts_check.setStatusOnOff');
-Route::get('/draftingmaster/mydraftscheck/list/setjobstatus/{id}/{sixstars}', [App\Http\Controllers\MyDraftsCheckController::class, 'setJobStatus'])->name('my_drafts_check.setJobStatus');
+Route::get('/draftingmaster/mydraftscheck/list/setjobstatus/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'setJobStatus'])->name('my_drafts_check.setJobStatus');
 Route::get('/draftingmaster/mydraftscheck/list/reject/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'rejectCheck'])->name('my_drafts_check.rejectCheck');
 
 
