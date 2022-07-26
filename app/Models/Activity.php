@@ -19,5 +19,11 @@ class Activity extends Model
         'status',
         'created_at',
     ];
+
+    public function role_activities(){
+        return $this->hasOne(RoleActivity::class);
+    }
+
+
     
 }

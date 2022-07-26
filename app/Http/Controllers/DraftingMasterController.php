@@ -65,7 +65,8 @@ class DraftingMasterController extends Controller
         'category' => 'nullable|exists:App\Models\Categories,name',
       ]);
 
-      
+      event(new Message(''));
+
       $status = "";
 
       if($request->six_stars == null){
@@ -99,23 +100,20 @@ class DraftingMasterController extends Controller
         if(!empty($drafters)){
           $drafters_arr = explode (",", $drafters); 
           foreach($drafters_arr as $draft){
-            JobTimeHistory::insert(
-              array(
-                'user_id' => $draft,
-                'drafting_masters_id' => $newJob->id,
-                'type' => 'DRAFTING',
-                'created_at' => now(),
-              )
-            );
-            
+            // JobTimeHistory::insert(
+            //   array(
+            //     'user_id' => $draft,
+            //     'drafting_masters_id' => $newJob->id,
+            //     'type' => 'DRAFTING',
+            //     'created_at' => now(),
+            //   )
+            // );
+            $newJob->assigns()->save(new JobTimeHistory(['user_id' => $draft,'type' => 'DRAFTING']));
             Self::addActivityById($description,$draft,10); //10=DRAFTER
           }
           
       }
       
-      $newJob->save();
-      event(new Message(''));
-
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' has been added.');
     }
 
@@ -131,7 +129,7 @@ class DraftingMasterController extends Controller
         User::raw('group_concat(CONCAT(users.first_name, " ", users.last_name) SEPARATOR ", ") as full_name'))
         ->leftJoin('job_time_histories','job_time_histories.user_id','users.id')
         ->where('job_time_histories.drafting_masters_id', '=', $request->id)
-        ->where('job_time_histories.type', '=', 'DRAFTING')->first();
+        ->where('job_time_histories.type', '=', 'DRAFTING')->first();   
     }
     
     protected function fetchChecker(Request $request)
@@ -705,10 +703,7 @@ class DraftingMasterController extends Controller
                   }
                 
             }
-            
-
               return  '<button class="btn btn-dark-green text-white">'.implode(', ',$drafters_arr).'</button>';
-              
             })
           
             ->editColumn('drafting_hours', function (DraftingMaster $draftingmaster) {
@@ -774,16 +769,7 @@ class DraftingMasterController extends Controller
         'status' => 0,
       )
     );
-
-      RoleActivity::insert(
-        array(
-          'activity_id' => $activity->id,
-          'role' => $target_role,
-          'user_id' => $user_id,
-          'created_at' => now(),
-        )
-      );
-    $activity->save();
+    $activity->role_activities()->save(new RoleActivity(['role'=> $target_role, 'user_id' => $user_id]));
    }
 
    public function addActivity($description,$target_role){
@@ -798,14 +784,7 @@ class DraftingMasterController extends Controller
       )
     );
 
-      RoleActivity::insert(
-        array(
-          'activity_id' => $activity->id,
-          'role' => $target_role,
-          'created_at' => now(),
-        )
-      );
-    $activity->save();
+    $activity->role_activities()->save(new RoleActivity(['role'=> $target_role]));
    }
 
 }

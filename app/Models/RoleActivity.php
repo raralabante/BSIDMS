@@ -12,5 +12,6 @@ class RoleActivity extends Model
         'activity_id', 
         'role',
         'user_id',
+        'created_at',
     ];
 }

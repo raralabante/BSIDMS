@@ -35,8 +35,7 @@ class DraftingMaster extends Model
     
 
     public function assigns(){
-        return $this->hasMany(related: JobTimeHistory::class);
+        return $this->hasMany(JobTimeHistory::class,'drafting_masters_id');
     }
-
 
 }
