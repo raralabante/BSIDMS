@@ -260,6 +260,7 @@ class MyDraftsCheckController extends Controller
 
     public function setJobStatus(Request $request) {
       $draft = DraftingMaster::findOrFail($request->id);
+      
       if($draft->six_stars == 1){
         $draft->status = 'Ready For Six Stars';
         $description = "Job# " . $draft->job_number . " is now ready for Six Stars.";

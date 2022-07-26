@@ -88,6 +88,23 @@
   
   
     $(document).ready( function () {
+
+      var users_table = $('#users_tbl').DataTable({
+        colReorder: true,
+        stateSave: true,
+          ajax: "{{ route('user.list') }}",
+          columns: [
+            {data: 'id', title: 'USER ID', className:'dt-right'},
+              {data: 'full_name', title: 'Full Name'},
+              {data: 'email', title: 'Email'},
+              {data: 'the_role', title: 'Roles'},
+              {data: 'department', title: 'Department'},
+              {data: 'team', title: 'Team'},
+              {data: 'edit_role', title: 'Action'},
+          ],
+          order: [[0, 'desc']],
+      });
+      
       $(".users").addClass('sidebar_active');
       const toastLiveExample = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(toastLiveExample);
@@ -145,21 +162,7 @@
 
           
 
-      var users_table = $('#users_tbl').DataTable({
-        colReorder: true,
-        stateSave: true,
-          ajax: "{{ route('user.list') }}",
-          columns: [
-            {data: 'id', title: 'USER ID', className:'dt-right'},
-              {data: 'full_name', title: 'Full Name'},
-              {data: 'email', title: 'Email'},
-              {data: 'the_role', title: 'Roles'},
-              {data: 'department', title: 'Department'},
-              {data: 'team', title: 'Team'},
-              {data: 'edit_role', title: 'Action'},
-          ],
-          order: [[0, 'desc']],
-      });
+      
         
       $('a.toggle-vis').on('click', function (e) {
         e.preventDefault();

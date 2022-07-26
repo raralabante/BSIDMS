@@ -67,15 +67,7 @@
       const warningToast = document.getElementById('warningToast')
       const toastWarning = new bootstrap.Toast(warningToast);
 
-    $.ajax({
-              url:  location.pathname + '/getforsixstars',
-              type:"GET",
-              success:function(data) {
-                $( "#job_number" ).autocomplete({
-                    source: data,
-                    })
-                 }
-          });
+    
 
       var sixstars_tbl = $('#sixstars_tbl').DataTable({
           ajax: "{{ route('sixstars.list') }}",
@@ -104,7 +96,15 @@
           order: [[0, 'desc']],
       });
 
-
+      $.ajax({
+              url:  location.pathname + '/getforsixstars',
+              type:"GET",
+              success:function(data) {
+                $( "#job_number" ).autocomplete({
+                    source: data,
+                    })
+                 }
+          });
 
       $('#sixstars_tbl').on('click', '.submit', function (){
         var draft_id = $(this).data("id");

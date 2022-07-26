@@ -65,8 +65,7 @@ class DraftingMasterController extends Controller
         'category' => 'nullable|exists:App\Models\Categories,name',
       ]);
 
-      event(new Message(''));
-
+      
       $status = "";
 
       if($request->six_stars == null){
@@ -115,7 +114,8 @@ class DraftingMasterController extends Controller
       }
       
       $newJob->save();
-      
+      event(new Message(''));
+
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' has been added.');
     }
 
@@ -462,12 +462,6 @@ class DraftingMasterController extends Controller
         }
 
         return datatables()->eloquent($query)
-          ->editColumn('delete_draft', function (DraftingMaster $draftingmaster) {
-            // return '<a href="#" class="view-summary" data-id="' . $joborder->id . '" data-company="' . $joborder->company_name . '" data-toggle="modal" data-target="#viewSummary">VIEW</a>';
-                return '<button class="btn btn-danger delete-categories-btn w-100" data-id="'. $draftingmaster->id .'" data-customer_name="'. $draftingmaster->customer_name .'">
-              <i class="fa-solid fa-trash-can"></i>&nbsp;&nbsp;DELETE
-              </button>';
-            })
             ->editColumn('drafters', function (DraftingMaster $draftingmaster) {
               $drafters_arr = [];
 
@@ -539,7 +533,7 @@ class DraftingMasterController extends Controller
                   })
                 ->editColumn('status', function (DraftingMaster $draftingmaster) {
                  
-                      return Self::getStatusColor($draftingmaster->status);
+                      return $draftingmaster->status;
                   })
                   ->editColumn('total_hours', function (DraftingMaster $draftingmaster) {
 
@@ -604,28 +598,7 @@ class DraftingMasterController extends Controller
                   
    }
 
-   public function getStatusColor($status){
-    $color_success = ['bg-secondary','bg-warning text-dark','bg-primary','bg-info','bg-light text-dark','bg-dark', 'bg-success'];
-      if($status == "Unassigned"){
-        return '<span class="badge '. $color_success[0] .'">'.$status.'</span>';
-      }
-      else if($status == "Assigned"){
-        return '<span class="badge '. $color_success[1] .'">'.$status.'</span>';
-      }
-      else if($status == "Ready For Check"){
-        return '<span class="badge '. $color_success[2] .'">'.$status.'</span>';
-      }
-      else if($status == "Ready To Submit"){
-        return '<span class="badge '. $color_success[3] .'">'.$status.'</span>';
-      }
-      else if($status == "Ready For Six Stars"){
-        return '<span class="badge '. $color_success[4] .'">'.$status.'</span>';
-      }
-      else if($status == "In Six Stars"){
-        return '<span class="badge '. $color_success[5] .'">'.$status.'</span>';
-      }
-      
-   }
+   
 
    public function submitJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);

@@ -443,19 +443,85 @@
 <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
 <script>
     $(document).ready( function () {
+
+      var drafting_master_tbl = $('#drafting_master_tbl').DataTable({
+        scrollX: true,
+        scrollY: true,
+          ajax: "{{ route('drafting_master.list') }}",
+          dom: 'Bfrtip',
+          // colReorder: true,
+          stateSave: true,
+        //   processing: true,
+        // serverSide: true,
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            {
+                className:    'column-toggle',
+                text:     '<button class="btn btn-light popover__title"><i class=" fa-solid fa-ellipsis-vertical"></i></button>',
+            },
+        ],
+          columns: [
+              {data: 'id', title: 'ID', className: "dt-right" },
+              {data: 'customer_name', title: 'Customer'},
+              {data: 'job_number', title: 'Client Job Number', className: "dt-center"},
+              {data: 'client_name', title: 'Client Name'},
+              {data: 'address', title: 'Address'},
+              {data: 'type', title: 'Type'},
+              {data: 'ETA', title: 'ETA', className: "dt-right", 
+              render: function (data, type) {
+                    return moment(data).format('MMM DD, YYYY');
+                }},
+              {data: 'brand', title: 'Brand'},
+              {data: 'job_type', title: 'Job Type'},
+              {data: 'category', title: 'Category'},
+              {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
+              {data: 'prospect', title: 'Prospect'},
+              {data: 'six_stars', title: 'Six Stars'},
+              {data: 'drafters', title: 'Drafters', className: "dt-center"},
+              {data: 'drafting_hours', title: 'Drafting Hours',className: "dt-center",
+              render: function (data, type) {
+                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
+                return duration;
+                },},
+              {data: 'checker', title: 'Checker', className: "dt-center"},
+              {data: 'checking_hours', title: 'Checking Hours',className: "dt-center",
+              render: function (data, type) {
+                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
+                return duration;
+                },},
+              {data: 'status', title: 'Status', className: "dt-center",
+              render: function (data, type) {
+               
+                return getStatusColor(data);
+                }, },
+              {data: 'total_hours', title: 'Total Hours',className: "dt-center",
+              render: function (data, type) {
+                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
+                return duration;
+                },},
+              {data: 'created_at', title: 'Created At', className: "dt-right", 
+              render: function (data, type) {
+                    return moment(data).format('MMM DD, YYYY');
+                },},
+                {data: 'cancel_job', title: 'Cancel', className: "dt-center"},
+              {data: 'edit_job', title: 'Edit', className: "dt-center"},
+              {data: 'submit_job', title: 'Submit', className: "dt-center"},
+          ],
+          order: [[0, 'desc']],
+          
+      });
+
       $("#draftingSubmenu .drafting_master").addClass("sidebar_active");
-
       document.getElementById("eta").min = moment().format('YYYY-MM-DD');
-
 
       const toastLiveExample = document.getElementById('liveToast');
       const toast = new bootstrap.Toast(toastLiveExample);
       const warningToast = document.getElementById('warningToast');
       const toastWarning = new bootstrap.Toast(warningToast);
 
-      
-
-    
       $.ajax({
         url:  '{{route("user.getDrafters")}}',
             type:"GET",
@@ -554,71 +620,7 @@
           source: brands_list
         });
     
-      var drafting_master_tbl = $('#drafting_master_tbl').DataTable({
-        scrollX: true,
-        scrollY: true,
-          ajax: "{{ route('drafting_master.list') }}",
-          dom: 'Bfrtip',
-          // colReorder: true,
-          stateSave: true,
-        //   processing: true,
-        // serverSide: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-            {
-                className:    'column-toggle',
-                text:     '<button class="btn btn-light popover__title"><i class=" fa-solid fa-ellipsis-vertical"></i></button>',
-            },
-        ],
-          columns: [
-              {data: 'id', title: 'ID', className: "dt-right" },
-              {data: 'customer_name', title: 'Customer'},
-              {data: 'job_number', title: 'Client Job Number', className: "dt-center"},
-              {data: 'client_name', title: 'Client Name'},
-              {data: 'address', title: 'Address'},
-              {data: 'type', title: 'Type'},
-              {data: 'ETA', title: 'ETA', className: "dt-right", 
-              render: function (data, type) {
-                    return moment(data).format('MMM DD, YYYY');
-                }},
-              {data: 'brand', title: 'Brand'},
-              {data: 'job_type', title: 'Job Type'},
-              {data: 'category', title: 'Category'},
-              {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
-              {data: 'prospect', title: 'Prospect'},
-              {data: 'six_stars', title: 'Six Stars'},
-              {data: 'drafters', title: 'Drafters', className: "dt-center"},
-              {data: 'drafting_hours', title: 'Drafting Hours',className: "dt-center",
-              render: function (data, type) {
-                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
-                return duration;
-                },},
-              {data: 'checker', title: 'Checker', className: "dt-center"},
-              {data: 'checking_hours', title: 'Checking Hours',className: "dt-center",
-              render: function (data, type) {
-                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
-                return duration;
-                },},
-              {data: 'status', title: 'Status', className: "dt-center" },
-              {data: 'total_hours', title: 'Total Hours',className: "dt-center",
-              render: function (data, type) {
-                const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
-                return duration;
-                },},
-              {data: 'created_at', title: 'Created At', className: "dt-right", 
-              render: function (data, type) {
-                    return moment(data).format('MMM DD, YYYY');
-                },},
-                {data: 'cancel_job', title: 'Cancel', className: "dt-center"},
-              {data: 'edit_job', title: 'Edit', className: "dt-center"},
-              {data: 'submit_job', title: 'Submit', className: "dt-center"},
-          ],
-          order: [[0, 'desc']],
-          
-      });
+      
 
       $('#drafting_master_tbl').on('click', '.edit_job', function (){
         var draft_id = $(this).data("id");
@@ -830,6 +832,28 @@
               $(".popover__content").css("visibility","hidden");
             }
           }); 
+
+         function getStatusColor(status){
+              color_success = ['bg-secondary','bg-warning text-dark','bg-primary','bg-info','bg-light text-dark','bg-dark', 'bg-success'];
+                if(status == "Unassigned"){
+                  return '<span class="badge '+ color_success[0] +'">'+status+'</span>';
+                }
+                else if(status == "Assigned"){
+                  return '<span class="badge '+ color_success[1] +'">'+status+'</span>';
+                }
+                else if(status == "Ready For Check"){
+                  return '<span class="badge '+ color_success[2] +'">'+status+'</span>';
+                }
+                else if(status == "Ready To Submit"){
+                  return '<span class="badge '+ color_success[3] +'">'+status+'</span>';
+                }
+                else if(status == "Ready For Six Stars"){
+                  return '<span class="badge '+ color_success[4] +'">'+status+'</span>';
+                }
+                else if(status == "In Six Stars"){
+                  return '<span class="badge '+ color_success[5] +'">'+status+'</span>';
+                }
+            }
 
           Pusher.logToConsole = true;
 
