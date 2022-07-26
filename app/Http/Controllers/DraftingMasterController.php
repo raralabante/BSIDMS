@@ -517,7 +517,7 @@ class DraftingMasterController extends Controller
                       }
                     }
                     else{
-                      if($draftingmaster->status == "Ready To Submit"){
+                      if($draftingmaster->status == "Ready To Submit" || $draftingmaster->status == "Ready For Six Stars"){
                         return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_checker' data-id='".$draftingmaster->id."' data-job_number='".$draftingmaster->job_number."' data-toggle='modal' data-target='#edit_checker_modal' disabled><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $checker->full_name . "</button>";
                       }
                       else{
