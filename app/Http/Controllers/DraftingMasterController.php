@@ -212,14 +212,7 @@ class DraftingMasterController extends Controller
       if(!empty($drafters)){
         $drafters_arr = explode (",", $drafters); 
       foreach($drafters_arr as $user_id){
-        JobTimeHistory::insert(
-           array(
-             'user_id' => $user_id,
-             'drafting_masters_id' => $request->draft_id,
-             'type' => 'DRAFTING',
-             'created_at' => now(),
-           )
-        );
+        $edit_job->assigns()->save(new JobTimeHistory(['user_id' => $user_id,'type' => 'DRAFTING']));
         Self::addActivityById($description,$user_id,10); //10=DRAFTER
       }
             
@@ -231,20 +224,13 @@ class DraftingMasterController extends Controller
 
     protected function assignChecker(Request $request)
     {
+      $drafting_master = DraftingMaster::findOrFail($request->draft_id);
+
       $request->validate([
         'checker' => 'required|max:255',
       
       ]);
-
-        JobTimeHistory::insert(
-           array(
-             'user_id' => $request->checker,
-             'drafting_masters_id' => $request->draft_id,
-             'type' => 'CHECKING',
-             'created_at' => now(),
-           )
-        );
-
+        $drafting_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'CHECKING']));
         $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10=DRAFTER
             event(new Message(''));
@@ -253,6 +239,8 @@ class DraftingMasterController extends Controller
 
     protected function editDrafters(Request $request)
     {
+
+      $drafting_master = DraftingMaster::findOrFail($request->edit_draft_id);
       $assigned_user_arr = [];
       $assigned_user_and_active_arr = [];
       $new_assigned_user_arr = [];
@@ -299,15 +287,7 @@ class DraftingMasterController extends Controller
             ->where('type','=','DRAFTING')->delete();
 
             foreach($drafters_arr as $user_id){
-              JobTimeHistory::insert(
-                array(
-                  'user_id' => $user_id,
-                  'drafting_masters_id' => $request->edit_draft_id,
-                  'type' => 'DRAFTING',
-                  'created_at' => now(),
-                )
-              );
-
+              $drafting_master->assigns()->save(new JobTimeHistory(['user_id' => $user_id,'type' => 'DRAFTING']));
               $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$user_id,10); //10=DRAFTER
 
@@ -328,18 +308,12 @@ class DraftingMasterController extends Controller
           JobTimeHistory::where('drafting_masters_id','=',$request->edit_draft_id)
             ->where('type','=','DRAFTING')->delete();
             foreach($drafters_arr as $user_id){
-              JobTimeHistory::insert(
-                array(
-                  'user_id' => $user_id,
-                  'drafting_masters_id' => $request->edit_draft_id,
-                  'type' => 'DRAFTING',
-                  'created_at' => now(),
-                )
-              );
+              $drafting_master->assigns()->save(new JobTimeHistory(['user_id' => $user_id,'type' => 'DRAFTING']));
+              $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
+              Self::addActivityById($description,$user_id,10); //10=DRAFTER
         }
     }
-        $description = "(DRAFTING) Job# " . $request->edit_job_number . " has been assigned to you.";
-        Self::addActivityById($description,$user_id,10); //10=DRAFTER
+        
         event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
       }
@@ -347,6 +321,8 @@ class DraftingMasterController extends Controller
     
     protected function editChecker(Request $request)
     {
+      $drafting_master = DraftingMaster::findOrFail($request->edit_draft_id);
+      
       $assigned_user_and_active = JobDraftingStatus::select('user_id')->where('drafting_masters_id','=',$request->edit_draft_id)
       ->where('status','=','1')
       ->where('type','=','CHECKING')->first();
@@ -363,16 +339,9 @@ class DraftingMasterController extends Controller
           JobTimeHistory::where('drafting_masters_id','=',$request->edit_draft_id)
             ->where('type','=','CHECKING')->delete();
 
-          JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
-          JobTimeHistory::insert(
-            array(
-              'user_id' => $request->checker,
-              'drafting_masters_id' => $request->edit_draft_id,
-              'type' => 'CHECKING',
-              'created_at' => now(),
-            )
-         );
-
+          // JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
+        
+            $drafting_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'CHECKING']));
             $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
 
@@ -391,16 +360,16 @@ class DraftingMasterController extends Controller
         JobTimeHistory::where('drafting_masters_id','=',$request->edit_draft_id)
             ->where('type','=','CHECKING')->delete();
 
-          JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
-          JobTimeHistory::insert(
-            array(
-              'user_id' => $request->checker,
-              'drafting_masters_id' => $request->edit_draft_id,
-              'type' => 'CHECKING',
-              'created_at' => now(),
-            )
-         );
-
+          // JobDraftingStatus::where('drafting_masters_id','=',$request->edit_draft_id)->where('type','=','CHECKING');
+        //   JobTimeHistory::insert(
+        //     array(
+        //       'user_id' => $request->checker,
+        //       'drafting_masters_id' => $request->edit_draft_id,
+        //       'type' => 'CHECKING',
+        //       'created_at' => now(),
+        //     )
+        //  );
+         $drafting_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'CHECKING']));
          $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
             
@@ -595,9 +564,7 @@ class DraftingMasterController extends Controller
                   return $total_time + $active_job->difference;
                   
    }
-
    
-
    public function submitJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);
             if($drafting_masters->status == "Ready To Submit"){
@@ -616,19 +583,20 @@ class DraftingMasterController extends Controller
 
    public function cancelJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);
-            if($drafting_masters->status != "Submitted"){
-
-              $description = "Job# " . $drafting_masters->job_number . " has been cancelled.";
-              Self::addActivity($description,3 );
-              Self::addActivity($description,4 );
-              Self::addActivity($description,9 );
-              event(new Message(''));
-              return DraftingMaster::where('id','=', $request->id)
-              ->update(['status' => "Cancelled"]);
-            }
-            else{
-              return 0;
-            }
+    $assigned_user_and_active = JobDraftingStatus::select('user_id')->where('drafting_masters_id','=',$request->id)
+      ->where('status','=','1')->first();
+        if(empty($assigned_user_and_active)){
+          $description = "Job# " . $drafting_masters->job_number . " has been cancelled.";
+          Self::addActivity($description,3 );
+          Self::addActivity($description,4 );
+          Self::addActivity($description,9 );
+          event(new Message(''));
+          return DraftingMaster::where('id','=', $request->id)
+          ->update(['status' => "Cancelled"]);
+        }
+        else{
+          return 0;
+        }
    }
 
    public function fetchByStatusList(Request $request) {

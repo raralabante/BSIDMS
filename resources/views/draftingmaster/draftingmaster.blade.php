@@ -781,9 +781,16 @@
                   url:  "{{route('drafting_master.cancel_job','')}}"+"/"+draft_id,
                 type:"GET",
                 success:function(response){
+                  if(response != 0){
                     $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been cancelled.");
                     toast.show();
-                  drafting_master_tbl.ajax.reload();
+                    drafting_master_tbl.ajax.reload();
+                  }
+                  else{
+                    $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " is currently active.");
+                    toastWarning.show();
+                  }
+                    
                 }
               });
               },
