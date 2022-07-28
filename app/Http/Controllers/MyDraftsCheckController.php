@@ -118,26 +118,6 @@ class MyDraftsCheckController extends Controller
               ->first();
 
               return ($total_time + $active_job->difference ) ?? "N/A";
-
-              // SELECT a.drafting_masters_id, SUM(DISTINCT TIMESTAMPDIFF(SECOND, a.job_start, a.job_stop)) AS difference 
-              //  FROM timesheets a LEFT JOIN job_drafting_status b ON a.drafting_masters_id = b.drafting_masters_id
-              // WHERE b.user_id = 12 
-              // AND b.status = 0
-              // AND b.type = "DRAFTING" 
-              // AND a.drafting_masters_id = 5 
-              // AND a.job_stop IS NOT NULL 
-              // GROUP BY a.drafting_masters_id;
-
-
-              // SELECT a.id,a.drafting_masters_id, SUM(TIMESTAMPDIFF(SECOND, a.job_start, now())) AS difference 
-              //  FROM timesheets a LEFT JOIN job_drafting_status b ON a.drafting_masters_id = b.drafting_masters_id
-              // WHERE b.user_id = 12 
-              // AND b.status = 1
-              // AND b.type = "DRAFTING" 
-              // AND a.drafting_masters_id = 4 
-              // AND a.job_stop IS NULL;
-
-
               })
               ->editColumn('reject', function (DraftingMaster $draftingmaster) {
                 return '<button class="btn btn-danger reject" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" >Reject</button>';
@@ -164,7 +144,7 @@ class MyDraftsCheckController extends Controller
     public function setStatusOnOff(Request $request) {
       $active_status = 0;
 
-      //CHECK IF USE IS ACTIVE ON CHECKING
+      //CHECK IF USER IS ACTIVE ON CHECKING
       $checking_user_status = JobDraftingStatus::select('status')
       ->where('user_id','=',Auth::user()->id)
       ->where('type','=','DRAFTING')
