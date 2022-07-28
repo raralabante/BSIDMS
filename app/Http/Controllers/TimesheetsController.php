@@ -38,25 +38,33 @@ class TimesheetsController extends Controller
 
    public function timeSheetList(Request $request){
 
-        $shifting_schedule = ShiftingSchedule::find(1)->first();
+    $shifting_schedule = ShiftingSchedule::select(ShiftingSchedule::raw('DATE_FORMAT(morning_start, "%H:%i") as morning_start')
+    ,ShiftingSchedule::raw('DATE_FORMAT(morning_end, "%H:%i") as morning_end')
+    ,ShiftingSchedule::raw('DATE_FORMAT(afternoon_start, "%H:%i") as afternoon_start')
+    ,ShiftingSchedule::raw('DATE_FORMAT(afternoon_end, "%H:%i") as afternoon_end'))->where('id','=','1')->first();
+    
      
         $query = Timesheet::select(
                   'id',
                   'user_id',
                   'type',
                   'drafting_masters_id',
-                  Timesheet::raw('DATE(created_at) as date'),
+                  'created_at',
                   Timesheet::raw('CASE WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->morning_start.'" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_start, "%r")
+                  WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->morning_end.'" AND "'.$shifting_schedule->afternoon_start.'" THEN TIME_FORMAT(job_start, "%r") 
                   ELSE null
                  END as morning_start'),
                  Timesheet::raw('CASE WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->morning_start.'" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_stop, "%r") 
-                  ELSE null
+                 WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->morning_end.'" AND "'.$shifting_schedule->afternoon_start.'" THEN TIME_FORMAT(job_stop, "%r") 
+                 ELSE null
                  END as morning_stop'),
                  Timesheet::raw(' CASE WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->afternoon_start.'" AND "'.$shifting_schedule->afternoon_end.'" THEN TIME_FORMAT(job_start, "%r")  
+                 WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->afternoon_end.'" AND "23:59" THEN TIME_FORMAT(job_start, "%r") 
                  ELSE null
                 END as afternoon_start'),
                 Timesheet::raw(' CASE WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->afternoon_start.'" AND "'.$shifting_schedule->afternoon_end.'" THEN TIME_FORMAT(job_stop, "%r")  
-                 ELSE null
+                WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->afternoon_end.'" AND "23:59" THEN TIME_FORMAT(job_stop, "%r") 
+                ELSE null
                 END as afternoon_stop'),
                 Timesheet::raw('TIMESTAMPDIFF(SECOND, job_start, job_stop) AS hours '))
                 ->where('drafting_masters_id','=',$request->id);
