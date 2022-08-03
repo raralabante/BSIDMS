@@ -23,7 +23,7 @@
       <ul class="list-unstyled components">
         @if (!empty($role_name))
             @foreach ($role_name as $role) 
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin" )
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin" )
                       <li>
                         <a class="dashboard" href="{{ route('dashboard') }}">
                         <i class="fa-solid fa-chart-pie"></i>&nbsp;&nbsp;Dashboard

@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/dashboard';
     public const DRAFTING_MASTER = '/draftingmaster';
     public const MY_DRAFTS = '/draftingmaster/mydrafts';
     public const USERS = '/users';
@@ -37,6 +37,12 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+            ->group(base_path('routes/drafting.php'));
+
+            Route::middleware('web')
+            ->group(base_path('routes/scheduling.php'));
         });
     }
 
@@ -51,4 +57,6 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
+
+  
 }
