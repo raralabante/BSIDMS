@@ -75,3 +75,10 @@ Route::post('/categories/insert', [App\Http\Controllers\CategoriesController::cl
 Route::get('/categories/list/deletecategories/{id}', [App\Http\Controllers\CategoriesController::class, 'deleteCategories'])->name('categories.deleteCategories');
 Route::GET('/categories/getcategories', [App\Http\Controllers\CategoriesController::class, 'getCategories'])->name('categories.getCategories');
 
+// Categories
+Route::get('/prestarts', [App\Http\Controllers\PrestartController::class, 'index'])->middleware('role:Administrator')->name('prestart');
+Route::get('/prestarts/list', [App\Http\Controllers\PrestartController::class, 'preStartList'])->name('prestart.list');
+Route::post('/prestarts/insert', [App\Http\Controllers\PrestartController::class, 'insert'])->name('prestart.insert');
+Route::get('/prestarts/list/deleteprestart/{id}', [App\Http\Controllers\PrestartController::class, 'deletePrestart'])->name('prestart.deleteprestart');
+Route::GET('/prestarts/getprestarts', [App\Http\Controllers\PrestartController::class, 'getPrestarts'])->name('prestart.getPrestarts');
+

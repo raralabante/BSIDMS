@@ -73,6 +73,9 @@
                     <li>
                         <a class="type" href="{{route('type')}}"><i class="fa-solid fa-t"></i>&nbsp;&nbsp;Types</a>
                     </li>
+                    <li>
+                        <a class="type" href="{{route('prestart')}}"><i class="fa-solid fa-t"></i>&nbsp;&nbsp;Prestart</a>
+                    </li>
                 </ul>
             </li>
             
@@ -119,7 +122,48 @@
               @endif
             </ul>
         </li>
-          
+        @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" )
+
+        <li class="active">
+            <a role="button" id="schedulingMenu" href="#schedulingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;Scheduling</a>
+            <ul class="collapse list-unstyled" id="schedulingSubmenu">
+              @if (!empty($role_name))
+              @foreach ($role_name as $role) 
+                      @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" )
+                          <li>
+                              <a class="scheduling_master" href="{{route('scheduling_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Scheduling Master</a>
+                          </li>
+                      @endif
+                      {{-- @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" || $role == "Drafting Admin" )
+                          <li>
+                              <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Schedules</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker" || $role == "Drafting Admin")
+                          <li>
+                              <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Schedules Check</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin")
+                          <li>
+                              <a class="submitted"  href="{{route('drafting_master.submitted_jobs')}}"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submitted</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin" )
+                          <li>
+                              <a class="cancelled"  href="{{route('drafting_master.cancelled_jobs')}}"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Cancelled</a>
+                          </li>
+                      @endif
+                      @if ($role == "Administrator" || $role == "Six Stars" )
+                          <li>
+                              <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
+                          </li>
+                      @endif --}}
+              @endforeach
+              @endif
+            </ul>
+        </li>
+        @endif
       </ul>
      
       
@@ -183,7 +227,9 @@ $( document ).ready(function() {
     else if (module == "brands" || module == "customers" || module == "jobtypes"|| module == "types" || module == "categories"){
         $("#filesMenu").click();
     }
-
+    else if (module == "schedulingmaster"){
+        $("#schedulingMenu").click();
+    }
     //remove duplicate submenu
     var seen = {};
     $('ul li').each(function() {
