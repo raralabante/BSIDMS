@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         ->where('id','=','1')->first();
         $schedule->command('auto:off')->dailyAt($shifting_schedule->morning_end);
         $schedule->command('auto:off')->dailyAt($shifting_schedule->afternoon_end);
-
+        $schedule->command('auto:off')->dailyAt('23:59');
     }
 
     /**

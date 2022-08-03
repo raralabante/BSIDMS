@@ -89,6 +89,8 @@
   
     $(document).ready( function () {
 
+     
+
       var users_table = $('#users_tbl').DataTable({
         colReorder: true,
         stateSave: true,
@@ -136,6 +138,8 @@
                 });
                  }
             });
+
+           
 
 
             $.ajax({

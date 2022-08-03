@@ -81,7 +81,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
                type:'POST',
-               url: '/register/loadteam',
+               url: "{{ route('register.loadTeam') }}",
                data:{department:"DFT"},
                success:function(data) {
                 var team = $("#team");

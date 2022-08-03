@@ -67,7 +67,7 @@
             <div class="form-check form-check-inline p-0">
               <div class="form-check form-switch">
                 <input class="form-check-input toggle-vis" type="checkbox" role="switch" data-column="1" id="column1" checked>
-                <label class="form-check-label" for="column1" >Customer</label>
+                <label class="form-check-label" for="column1" >Customer </label>
               </div>
             </div>
             <div class="form-check form-check-inline p-0">
@@ -160,32 +160,32 @@
 
                 </div>
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Customer Name</span>
+                  <span class="input-group-text" id="basic-addon1">Customer Name<span class="text-danger">*</span></span>
                   <input id="customer_names" type="text" class="form-control" placeholder="Customer Name" aria-label="Customer Name" aria-describedby="basic-addon1" name="customer_name" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Client Job Number</span>
+                  <span class="input-group-text" id="basic-addon1">Client Job Number<span class="text-danger">*</span></span>
                   <input id="job_number" type="text" class="form-control" placeholder="Job Number" aria-label="Job Number" aria-describedby="basic-addon1" name="job_number" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Client Name</span>
+                  <span class="input-group-text" id="basic-addon1">Client Name<span class="text-danger">*</span></span>
                   <input id="client_name" type="text" class="form-control" placeholder="Client Name" aria-label="Client Name" aria-describedby="basic-addon1" name="client_name" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Address</span>
+                  <span class="input-group-text" id="basic-addon1">Address<span class="text-danger">*</span></span>
                   <input id="address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" name="address" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Type</span>
+                  <span class="input-group-text" id="basic-addon1">Type<span class="text-danger">*</span></span>
                   <input id="types" type="text" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="type" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">ETA</span>
+                  <span class="input-group-text" id="basic-addon1">ETA<span class="text-danger">*</span></span>
                   <input id="eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="eta" required>
                 </div>
 
@@ -252,27 +252,27 @@
 
                 </div>
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Customer Name</span>
+                  <span class="input-group-text" id="basic-addon1">Customer Name<span class="text-danger">*</span></span>
                   <input id="edit_customer_names" type="text" class="form-control" placeholder="Customer Name" aria-label="Customer Name" aria-describedby="basic-addon1" name="edit_customer_name" required>
                 </div>
 
                 <div class="input-group mb-3 hidden">
-                  <span class="input-group-text" id="basic-addon1">Client Job Number</span>
+                  <span class="input-group-text" id="basic-addon1">Client Job Number<span class="text-danger">*</span></span>
                   <input id="edit_job_number" type="text" class="form-control" placeholder="Job Number" aria-label="Job Number" aria-describedby="basic-addon1" name="edit_job_number" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Client Name</span>
+                  <span class="input-group-text" id="basic-addon1">Client Name<span class="text-danger">*</span></span>
                   <input id="edit_client_name" type="text" class="form-control" placeholder="Client Name" aria-label="Client Name" aria-describedby="basic-addon1" name="edit_client_name" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Address</span>
+                  <span class="input-group-text" id="basic-addon1">Address<span class="text-danger">*</span></span>
                   <input id="edit_address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" name="edit_address" autocomplete="off" required>
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Type</span>
+                  <span class="input-group-text" id="basic-addon1">Type<span class="text-danger">*</span></span>
                   <input id="edit_types" type="text" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_type" required>
                 </div>
 

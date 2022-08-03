@@ -39,18 +39,19 @@ class LoginController extends Controller
             error_log($role_name);
             if($role_name == "Administrator" OR $role_name == "Drafting Manager" OR $role_name == "Drafting TL"){
 
-                return redirect()->route('drafting_master');
+                return redirect()->route('dashboard');
             }
             else if($role_name == "Drafter" || $role_name == "Drafting Checker"){
                 return redirect()->route('my_drafts');
             }
             else{
-                return redirect()->route('home');
+                return redirect()->route('dashboard');
             }
           
         }
        
     }
+
 
     public function logout(Request $request)
     {

@@ -54,7 +54,7 @@ class DraftingMasterController extends Controller
       
        $request->validate([
         'customer_name' => 'required|max:255|exists:customers,name',
-        'job_number' => 'required|max:255|unique:App\Models\DraftingMaster,job_number',
+        'job_number' => 'required|max:255',
         'client_name' => 'required|max:255',
         'address' => 'required|max:255',
         'type' => 'required|max:255|exists:App\Models\Type,name',

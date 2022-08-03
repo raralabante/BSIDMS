@@ -12,8 +12,7 @@
       <body class="">
         
         <div class="container-fluid p-5">
-          <h1>TIMESHEETS</h1>
-          <h1>CLIENT JOB# {{$drafting_masters->id}}</h1>
+          <h3>CLIENT JOB# {{$drafting_masters->id}}</h3>
           @if(session()->has('success'))
         <div class="alert alert-success d-flex align-items-center" role="alert">
             <i class="fas fa-check"></i>&nbsp;
