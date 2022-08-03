@@ -21,7 +21,7 @@ Route::post('/register/loadteam', [App\Http\Controllers\Auth\RegisterController:
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //DASHBOARD
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting Admin')->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Scheduling Manager,Drafting Admin')->name('dashboard');
 Route::post('/dashboard/getactiveusers', [App\Http\Controllers\DashboardController::class, 'getActiveUsers'])->name('dashboard.getActiveUsers');
 Route::post('/dashboard/getinactiveusers', [App\Http\Controllers\DashboardController::class, 'getInactiveUsers'])->name('dashboard.getInactiveUsers');
 
