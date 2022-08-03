@@ -87,7 +87,6 @@ class RegisterController extends Controller
     protected function loadTeam(Request $request){
         // error_log($request->department);
         $team = Pivot::select('code_value')
-        ->where('desc1','=',$request->department)
         ->where( 'code_name', '=', 'TEAM' )
         ->orderBy('code_value','ASC')->get();
 

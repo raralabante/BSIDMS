@@ -82,7 +82,7 @@
              },
                type:'POST',
                url: "{{ route('register.loadTeam') }}",
-               data:{department:"DFT"},
+               
                success:function(data) {
                 var team = $("#team");
                     team.empty();
