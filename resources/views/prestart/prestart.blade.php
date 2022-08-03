@@ -29,7 +29,7 @@
           <form method="POST" action="{{ route('prestart.insert') }}" onsubmit="add_prestart_btn.disabled = true; return true;">
             @csrf
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Prestart Name" aria-label="prestart Name" aria-describedby="add_prestart_btn" name="prestart_name" required autocomplete="off">
+                <input type="text" class="form-control" placeholder="Prestart Name" name="prestart_name"  required autocomplete="off" tabindex="0" autofocus/>
                 <button class="btn btn-success" type="submit" id="add_prestart_btn"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;ADD PRESTART</button>
             </div>
           </form>
