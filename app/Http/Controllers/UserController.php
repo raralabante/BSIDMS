@@ -169,18 +169,31 @@ class UserController extends Controller
             ->orderBy('users.first_name', 'ASC')->get();
             return $name;
       }
-    
-    public function getCheckers(){
+      
+      public function getSchedulers(){
         $name = User::select(
             'users.id as value', 
             User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
             ->leftJoin('role_user','role_user.user_id','users.id')
-            ->where('role_user.role_id','=',11)
+            ->where('role_user.role_id','=',20)
             ->where('users.department','=',Auth::user()->department)
             ->where('users.team','=',Auth::user()->team)
             ->orderBy('users.first_name', 'ASC')->get();
             return $name;
-    }
+      }
+      
+    // public function getCheckers(){
+    //     $name = User::select(
+    //         'users.id as value', 
+    //         User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+    //         ->leftJoin('role_user','role_user.user_id','users.id')
+    //         ->where('role_user.role_id','=',11)
+    //         ->where('users.department','=',Auth::user()->department)
+    //         ->where('users.team','=',Auth::user()->team)
+    //         ->orderBy('users.first_name', 'ASC')->get();
+        
+    //         return $name;
+    // }
 
     public function readActivities(Request $request){
     

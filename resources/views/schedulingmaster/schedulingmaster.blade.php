@@ -147,6 +147,14 @@
                 @csrf
               <div class="modal-body">
                 <div class="input-group mb-3">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="hitlist" name="hitlist" value="1">
+                    <label class="form-check-label" for="hitlist">Hitlist</label>
+                  </div>
+
+                </div>
+
+                <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Customer Name<span class="text-danger">*</span></span>
                   <input id="customer_names" type="text" class="form-control" placeholder="Customer Name" aria-label="Customer Name" aria-describedby="basic-addon1" name="customer_name" required>
                 </div>
@@ -172,6 +180,21 @@
                 </div>
 
                 <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Pre-Start<span class="text-danger">*</span></span>
+                  <input id="prestart" type="text" class="form-control" placeholder="Pre-Start" aria-label="Pre-Start" aria-describedby="basic-addon1" name="prestart" required>
+                </div>
+
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Stage<span class="text-danger">*</span></span>
+                  <select class="form-select" aria-label="Default select example" name="stage" required>
+                    <option selected>Select Stage</option>
+                    <option value="Stage 1">Stage 1</option>
+                    <option value="Stage 2">Stage 2</option>
+                    <option value="Full Stage">Full Stage</option>
+                  </select>
+                </div>
+
+                <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Brands</span>
                   <input id="brands" type="text" class="form-control" placeholder="Brand" aria-label="Brand" aria-describedby="basic-addon1" name="brand">
                 </div>
@@ -181,14 +204,7 @@
                   <input id="job_types" type="text" class="form-control" placeholder="Job Type" aria-label="Job Type" aria-describedby="basic-addon1" name="job_type">
                 </div>
 
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Pre-Start</span>
-                  <input id="pre_start" type="text" class="form-control" placeholder="Pre-Start" aria-label="Pre-Start" aria-describedby="basic-addon1" name="pre_start">
-                </div>
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Stage</span>
-                  <input id="stage" type="text" class="form-control" placeholder="Stage" aria-label="Stage" aria-describedby="basic-addon1" name="stage">
-                </div>
+                
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Floor Area</span>
                   <input id="floor_area" type="text" class="form-control" placeholder="Floor Area" aria-label="Floor Area" aria-describedby="basic-addon1" name="floor_area" autocomplete="off" onkeyup="value=value.replace(/[^0-9^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/^0+/, '')">
@@ -199,13 +215,11 @@
                   <input id="prospect" type="text" class="form-control" placeholder="Prospect/Sample" aria-label="Prospect/Sample" aria-describedby="basic-addon1" name="prospect">
                 </div>
 
-               
-                  <div class="form-floating">
-                    <span class="input-group-text" id="basic-addon1">Schedulers</span>
-                  <input id="schedulers" type="text" class="form-control amsify" placeholder="Add schedulers here" aria-label="Drafter" style="height: 100px" aria-describedby="basic-addon1" name="schedulers">
-                  </div>
-               
-                
+               <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Scheduler</span>
+                  <input id="scheduler" type="text" class="form-control" placeholder="Scheduler" aria-label="Pre-Start" aria-describedby="basic-addon1" name="scheduler_label">
+                </div>
+                <input id="scheduler_val" type="hidden" name="scheduler" required>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -228,11 +242,11 @@
                 @csrf
               <div class="modal-body">
 
-                <input id="edit_draft_id" type="hidden" name="edit_draft_id">
+                <input id="edit_schedule_id" type="hidden" name="edit_schedule_id">
                 <div class="input-group mb-3">
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="edit_six_stars" name="edit_six_stars" value="1">
-                    <label class="form-check-label" for="edit_six_stars">Six Stars</label>
+                    <input class="form-check-input" type="checkbox" role="switch" id="edit_hitlist" name="edit_hitlist" value="1">
+                    <label class="form-check-label" for="edit_hitlist">Hitlist</label>
                   </div>
 
                 </div>
@@ -261,10 +275,20 @@
                   <input id="edit_types" type="text" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_type" required>
                 </div>
 
-                {{-- <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">ETA</span>
-                  <input id="edit_eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_eta" required>
-                </div> --}}
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Pre-Start<span class="text-danger">*</span></span>
+                  <input id="edit_prestart" type="text" class="form-control" placeholder="Pre-Start" aria-label="Pre-Start" aria-describedby="basic-addon1" name="edit_prestart">
+                </div>
+
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">Stage<span class="text-danger">*</span></span>
+                  <select id="edit_stage" class="form-select" aria-label="Default select example" name="edit_stage" required>
+                    <option selected>Select Stage</option>
+                    <option value="Stage 1">Stage 1</option>
+                    <option value="Stage 2">Stage 2</option>
+                    <option value="Full Stage">Full Stage</option>
+                  </select>
+                </div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Brands</span>
@@ -274,11 +298,6 @@
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Job Type</span>
                   <input id="edit_job_types" type="text" class="form-control" placeholder="Job Type" aria-label="Job Type" aria-describedby="basic-addon1" name="edit_job_type">
-                </div>
-
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Pre-Start</span>
-                  <input id="edit_pre_start" type="text" class="form-control" placeholder="Pre-Start" aria-label="Pre-Start" aria-describedby="basic-addon1" name="edit_pre_start">
                 </div>
 
                 <div class="input-group mb-3">
@@ -301,8 +320,8 @@
           </div>
         </div>
 
-        <!-- Assign Drafter Modal -->
-        <div class="modal fade" id="assign_drafter_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Assign scheduler Modal -->
+        <div class="modal fade" id="assign_scheduler_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header real-cognita-teal">
@@ -310,13 +329,13 @@
                
                 <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.assign_drafters') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.assign_schedulers') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
-                  <input type="hidden" name="draft_id" id="draft_id">
+                  <input type="hidden" name="schedule_id" id="schedule_id">
                   <input type="hidden" name="job_number" id="job_number">
-                  <input class="form-control amsify" placeholder="Add drafters here" id="assign_drafters" style="height: 100px" name="drafters" required/>
+                  <input class="form-control amsify" placeholder="Add schedulers here" id="assign_schedulers" style="height: 100px" name="schedulers" required/>
                 </div>
               </div>
               <div class="modal-footer">
@@ -341,7 +360,7 @@
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
-                  <input type="hidden" name="draft_id" id="draft_id">
+                  <input type="hidden" name="schedule_id" id="schedule_id">
                   <input type="hidden" name="job_number" id="job_number">
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Checker</span>
@@ -361,8 +380,8 @@
           </div>
         </div>
 
-        <!-- Edit Drafter Modal -->
-        <div class="modal fade" id="edit_drafter_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Edit scheduler Modal -->
+        <div class="modal fade" id="edit_scheduler_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header real-cognita-teal">
@@ -370,13 +389,13 @@
                
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.edit_drafters') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.edit_schedulers') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
-                  <input type="hidden" name="edit_draft_id" id="edit_draft_id">
+                  <input type="hidden" name="edit_schedule_id" id="edit_schedule_id">
                   <input type="hidden" name="edit_job_number" id="edit_job_number">
-                    <input class="form-control amsify" placeholder="Add drafters here" id="edit_drafters" style="height: 100px" name="edit_drafters" required/>
+                    <input class="form-control amsify" placeholder="Add schedulers here" id="edit_schedulers" style="height: 100px" name="edit_schedulers" required/>
                 </div>
               </div>
               <div class="modal-footer">
@@ -401,7 +420,7 @@
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
-                  <input type="hidden" name="edit_draft_id" id="edit_draft_id">
+                  <input type="hidden" name="edit_schedule_id" id="edit_schedule_id">
                   <input type="hidden" name="edit_job_number" id="edit_job_number">
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Checker</span>
@@ -455,24 +474,20 @@
               {data: 'client_name', title: 'Client Name'},
               {data: 'address', title: 'Address'},
               {data: 'type', title: 'Type'},
-              {data: 'ETA', title: 'ETA', className: "dt-right", 
-              render: function (data, type) {
-                    return moment(data).format('MMM DD, YYYY');
-                }},
               {data: 'brand', title: 'Brand'},
               {data: 'job_type', title: 'Job Type'},
-              {data: 'pre_start', title: 'Pre Start'},
+              {data: 'prestart', title: 'Pre Start'},
               {data: 'stage', title: 'Stage'},
               {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
               {data: 'prospect', title: 'Prospect'},
-              {data: 'six_stars', title: 'Six Stars'},
-              {data: 'drafters', title: 'Drafters', className: "dt-center"},
-              {data: 'drafting_hours', title: 'Drafting Hours',className: "dt-center",
+              {data: 'hitlist', title: 'Hit list'},
+              {data: 'scheduler', title: 'scheduler', className: "dt-center"},
+              {data: 'scheduling_hours', title: 'Scheduling Hours',className: "dt-center",
               render: function (data, type) {
                 const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
                 return duration;
                 },},
-              {data: 'checker', title: 'Checker', className: "dt-center"},
+              {data: 'schedule_checker', title: 'Checker', className: "dt-center"},
               {data: 'checking_hours', title: 'Checking Hours',className: "dt-center",
               render: function (data, type) {
                 const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
@@ -501,21 +516,25 @@
       });
 
       $("#schedulingSubmenu .scheduling_master").addClass("sidebar_active");
-      document.getElementById("eta").min = moment().format('YYYY-MM-DD');
 
       const toastLiveExample = document.getElementById('liveToast');
       const toast = new bootstrap.Toast(toastLiveExample);
       const warningToast = document.getElementById('warningToast');
       const toastWarning = new bootstrap.Toast(warningToast);
-
+    
+      
+      var scheduler_list = [];
       $.ajax({
-        url:  '{{route("user.getDrafters")}}',
+        url:  '{{route("user.getSchedulers")}}',
             type:"GET",
             success:function(data) {
-              $('.amsify').amsifySuggestags({
-                suggestions: data,
-                whiteList: true,
-                showAllSuggestions: false,
+              $( "#scheduler" ).autocomplete({
+                source: data,
+                select:function(event,ui){
+                 
+                $("#scheduler").val(ui.item.label);
+                $("#scheduler_val").val(ui.item.value);return false;
+        }
               });
             }
         });
@@ -566,6 +585,18 @@
                  }
           });
 
+      var prestart_list = [];
+        $.ajax({
+          url:  '{{route("prestart.getPrestarts")}}',
+              type:"GET",
+              success:function(data) {
+                $.each(data, function(i, item) {
+                  prestart_list.push(data[i].name);
+                });
+                 }
+          });
+
+
         $.ajax({
           url:  '{{route("user.getCheckers")}}',
               type:"GET",
@@ -594,78 +625,80 @@
         $( "#brands,#edit_brands" ).autocomplete({
           source: brands_list
         });
+        $( "#prestart,#edit_prestart" ).autocomplete({
+          source: prestart_list
+        });
+    
     
       
 
       $('#scheduling_master_tbl').on('click', '.edit_job', function (){
-        var draft_id = $(this).data("id");
+        var schedule_id = $(this).data("id");
         var job_number = $(this).data("job_number");
         $("#edit_job_modal h5").html("<i class='fa-solid fa-pen'></i> &nbsp;EDIT CLIENT JOB# " + job_number);
+        
           $.ajax({
-
-            
-            url:  "{{route('scheduling_master.fetch','')}}"+"/"+draft_id,
+            url:  "{{route('scheduling_master.fetch','')}}"+"/"+schedule_id,
               type:"GET",
               success:function(response){
-            
-                $("#edit_draft_id").val(response.id);
+           
+                $("#edit_schedule_id").val(response.id);
                 $("#edit_customer_names").val(response.customer_name);
                 $("#edit_job_number").val(response.job_number);
                 $("#edit_client_name").val(response.client_name);
                 $("#edit_address").val(response.address);
                 $("#edit_types").val(response.type);
-                $("#edit_eta").val(response.ETA);
                 $("#edit_brands").val(response.brand);
                 $("#edit_job_types").val(response.job_type);
-                $("#edit_pre_start").val(response.pre_start);
-                $("#edit_stage").val(response.edit_stage);
+                $("#edit_prestart").val(response.prestart);
+                $("#edit_stage").val(response.stage);
                 $("#edit_floor_area").val(response.floor_area);
                 $("#edit_prospect").val(response.prospect);
-                if(response.six_stars == 1){
-                  $( "#edit_six_stars" ).prop( "checked", true );
+                if(response.hitlist == 1){
+                  $( "#edit_hitlist" ).prop( "checked", true );
                 }
                 else{
-                  $( "#edit_six_stars" ).prop( "checked", false );
+                  $( "#edit_hitlist" ).prop( "checked", false );
                 }
               }
           });
       });
 
-      $('#scheduling_master_tbl').on('click', '.assign_drafter', function (){
-        var draft_id = $(this).data('id');
+      $('#scheduling_master_tbl').on('click', '.assign_scheduler', function (){
+        var schedule_id = $(this).data('id');
         var job_number = $(this).data('job_number');
     
-        $("#draft_id").val(draft_id);
+        $("#schedule_id").val(schedule_id);
         $("#job_number").val(job_number);
         
         $("#job_number_title").text("CLIENT JOB# " + job_number);
       });
 
       $('#scheduling_master_tbl').on('click', '.assign_checker', function (){
-        var draft_id = $(this).data('id');
+        var schedule_id = $(this).data('id');
         var job_number = $(this).data('job_number');
     
-        $("#assign_checker_modal #draft_id").val(draft_id);
+        $("#assign_checker_modal #schedule_id").val(schedule_id);
         $("#assign_checker_modal #job_number").val(job_number);
         
         $("#assign_checker_modal #job_number_title").text("CLIENT JOB# " + job_number);
       });
 
-      $('#scheduling_master_tbl').on('click', '.edit_drafter', function (){
-        var draft_id = $(this).data('id');
+      $('#scheduling_master_tbl').on('click', '.edit_scheduler', function (){
+        var schedule_id = $(this).data('id');
         var job_number = $(this).data('job_number');
-        $("#edit_drafter_modal #edit_draft_id").val(draft_id);
-        $("#edit_drafter_modal #edit_job_number").val(job_number);
+        $("#edit_scheduler_modal #edit_schedule_id").val(schedule_id);
+        $("#edit_scheduler_modal #edit_job_number").val(job_number);
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
           
-              url:  "{{route('scheduling_master.fetch_drafters','')}}"+"/"+draft_id,
+              url:  "{{route('scheduling_master.fetch_schedulers','')}}"+"/"+schedule_id,
               type:"GET",
               success:function(response){
-                $('#edit_drafter_modal #edit_drafters').val(response.users_id);
+                $('#edit_scheduler_modal #edit_schedulers').val(response.users_id);
                 
                 $.ajax({
-                  url:  '{{route("user.getDrafters")}}',
+                  url:  '{{route("user.getSchedulers")}}',
                       type:"GET",
                       success:function(data) {
                         $('.amsify').amsifySuggestags({
@@ -682,14 +715,14 @@
       });
 
       $('#scheduling_master_tbl').on('click', '.edit_checker', function (){
-        var draft_id = $(this).data('id');
+        var schedule_id = $(this).data('id');
         var job_number = $(this).data('job_number');
-        $("#edit_checker_modal #edit_draft_id").val(draft_id);
+        $("#edit_checker_modal #edit_schedule_id").val(schedule_id);
         $("#edit_checker_modal #edit_job_number").val(job_number);
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
           
-          url:  "{{route('scheduling_master.fetch_checker','')}}"+"/"+draft_id,
+          url:  "{{route('scheduling_master.fetch_checker','')}}"+"/"+schedule_id,
               type:"GET",
               success:function(response){
                 $("#edit_checker").val(response.users_id);
@@ -699,7 +732,7 @@
       });
 
       $('#scheduling_master_tbl').on('click', '.submit_job', function (){
-        var draft_id = $(this).data("id");
+        var schedule_id = $(this).data("id");
         var job_number = $(this).data("job_number");
         
         $.confirm({
@@ -714,7 +747,7 @@
               btnClass: 'btn-green',
               confirm: function(){
                 $.ajax({
-                  url:  "{{route('scheduling_master.submit_job','')}}"+"/"+draft_id,
+                  url:  "{{route('scheduling_master.submit_job','')}}"+"/"+schedule_id,
                 type:"GET",
                 success:function(response){
                   if(response == 0){
@@ -737,7 +770,7 @@
       });
 
       $('#scheduling_master_tbl').on('click', '.cancel_job', function (){
-        var draft_id = $(this).data("id");
+        var schedule_id = $(this).data("id");
         var job_number = $(this).data("job_number");
         
         $.confirm({
@@ -754,7 +787,7 @@
                 $.ajax({
 
                   
-                  url:  "{{route('scheduling_master.cancel_job','')}}"+"/"+draft_id,
+                  url:  "{{route('scheduling_master.cancel_job','')}}"+"/"+schedule_id,
                 type:"GET",
                 success:function(response){
                   if(response != 0){

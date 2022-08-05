@@ -10,7 +10,7 @@
                 <div class="card text-center">
                     <div class="card-header btn-dark-green text-white">
                         <div class="float-start ">
-                            <i class="fa-solid fa-satellite-dish text-danger fa-xl mt-4 pulsing p-1"></i><span>&nbsp;&nbsp;Live updating</span> 
+                            {{-- <i class="fa-solid fa-satellite-dish text-danger fa-xl mt-4 pulsing p-1"></i><span>&nbsp;&nbsp;Live updating</span>  --}}
                         </div>
                         
                         <center>
@@ -109,7 +109,7 @@
                                 </button>
                                 <div class="ms-2 me-auto ">
                                     <div class="fw-bold m-1">Latest Job Added</div>
-                                  <span id="latest_job m-1" ></span>
+                                  <span id="latest_job" class="m-1" ></span>
                                 </div>
                                 <span id="latest_job_date" class="text-muted">Date</span>
                               </li>
@@ -147,9 +147,17 @@
                 $("#active_users_count").text("(" + data.length + ")");
                 $("#active_users").empty();
                 $.each(data, function(i, item) {
-                    var url = '{{ route("timesheets", ":id") }}';
-                    url = url.replace(':id', data[i].drafting_masters_id);
-                    $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <a href='"+url+"' class='text-primary'><u>VIEW JOB ID No. "+data[i].drafting_masters_id+"</u></a></li>");
+                    if($("#user_department").text() == "DFT"){
+                        var url = '{{ route("timesheets.drafting", ":id") }}';
+                        url = url.replace(':id', data[i].drafting_masters_id);
+                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <a href='"+url+"' class='text-primary'><u>VIEW JOB ID No. "+data[i].drafting_masters_id+"</u></a></li>");
+                    }
+                    else{
+                        var url = '{{ route("timesheets.drafting", ":id") }}';
+                        url = url.replace(':id', data[i].drafting_masters_id);
+                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <a href='"+url+"' class='text-primary'><u>VIEW JOB ID No. "+data[i].drafting_masters_id+"</u></a></li>");
+                    }
+                    
                 });
                  }
             });

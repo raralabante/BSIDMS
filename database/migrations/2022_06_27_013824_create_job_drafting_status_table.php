@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('job_drafting_status', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('drafting_masters_id');
+            $table->integer('drafting_masters_id')->unsigned()->nullable();
+            $table->integer('scheduling_masters_id')->unsigned()->nullable();
             $table->boolean('status')->nullable();
             $table->string('type');
             $table->timestamps();

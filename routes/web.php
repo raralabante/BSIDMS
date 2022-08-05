@@ -35,6 +35,7 @@ Route::post('/users/list/loadroles', [App\Http\Controllers\UserController::class
 Route::post('/users/list/updateroles', [App\Http\Controllers\UserController::class, 'updateRoles'])->name('user.updateRoles');
 Route::get('/users/list/deleteuser/{id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('user.deleteUser');
 Route::GET('/users/getdrafters', [App\Http\Controllers\UserController::class, 'getDrafters'])->name('user.getDrafters');
+Route::GET('/users/getschedulers', [App\Http\Controllers\UserController::class, 'getSchedulers'])->name('user.getSchedulers');
 Route::GET('/users/getcheckers', [App\Http\Controllers\UserController::class, 'getCheckers'])->name('user.getCheckers');
 Route::GET('/users/readactivities', [App\Http\Controllers\UserController::class, 'readActivities'])->name('user.readActivities');
 Route::GET('/users/getactivities', [App\Http\Controllers\UserController::class, 'getActivities'])->name('user.getActivities');
@@ -82,3 +83,8 @@ Route::post('/prestarts/insert', [App\Http\Controllers\PrestartController::class
 Route::get('/prestarts/list/deleteprestart/{id}', [App\Http\Controllers\PrestartController::class, 'deletePrestart'])->name('prestart.deleteprestart');
 Route::GET('/prestarts/getprestarts', [App\Http\Controllers\PrestartController::class, 'getPrestarts'])->name('prestart.getPrestarts');
 
+//Timesheets
+Route::get('/draftingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index_drafting'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker,Drafter')->name('timesheets.drafting');
+Route::get('/draftingmaster/timesheets/fetch/{id}', [App\Http\Controllers\TimesheetsController::class, 'timeSheetListDrafting'])->name('timesheets.fetchDrafting');
+Route::get('/schedulingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index_scheduling'])->middleware('role:Administrator,Scheduling Manager,Scheduling Admin,Senior Scheduler')->name('timesheets.scheduling');
+Route::get('/schedulingmaster/timesheets/fetch/{id}', [App\Http\Controllers\TimesheetsController::class, 'timeSheetListScheduling'])->name('timesheets.fetchScheduling');

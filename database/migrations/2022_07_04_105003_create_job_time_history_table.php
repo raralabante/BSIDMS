@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('job_time_histories', function (Blueprint $table) {
             $table->id();
-            $table->integer('drafting_masters_id')->unsigned();
+            $table->integer('drafting_masters_id')->unsigned()->nullable();
+            $table->integer('scheduling_masters_id')->unsigned()->nullable();
             $table->integer('user_id');
             
             $table->string('type');

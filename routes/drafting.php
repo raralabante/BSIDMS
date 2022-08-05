@@ -50,9 +50,8 @@ Route::get('/draftingmaster/mydraftscheck/list/setjobstatus/{id}', [App\Http\Con
 Route::get('/draftingmaster/mydraftscheck/list/reject/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'rejectCheck'])->name('my_drafts_check.rejectCheck');
 
 
-//Timesheets
-Route::get('/draftingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker,Drafter')->name('timesheets');
-Route::get('/draftingmaster/timesheets/fetch/{id}', [App\Http\Controllers\TimesheetsController::class, 'timeSheetList'])->name('timesheets.fetch');
+
+
 
 //Shifting Schedule
 Route::get('/shiftingschedule', [App\Http\Controllers\ShiftingScheduleController::class, 'index'])->middleware('role:Administrator')->name('shifting_schedule');

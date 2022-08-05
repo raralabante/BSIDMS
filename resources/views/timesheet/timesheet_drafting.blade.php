@@ -54,7 +54,7 @@
       const toastWarning = new bootstrap.Toast(warningToast);
       var id = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
       var timesheets_tbl = $('#timesheets_tbl').DataTable({
-          ajax: "{{route('timesheets.fetch','')}}"+"/"+id,
+          ajax: "{{route('timesheets.fetchDrafting','')}}"+"/"+id,
           dom: 'Bfrtip',
  
         buttons: [
@@ -85,14 +85,8 @@
                 
           ],
           order: [[0, 'asc']],
-          
-      
-          
+
       });
-
-      
-
-
     });
 </script>
 @endsection

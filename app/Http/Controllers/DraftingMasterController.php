@@ -530,7 +530,7 @@ class DraftingMasterController extends Controller
                 })
                 ->editColumn('job_number', function (DraftingMaster $draftingmaster) {
                   
-                  return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
+                  return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets.drafting', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
                   
                 })
                 ->rawColumns(['drafters','drafting_hours','checker','checking_hours','checking_hours','status','total_hours','edit_job','submit_job','job_number','cancel_job'])
@@ -718,7 +718,7 @@ class DraftingMasterController extends Controller
                   })
                   ->editColumn('job_number', function (DraftingMaster $draftingmaster) {
                   
-                    return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
+                    return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets.drafting', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
                     
                   })
               ->rawColumns(['drafters','drafting_hours','checker','checking_hours','total_hours','job_number'])

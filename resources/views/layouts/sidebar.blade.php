@@ -8,8 +8,9 @@
       </div> --}}
       <div class="user-details ">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
-          <span><i class="fa-solid fa-earth-africa"></i>  {{Auth::user()->department}} ({{Auth::user()->team}})</span><br>
+          <span><i class="fa-solid fa-earth-africa"></i>  <span id="user_department">{{Auth::user()->department}}</span> ({{Auth::user()->team}})</span><br>
           <span><i class="fa-solid fa-envelope"></i>  {{Auth::user()->email}}</span><br>
+
           <i class="fa-solid fa-briefcase"></i>
        
               @foreach (Auth::user()->permissions as $permission) 
@@ -23,7 +24,7 @@
       <ul class="list-unstyled components">
         @if (!empty($role_name))
             @foreach ($role_name as $role) 
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin" )
+                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin" || $role == "Scheduling Manager" )
                       <li>
                         <a class="dashboard" href="{{ route('dashboard') }}">
                         <i class="fa-solid fa-chart-pie"></i>&nbsp;&nbsp;Dashboard
@@ -82,12 +83,13 @@
             @endif
             @endforeach
         @endif
-
+        @if (!empty($role_name))
+        @foreach ($role_name as $role) 
+        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin"   )
         <li class="active">
             <a role="button" id="draftingMenu" href="#draftingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-pen-ruler"></i>&nbsp;&nbsp;Drafting</a>
             <ul class="collapse list-unstyled" id="draftingSubmenu">
-              @if (!empty($role_name))
-              @foreach ($role_name as $role) 
+              
                       @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin" )
                           <li>
                               <a class="drafting_master" href="{{route('drafting_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Drafting Master</a>
@@ -118,10 +120,13 @@
                               <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
                           </li>
                       @endif
-              @endforeach
-              @endif
+             
             </ul>
         </li>
+        @endif
+        @endforeach
+        @endif
+       
         @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" )
 
         <li class="active">

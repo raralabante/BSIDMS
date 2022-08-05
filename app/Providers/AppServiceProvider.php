@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Activity;
 
 use App\Models\Pivot;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,19 @@ class AppServiceProvider extends ServiceProvider
                 ->where('code_name','=','DEPARTMENT')
                 ->orderBy('code_value', 'ASC')->get();
                 View::share('departments', $departments);
+        });
+
+        View::composer('draftingmaster.draftingmaster',function($view){
+            $drafting_checkers = User::select(
+                'users.id as value', 
+                User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+                ->leftJoin('role_user','role_user.user_id','users.id')
+                ->where('role_user.role_id','=',11)
+                ->where('users.department','=',Auth::user()->department)
+                ->where('users.team','=',Auth::user()->team)
+                ->orderBy('users.first_name', 'ASC')->get();
+                
+                View::share('drafting_checkers', $drafting_checkers);
         });
 
       

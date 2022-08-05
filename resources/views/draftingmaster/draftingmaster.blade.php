@@ -362,6 +362,9 @@
                     <span class="input-group-text" id="basic-addon1">Checker</span>
                    
                       <select class="form-select" id="assign_checker" name="checker" required>
+                        @foreach($drafting_checkers as $drafting_checker)
+                        <option value="{{$drafting_checker->value}}">{{$drafting_checker->label}}</option>
+                        @endforeach
                       </select>
                       
                   </div>
@@ -421,6 +424,10 @@
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Checker</span>
                       <select class="form-select" id="edit_checker" name="checker" required>
+
+                        @foreach($drafting_checkers as $drafting_checker)
+                        <option value="{{$drafting_checker->value}}">{{$drafting_checker->label}}</option>
+                        @endforeach
                       </select>
                   </div>
                 </div>
@@ -589,20 +596,20 @@
                  }
           });
 
-        $.ajax({
-          url:  '{{route("user.getCheckers")}}',
-              type:"GET",
-              success:function(data) {
-                $('#assign_checker, #edit_checker').empty();
-                $('#assign_checker, #edit_checker').append('<option value="" selected disabled>Select Checker</option>');
-                $.each(data, function (i, item) {
-                    $('#assign_checker, #edit_checker').append($('<option>', { 
-                        value: item.value,
-                        text : item.label 
-                    }));
-                });
-                 }
-          });
+        // $.ajax({
+        //   url:  '{{route("user.getCheckers")}}',
+        //       type:"GET",
+        //       success:function(data) {
+        //         $('#assign_checker, #edit_checker').empty();
+        //         $('#assign_checker, #edit_checker').append('<option value="" selected disabled>Select Checker</option>');
+        //         $.each(data, function (i, item) {
+        //             $('#assign_checker, #edit_checker').append($('<option>', { 
+        //                 value: item.value,
+        //                 text : item.label 
+        //             }));
+        //         });
+        //          }
+        //   });
 
         $( "#customer_names,#edit_customer_names" ).autocomplete({
           source: company_list

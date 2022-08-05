@@ -67,7 +67,7 @@ class PrestartController extends Controller
     //   
     }
 
-    public function getTypes(){
+    public function getPrestarts(){
       $name = Prestart::select(
         'name')
         ->orderBy('name', 'ASC')->get();
