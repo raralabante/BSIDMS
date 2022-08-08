@@ -11,11 +11,12 @@
           <span><i class="fa-solid fa-earth-africa"></i>  <span id="user_department">{{Auth::user()->department}}</span> ({{Auth::user()->team}})</span><br>
           <span><i class="fa-solid fa-envelope"></i>  {{Auth::user()->email}}</span><br>
 
+          
           <i class="fa-solid fa-briefcase"></i>
        
               @foreach (Auth::user()->permissions as $permission) 
                   &lt;{{
-                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
+                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->orderBy('priority','ASC')->first()->name;
                   }}&gt;
               
               @endforeach
@@ -84,10 +85,11 @@
             @endforeach
         @endif
         @if (!empty($role_name))
-        @foreach ($role_name as $role) 
-        @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin"   )
+        
+       
         <li class="active">
             <a role="button" id="draftingMenu" href="#draftingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-pen-ruler"></i>&nbsp;&nbsp;Drafting</a>
+            @foreach ($role_name as $role) 
             <ul class="collapse list-unstyled" id="draftingSubmenu">
               
                       @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Admin" )
@@ -123,11 +125,10 @@
              
             </ul>
         </li>
-        @endif
         @endforeach
         @endif
        
-        @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" )
+        @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" || $role == "Scheduler" || $role == "Scheduling Checker")
 
         <li class="active">
             <a role="button" id="schedulingMenu" href="#schedulingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;Scheduling</a>
@@ -139,17 +140,17 @@
                               <a class="scheduling_master" href="{{route('scheduling_master')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Scheduling Master</a>
                           </li>
                       @endif
-                      {{-- @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker"|| $role == "Drafter" || $role == "Drafting Admin" )
+                      @if ($role == "Administrator" ||  $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" || $role == "Scheduler" || $role == "Scheduling Checker")
                           <li>
-                              <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Schedules</a>
+                              <a class="my_schedules" href="{{route('my_schedules')}}"><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;My Schedules</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting TL" || $role == "Drafting Checker" || $role == "Drafting Admin")
+                      @if ($role == "Administrator" || $role == "Scheduling Manager" || $role == "Scheduling Admin" || $role == "Senior Scheduler" || $role == "Scheduler" || $role == "Scheduling Checker")
                           <li>
-                              <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Schedules Check</a>
+                              <a class="my_schedules_check" href="{{route('my_schedules_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Schedules Check</a>
                           </li>
                       @endif
-                      @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin")
+                      {{-- @if ($role == "Administrator" || $role == "Drafting Manager" || $role == "Drafting Admin")
                           <li>
                               <a class="submitted"  href="{{route('drafting_master.submitted_jobs')}}"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submitted</a>
                           </li>
@@ -166,6 +167,18 @@
                       @endif --}}
               @endforeach
               @endif
+            </ul>
+        </li>
+        @endif
+
+        @if ($role == "Administrator")
+
+        <li class="active">
+            <a role="button" id="reportsMenu" href="#reportsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;Reports</a>
+            <ul class="collapse list-unstyled" id="reportsMenu">
+                <li>
+                    <a class="multifilters" href="{{route('report.multifilters')}}"><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Multi-Filters</a>
+                </li>
             </ul>
         </li>
         @endif
@@ -235,6 +248,9 @@ $( document ).ready(function() {
     else if (module == "schedulingmaster"){
         $("#schedulingMenu").click();
     }
+    else if (module == "reports"){
+        $("#reportsMenu").click();
+    }
     //remove duplicate submenu
     var seen = {};
     $('ul li').each(function() {
@@ -243,6 +259,15 @@ $( document ).ready(function() {
                 $(this).remove();
             else
                 seen[txt] = true;
+        });
+    
+    var seen2 = {};
+    $('#draftingMenu').each(function() {
+            var txt = $(this).text();
+            if (seen2[txt])
+                $(this).remove();
+            else
+            seen2[txt] = true;
         });
 
 

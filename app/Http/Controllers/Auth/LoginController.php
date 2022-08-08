@@ -37,12 +37,15 @@ class LoginController extends Controller
         foreach (Auth::user()->permissions as $permission) {
             $role_name = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
             error_log($role_name);
-            if($role_name == "Administrator" OR $role_name == "Drafting Manager" OR $role_name == "Drafting TL"){
+            if($role_name == "Administrator" OR $role_name == "Drafting Manager" ){
 
                 return redirect()->route('dashboard');
             }
             else if($role_name == "Drafter" || $role_name == "Drafting Checker"){
                 return redirect()->route('my_drafts');
+            }
+            else if($role_name == "Scheduler" || $role_name == "Scheduling Checker"){
+                return redirect()->route('my_schedules');
             }
             else{
                 return redirect()->route('dashboard');
