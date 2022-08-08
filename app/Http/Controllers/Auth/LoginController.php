@@ -41,6 +41,10 @@ class LoginController extends Controller
 
                 return redirect()->route('dashboard');
             }
+            if($role_name == "Drafting TL"){
+
+                return redirect()->route('drafting_master');
+            }
             else if($role_name == "Drafter" || $role_name == "Drafting Checker"){
                 return redirect()->route('my_drafts');
             }
