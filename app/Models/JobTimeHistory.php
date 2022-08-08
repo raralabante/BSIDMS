@@ -18,6 +18,7 @@ class JobTimeHistory extends Model
         'id', 
         'user_id',
         'drafting_masters_id',
+        'scheduling_masters_id',
         'type',
         'morning_start',
         'morning_stop',

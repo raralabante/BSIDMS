@@ -19,6 +19,7 @@ class JobDraftingStatus extends Model
         'id', 
         'user_id',
         'drafting_masters_id',
+        'scheduling_masters_id',
         'status',
         'type',
     ];

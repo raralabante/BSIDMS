@@ -7,7 +7,7 @@ use App\Models\SchedulingMaster;
 use App\Models\JobTimeHistory;
 use Illuminate\Http\Request;
 use App\Models\Timesheet;
-use App\Models\JobSCHEDULINGStatus;
+use App\Models\JobDraftingStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
 use App\Models\RoleActivity;
@@ -85,7 +85,7 @@ class SchedulingMasterController extends Controller
         if(!empty($request->scheduler_label)){
             $description = "(SCHEDULING) Job# " . $request->job_number . " has been assigned to you.";
             $newJob->assigns()->save(new JobTimeHistory(['user_id' => $request->scheduler,'type' => 'SCHEDULING']));
-            Self::addActivityById($description,$request->scheduler,20); //20=DRAFTER
+            Self::addActivityById($description,$request->scheduler,20); //20=SCHEDULER
           }
 
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' has been added.');
@@ -158,10 +158,10 @@ class SchedulingMasterController extends Controller
                 else{
                   $scheduler = Self::convertIDToFullname($jobtimehistory->user_id);
                   if($schedulingmaster->status == "Assigned"){
-                    return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_drafter' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#edit_drafter_modal'><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $scheduler->full_name . "</button>";
+                    return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_scheduler' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#edit_scheduler_modal'><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $scheduler->full_name . "</button>";
                   }
                   else{
-                    return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_drafter' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#edit_drafter_modal' disabled><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $scheduler->full_name . "</button>";
+                    return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_scheduler' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#edit_scheduler_modal' disabled><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $scheduler->full_name . "</button>";
                   }
                 }
                   
@@ -270,9 +270,6 @@ class SchedulingMasterController extends Controller
         'edit_category' => 'nullable|exists:App\Models\Categories,name',
       ]);
       
-    
-
-     
       if($request->edit_hitlist == null){
         $request->edit_hitlist = 0;
       }
@@ -281,8 +278,8 @@ class SchedulingMasterController extends Controller
 
 
       // $checkers = JobTimeHistory::select('job_time_histories.type')
-      // ->leftJoin('drafting_masters','drafting_masters.id','job_time_histories.drafting_masters_id')
-      // ->where('job_time_histories.drafting_masters_id','=', $request->edit_schedule_id)
+      // ->leftJoin('scheduling_masters','scheduling_masters.id','job_time_histories.scheduling_masters_id')
+      // ->where('job_time_histories.scheduling_masters_id','=', $request->edit_schedule_id)
       // ->where('job_time_histories.type','=','CHECKING')->first();
    
       // if(!empty($checkers)){
@@ -308,6 +305,166 @@ class SchedulingMasterController extends Controller
       $edit_job->save();
       event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' has been updated.');
+    }
+
+    protected function assignScheduler(Request $request)
+    {
+
+      $request->validate([
+        'scheduler' => 'required|max:255',
+      ]);
+
+      $edit_job = SchedulingMaster::where('id','=',$request->schedule_id)->get()->first();
+      $edit_job->status = "Assigned";
+      $edit_job->save();
+
+
+      $description = "(SCHEDULING) Job# " . $edit_job->job_number . " has been assigned to you.";
+      if(!empty($request->scheduler)){
+
+        $edit_job->assigns()->save(new JobTimeHistory(['user_id' => $request->scheduler,'type' => 'SCHEDULING']));
+        Self::addActivityById($description,$request->scheduler,20); //20=SCHEDULER
+      
+    }
+        event(new Message(''));
+        return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' scheduler has been assigned.');
+    }
+
+    protected function fetchScheduler(Request $request)
+    {
+      return User::select(
+        User::raw('group_concat(users.id SEPARATOR ", ") as users_id'),
+        User::raw('group_concat(CONCAT(users.first_name, " ", users.last_name) SEPARATOR ", ") as full_name'))
+        ->leftJoin('job_time_histories','job_time_histories.user_id','users.id')
+        ->where('job_time_histories.scheduling_masters_id', '=', $request->id)
+        ->where('job_time_histories.type', '=', 'SCHEDULING')->first();   
+    }
+    
+    protected function editScheduler(Request $request)
+    {
+      $scheduling_master = SchedulingMaster::findOrFail($request->edit_schedule_id);
+      
+      $assigned_user_and_active = JobDraftingStatus::select('user_id')->where('scheduling_masters_id','=',$request->edit_schedule_id)
+      ->where('status','=','1')
+      ->where('type','=','SCHEDULING')->first();
+      
+      $check_new_user_status = JobDraftingStatus::select('user_id')->where('scheduling_masters_id','=',$request->edit_schedule_id)
+      ->where('status','=','1')
+      ->where('user_id','=',$request->edit_scheduler)
+      ->where('type','=','SCHEDULING')->first();
+
+      if(!empty($assigned_user_and_active)){ //IF THERE IS ASSIGNED USER AND ACTIVE
+        if(!empty($check_new_user_status)){ // CHECK IF NEW ASSIGNED USER IS ALREADY ASSIGED
+          error_log('1');
+
+          JobTimeHistory::where('scheduling_masters_id','=',$request->edit_schedule_id)
+            ->where('type','=','SCHEDULING')->delete();
+
+          // JobDraftingStatus::where('scheduling_masters_id','=',$request->edit_schedule_id)->where('type','=','CHECKING');
+        
+            $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->edit_scheduler, 'type' => 'CHECKING']));
+            $description = "(SCHEDULING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->edit_scheduler,20); //20 SCHEDULER
+
+
+            return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' scheduler has been updated.');
+        }
+        else{
+          //IF THE NEW ASSIGNED USER IS  NOT YET ASSIGNED
+          error_log('2');
+          return redirect()->back()->with('error', 'Error while editing checker for Client Job# ' . $request->edit_job_number. ' a scheduler is currently active');
+        }
+       
+      }
+      else{ //IF THERE IS NO ASSIGNED USER
+        error_log('3');
+        JobTimeHistory::where('scheduling_masters_id','=',$request->edit_schedule_id)
+            ->where('type','=','SCHEDULING')->delete();
+
+         $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->edit_scheduler, 'type' => 'SCHEDULING']));
+         $description = "(SCHEDULING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->edit_scheduler,20); //20 SCHEDULER
+            
+            event(new Message(''));
+        return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' scheduler has been updated.');
+      }
+
+    }
+
+    protected function assignChecker(Request $request)
+    {
+      $scheduling_master = SchedulingMaster::findOrFail($request->schedule_id);
+
+      $request->validate([
+        'checker' => 'required|max:255',
+      
+      ]);
+        $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'SCHEDULE CHECKING']));
+        $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,12); //12=SCHEDULE CHECKER
+            event(new Message(''));
+        return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' checker has been assigned.');
+    }
+
+    protected function fetchChecker(Request $request)
+    {
+      return User::select(
+        User::raw('group_concat(users.id SEPARATOR ", ") as users_id'),
+        User::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'))
+        ->leftJoin('job_time_histories','job_time_histories.user_id','users.id')
+        ->where('job_time_histories.scheduling_masters_id', '=', $request->id)
+        ->where('job_time_histories.type', '=', 'SCHEDULE CHECKING')->first();
+    }
+
+    protected function editChecker(Request $request)
+    {
+      $scheduling_master = SchedulingMaster::findOrFail($request->edit_schedule_id);
+      
+      $assigned_user_and_active = JobDraftingStatus::select('user_id')->where('scheduling_masters_id','=',$request->edit_schedule_id)
+      ->where('status','=','1')
+      ->where('type','=','SCHEDULE CHECKING')->first();
+      
+      $check_new_user_status = JobDraftingStatus::select('user_id')->where('scheduling_masters_id','=',$request->edit_schedule_id)
+      ->where('status','=','1')
+      ->where('user_id','=',$request->checker)
+      ->where('type','=','SCHEDULE CHECKING')->first();
+
+      if(!empty($assigned_user_and_active)){ //IF THERE IS ASSIGNED USER AND ACTIVE
+        if(!empty($check_new_user_status)){ // CHECK IF NEW ASSIGNED USER IS ALREADY ASSIGED
+          error_log('1');
+
+          JobTimeHistory::where('scheduling_masters_id','=',$request->edit_schedule_id)
+            ->where('type','=','SCHEDULE CHECKING')->delete();
+
+          // JobDraftingStatus::where('scheduling_masters_id','=',$request->edit_schedule_id)->where('type','=','CHECKING');
+        
+            $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'SCHEDULE CHECKING']));
+            $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,12); //12 SCHEDULING CHECKER
+
+
+            return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
+        }
+        else{
+          //IF THE NEW ASSIGNED USER IS  NOT YET ASSIGNED
+          error_log('2');
+          return redirect()->back()->with('error', 'Error while editing checker for Client Job# ' . $request->edit_job_number. ' a checker is currently active');
+        }
+       
+      }
+      else{ //IF THERE IS NO ASSIGNED USER
+        error_log('3');
+        JobTimeHistory::where('scheduling_masters_id','=',$request->edit_schedule_id)
+            ->where('type','=','SCHEDULE CHECKING')->delete();
+
+         $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'SCHEDULE CHECKING']));
+         $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
+            Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
+            
+            event(new Message(''));
+        return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
+      }
+
     }
 
     public function getTypeHours($schedulingmaster, $type){

@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Activity;
-
+use App\Models\Customer;
 use App\Models\Pivot;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +38,29 @@ class AppServiceProvider extends ServiceProvider
                 View::share('departments', $departments);
         });
 
+        View::composer(['customer.customer','report.multifilters'],function($view){
+            $teams = Pivot::select(
+                'code_value',
+                'desc1')
+                ->where('code_name','=','TEAM')
+                ->orderBy('code_value', 'ASC')->get();
+                View::share('teams', $teams);
+        });
+
+        View::composer('report.multifilters',function($view){
+            $customers = Customer::select(
+                'name')
+                ->orderBy('name', 'ASC')->get();
+            
+            $types = Customer::select(
+                'name')
+                ->orderBy('name', 'ASC')->get();
+
+                View::share('customers', $customers);
+                View::share('types', $types);
+        });
+
+
         View::composer('draftingmaster.draftingmaster',function($view){
             $drafting_checkers = User::select(
                 'users.id as value', 
@@ -51,38 +74,35 @@ class AppServiceProvider extends ServiceProvider
                 View::share('drafting_checkers', $drafting_checkers);
         });
 
+        View::composer('schedulingmaster.schedulingmaster',function($view){
+            $scheduling_checkers = User::select(
+                'users.id as value', 
+                User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+                ->leftJoin('role_user','role_user.user_id','users.id')
+                ->where('role_user.role_id','=',12)
+                ->where('users.department','=',Auth::user()->department)
+                ->where('users.team','=',Auth::user()->team)
+                ->orderBy('users.first_name', 'ASC')->get();
+            
+            $schedulers = User::select(
+                'users.id as value', 
+                User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+                ->leftJoin('role_user','role_user.user_id','users.id')
+                ->where('role_user.role_id','=',20)
+                ->where('users.department','=',Auth::user()->department)
+                ->where('users.team','=',Auth::user()->team)
+                ->orderBy('users.first_name', 'ASC')->get();
+                
+                View::share('schedulers', $schedulers);
+                View::share('scheduling_checkers', $scheduling_checkers);
+
+        });
       
 
        View::composer(
         '*'
         , function ($view) {
             if (Auth::check()) {
-            //     $activities_by_id = Activity::select('activities.description','activities.created_at','activities.status')
-            //     ->leftJoin('role_activities','role_activities.activity_id','activities.id')
-            //     ->where('activities.department','=', Auth::user()->department)
-            //     ->where('activities.team','=', Auth::user()->team)
-            //     ->where('role_activities.user_id','=',Auth::user()->id)
-            //     ->whereIn('role_activities.role',function($query){
-            //         $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
-            //     })
-            //     ->orderBy('created_at','DESC')
-            //     ;
-
-            // $activities = Activity::select('activities.description','activities.created_at','activities.status')
-            //     ->leftJoin('role_activities','role_activities.activity_id','activities.id')
-            //     ->where('activities.department','=', Auth::user()->department)
-            //     ->where('activities.team','=', Auth::user()->team)
-            //     ->where('activities.user_id' , '!=', Auth::user()->id)
-                
-            //     ->whereNull('role_activities.user_id')
-            //     ->whereIn('role_activities.role',function($query){
-            //         $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
-            //     })
-            //     ->union($activities_by_id)
-            //     ->orderBy('created_at','DESC')
-            //     ->take(10)
-            //     ->get();
-                
                 
             $activities_by_id_count = Activity::select('activities.description','activities.created_at','activities.status')
             ->leftJoin('role_activities','role_activities.activity_id','activities.id')

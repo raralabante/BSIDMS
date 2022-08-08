@@ -329,13 +329,20 @@
                
                 <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.assign_schedulers') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.assignScheduler') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
                   <input type="hidden" name="schedule_id" id="schedule_id">
                   <input type="hidden" name="job_number" id="job_number">
-                  <input class="form-control amsify" placeholder="Add schedulers here" id="assign_schedulers" style="height: 100px" name="schedulers" required/>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Scheduler</span>
+                      <select class="form-select" id="assign_scheduler" name="scheduler" required>
+                        @foreach($schedulers as $scheduler)
+                        <option value="{{$scheduler->value}}">{{$scheduler->label}}</option>
+                        @endforeach
+                      </select>
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -356,19 +363,20 @@
                 
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.assign_checker') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.assignChecker') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
                   <input type="hidden" name="schedule_id" id="schedule_id">
                   <input type="hidden" name="job_number" id="job_number">
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Checker</span>
-                   
-                      <select class="form-select" id="assign_checker" name="checker" required>
-                      </select>
-                      
-                  </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Checker</span>
+                        <select class="form-select" id="assign_checker" name="checker" required>
+                          @foreach($scheduling_checkers as $scheduling_checker)
+                          <option value="{{$scheduling_checker->value}}">{{$scheduling_checker->label}}</option>
+                          @endforeach
+                        </select>
+                    </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -389,13 +397,20 @@
                
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.edit_schedulers') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.editScheduler') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
                   <input type="hidden" name="edit_schedule_id" id="edit_schedule_id">
                   <input type="hidden" name="edit_job_number" id="edit_job_number">
-                    <input class="form-control amsify" placeholder="Add schedulers here" id="edit_schedulers" style="height: 100px" name="edit_schedulers" required/>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Scheduler</span>
+                      <select class="form-select" id="edit_scheduler" name="edit_scheduler" required>
+                        @foreach($schedulers as $scheduler)
+                        <option value="{{$scheduler->value}}">{{$scheduler->label}}</option>
+                        @endforeach
+                      </select>
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -416,7 +431,7 @@
                 
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form method="POST" action="{{ route('scheduling_master.edit_checker') }}" onsubmit="save.disabled = true; return true;">
+              <form method="POST" action="{{ route('scheduling_master.editChecker') }}" onsubmit="save.disabled = true; return true;">
                 @csrf
               <div class="modal-body">
                 <div class="form-floating">
@@ -424,8 +439,11 @@
                   <input type="hidden" name="edit_job_number" id="edit_job_number">
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Checker</span>
-                      <select class="form-select" id="edit_checker" name="checker" required>
-                      </select>
+                    <select class="form-select" id="edit_checker" name="checker" required>
+                      @foreach($scheduling_checkers as $scheduling_checker)
+                      <option value="{{$scheduling_checker->value}}">{{$scheduling_checker->label}}</option>
+                      @endforeach
+                    </select>
                   </div>
                 </div>
               </div>
@@ -481,7 +499,7 @@
               {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
               {data: 'prospect', title: 'Prospect'},
               {data: 'hitlist', title: 'Hit list'},
-              {data: 'scheduler', title: 'scheduler', className: "dt-center"},
+              {data: 'scheduler', title: 'Scheduler', className: "dt-center"},
               {data: 'scheduling_hours', title: 'Scheduling Hours',className: "dt-center",
               render: function (data, type) {
                 const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
@@ -692,23 +710,11 @@
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
           
-              url:  "{{route('scheduling_master.fetch_schedulers','')}}"+"/"+schedule_id,
+              url:  "{{route('scheduling_master.fetchScheduler','')}}"+"/"+schedule_id,
               type:"GET",
               success:function(response){
-                $('#edit_scheduler_modal #edit_schedulers').val(response.users_id);
-                
-                $.ajax({
-                  url:  '{{route("user.getSchedulers")}}',
-                      type:"GET",
-                      success:function(data) {
-                        $('.amsify').amsifySuggestags({
-                          suggestions: data,
-                          whiteList: true,
-                          showAllSuggestions: false,
-                        });
-                      }
-                  });
-                    
+
+                $('#edit_scheduler_modal #edit_scheduler').val(response.users_id);
               }
           });
 
@@ -722,9 +728,10 @@
         $("#edit_job_number_title").text("CLIENT JOB# " + job_number);
         $.ajax({
           
-          url:  "{{route('scheduling_master.fetch_checker','')}}"+"/"+schedule_id,
+          url:  "{{route('scheduling_master.fetchChecker','')}}"+"/"+schedule_id,
               type:"GET",
               success:function(response){
+                
                 $("#edit_checker").val(response.users_id);
               }
           });

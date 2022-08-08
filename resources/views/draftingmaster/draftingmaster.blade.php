@@ -360,13 +360,11 @@
                   <input type="hidden" name="job_number" id="job_number">
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Checker</span>
-                   
                       <select class="form-select" id="assign_checker" name="checker" required>
                         @foreach($drafting_checkers as $drafting_checker)
                         <option value="{{$drafting_checker->value}}">{{$drafting_checker->label}}</option>
                         @endforeach
                       </select>
-                      
                   </div>
                 </div>
               </div>

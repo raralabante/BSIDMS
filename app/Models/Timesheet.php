@@ -14,6 +14,7 @@ class Timesheet extends Model
     protected $fillable = [
         'id',
         'drafting_masters_id',
+        'scheduling_masters_id',
         'user_id',
         'type',
         'job_start',

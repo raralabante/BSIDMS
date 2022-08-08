@@ -23,6 +23,7 @@ class Role extends Model
         'role_id',
 		'name',
 		'slug',
+        'priority',
 		'active',
 	];
    
