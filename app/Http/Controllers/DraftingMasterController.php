@@ -11,12 +11,14 @@ use App\Models\JobDraftingStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
 use App\Models\RoleActivity;
+use App\Models\Role;
 use App\Models\JobTimeHistory;
 use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use App\Events\Message;
+use Illuminate\Support\Facades\View;
 class DraftingMasterController extends Controller
 {
     /**
@@ -34,19 +36,24 @@ class DraftingMasterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-		  return view('draftingmaster.draftingmaster');
+      return view('draftingmaster.draftingmaster');
     }
 
-    public function index_submitted()
+    public function index_submitted(Request $request)
     {
-		  return view('draftingmaster.draftingmastersubmitted');
+      $route_permissions = $request->roles;
+
+      return view('draftingmaster.draftingmastersubmitted',compact('route_permissions'));
+
     }
     
-    public function index_cancelled()
+    public function index_cancelled(Request $request)
     {
-		  return view('draftingmaster.draftingmastercancelled');
+      $route_permissions = $request->roles;
+
+      return view('draftingmaster.draftingmastercancelled',compact('route_permissions'));
     }
 
     protected function insert(Request $request)
@@ -626,6 +633,7 @@ class DraftingMasterController extends Controller
           ->where('status','=',$request->status);
       }
       else{
+       
         $query = DraftingMaster::select(
           'id',
           'customer_name',

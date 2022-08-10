@@ -109,9 +109,9 @@
                                 </button>
                                 <div class="ms-2 me-auto ">
                                     <div class="fw-bold m-1">Latest Job Added</div>
-                                  <span id="latest_job" class="m-1" ></span>
+                                  <span id="latest_job" class="m-1" >(Customer Name)</span>
                                 </div>
-                                <span id="latest_job_date" class="text-muted">Date</span>
+                                <span id="latest_job_date" class="text-muted">(Date)</span>
                               </li>
                         </div>
                        
@@ -150,7 +150,7 @@
                     if($("#user_department").text() == "DFT"){
                         var url = '{{ route("timesheets.drafting", ":id") }}';
                         url = url.replace(':id', data[i].drafting_masters_id);
-                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <a href='"+url+"' class='text-primary'><u>VIEW JOB ID No. "+data[i].drafting_masters_id+"</u></a></li>");
+                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <span>"+data[i].type+"</span><a href='"+url+"' class='text-primary'><u>Job No. "+data[i].job_number+"</u></a></li>");
                     }
                     else{
                         var url = '{{ route("timesheets.drafting", ":id") }}';
@@ -186,11 +186,11 @@
                type:'POST',
                url:  "{{route('dashboard.getFeeds')}}",
                success:function(data) {
-                $("#unassigned_count").text(data[0]);
-                $("#ready_to_submit_count").text(data[1]);
-                $("#submitted_count").text(data[2]);
-                $("#latest_job").text(data[3]);
-                $("#latest_job_date").text(moment(data[4]).format('MMM DD, YYYY hh:mm A'));
+                // $("#unassigned_count").text(data[0]);
+                // $("#ready_to_submit_count").text(data[1]);
+                // $("#submitted_count").text(data[2]);
+                // $("#latest_job").text(data[3]);
+                // $("#latest_job_date").text(moment(data[4]).format('MMM DD, YYYY hh:mm A'));
 
                  }
             });

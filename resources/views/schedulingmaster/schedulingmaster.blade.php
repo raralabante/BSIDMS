@@ -466,6 +466,8 @@
 <script>
     $(document).ready( function () {
 
+      $("#schedulingSubmenu .scheduling_master").addClass("sidebar_active");
+      $("#schedulingMenu").click();
       var scheduling_master_tbl = $('#scheduling_master_tbl').DataTable({
         scrollX: true,
         scrollY: true,
@@ -533,8 +535,7 @@
           
       });
 
-      $("#schedulingSubmenu .scheduling_master").addClass("sidebar_active");
-
+      
       const toastLiveExample = document.getElementById('liveToast');
       const toast = new bootstrap.Toast(toastLiveExample);
       const warningToast = document.getElementById('warningToast');

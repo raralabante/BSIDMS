@@ -32,14 +32,15 @@ class TimesheetsController extends Controller
      */
     public function index_drafting(Request $request)
     {
-        $drafting_masters = DraftingMaster::where('id','=',$request->id)->first();
+        $drafting_masters = DraftingMaster::findOrFail($request->id);
         
 		  return view('timesheet.timesheet_drafting',compact('drafting_masters'));
     }
 
     public function index_scheduling(Request $request)
     {
-        $scheduling_masters = SchedulingMaster::where('id','=',$request->id)->first();
+        $scheduling_masters = SchedulingMaster::findOrFail($request->id);
+     
         
 		  return view('timesheet.timesheet_scheduling',compact('scheduling_masters'));
     }
@@ -59,11 +60,11 @@ class TimesheetsController extends Controller
                   'type',
                   'drafting_masters_id',
                   'created_at',
-                  Timesheet::raw('CASE WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->morning_start.'" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_start, "%r")
+                  Timesheet::raw('CASE WHEN TIME(job_start) BETWEEN "00:01" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_start, "%r")
                   WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->morning_end.'" AND "'.$shifting_schedule->afternoon_start.'" THEN TIME_FORMAT(job_start, "%r") 
                   ELSE null
                  END as morning_start'),
-                 Timesheet::raw('CASE WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->morning_start.'" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_stop, "%r") 
+                 Timesheet::raw('CASE WHEN TIME(job_stop) BETWEEN "00:01" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_stop, "%r") 
                  WHEN TIME(job_stop) BETWEEN "'.$shifting_schedule->morning_end.'" AND "'.$shifting_schedule->afternoon_start.'" THEN TIME_FORMAT(job_stop, "%r") 
                  ELSE null
                  END as morning_stop'),
@@ -158,6 +159,8 @@ class TimesheetsController extends Controller
                     ->toJson();
 
           }
+
+        
      
 
 }

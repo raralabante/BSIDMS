@@ -88,6 +88,7 @@ class RegisterController extends Controller
         // error_log($request->department);
         $team = Pivot::select('code_value')
         ->where( 'code_name', '=', 'TEAM' )
+        ->where( 'desc1', '=', $request->department )
         ->orderBy('code_value','ASC')->get();
 
         return response()->json($team);

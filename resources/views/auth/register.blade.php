@@ -126,14 +126,13 @@
 <script>
 $( document ).ready(function() {
     $(".register").addClass('sidebar_active');
+    $("#usersMenu").click();
     $( "#department" ).change(function() {
         $.ajax({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
                type:'POST',
-
-               
                url:  "{{route('register.loadTeam')}}",
                data:{department:$(this).val()},
                success:function(data) {
@@ -143,7 +142,6 @@ $( document ).ready(function() {
                     $.each(data, function(i, item) {
                         team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
                     });
-                
 
                  }
             });

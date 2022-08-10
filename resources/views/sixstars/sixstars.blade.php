@@ -62,6 +62,7 @@
 <script>
     $(document).ready( function () {
       $("#draftingSubmenu .six_stars").addClass("sidebar_active");
+      $("#draftingMenu").click();
       const successToast = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(successToast);
       const warningToast = document.getElementById('warningToast')
@@ -102,7 +103,10 @@
               success:function(data) {
                 $( "#job_number" ).autocomplete({
                     source: data,
-                    })
+                    minLength: 0,
+                    }).focus(function () {
+                          $(this).autocomplete("search");
+                      });
                  }
           });
 

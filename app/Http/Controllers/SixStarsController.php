@@ -106,7 +106,7 @@ class SixStarsController extends Controller
         $draft = DraftingMaster::findOrFail($request->id);
         
         $draft->status = 'Ready To Submit';
-        $draft->six_stars_received_at == now();
+        $draft->six_stars_received_at = now();
         $draft->save();
 
         $description = "Job# " . $draft->job_number. " is now ready to submit.";

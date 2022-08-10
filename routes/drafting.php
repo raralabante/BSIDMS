@@ -36,14 +36,14 @@ Route::get('/draftingmaster/cancelled', [App\Http\Controllers\DraftingMasterCont
 
 
 //My Drafts
-Route::get('/draftingmaster/mydrafts', [App\Http\Controllers\MyDraftsController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker,Drafter')->name('my_drafts');
+Route::get('/draftingmaster/mydrafts', [App\Http\Controllers\MyDraftsController::class, 'index'])->middleware('role:Administrator,Drafter')->name('my_drafts');
 Route::get('/draftingmaster/mydrafts/list', [App\Http\Controllers\MyDraftsController::class, 'myDraftsList'])->name('my_drafts.list');
 Route::get('/draftingmaster/mydrafts/list/setstatus/{id}', [App\Http\Controllers\MyDraftsController::class, 'setStatusOnOff'])->name('my_drafts.setStatusOnOff');
 Route::get('/draftingmaster/mydrafts/list/setjobstatus/{id}', [App\Http\Controllers\MyDraftsController::class, 'setJobStatus'])->name('my_drafts.setJobStatus');
 
 
 //My Drafts Check
-Route::get('/draftingmaster/mydraftscheck', [App\Http\Controllers\MyDraftsCheckController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker')->name('my_drafts_check');
+Route::get('/draftingmaster/mydraftscheck', [App\Http\Controllers\MyDraftsCheckController::class, 'index'])->middleware('role:Administrator,Drafting Checker')->name('my_drafts_check');
 Route::get('/draftingmaster/mydraftscheck/list', [App\Http\Controllers\MyDraftsCheckController::class, 'myDraftsCheckList'])->name('my_drafts_check.list');
 Route::get('/draftingmaster/mydraftscheck/list/setstatus/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'setStatusOnOff'])->name('my_drafts_check.setStatusOnOff');
 Route::get('/draftingmaster/mydraftscheck/list/setjobstatus/{id}', [App\Http\Controllers\MyDraftsCheckController::class, 'setJobStatus'])->name('my_drafts_check.setJobStatus');

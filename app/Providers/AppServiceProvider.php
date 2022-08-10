@@ -5,8 +5,12 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Activity;
+use App\Models\Brand;
+use App\Models\Categories;
 use App\Models\Customer;
+use App\Models\JobType;
 use App\Models\Pivot;
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
@@ -38,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
                 View::share('departments', $departments);
         });
 
-        View::composer(['customer.customer','report.multifilters'],function($view){
+        View::composer(['customer.customer','report.multifilters','report.usertimesheets'],function($view){
             $teams = Pivot::select(
                 'code_value',
                 'desc1')
@@ -52,10 +56,25 @@ class AppServiceProvider extends ServiceProvider
                 'name')
                 ->orderBy('name', 'ASC')->get();
             
-            $types = Customer::select(
+            $types = Type::select(
                 'name')
                 ->orderBy('name', 'ASC')->get();
 
+            $brands = Brand::select(
+                'name')
+                ->orderBy('name', 'ASC')->get();
+
+            $job_types = JobType::select(
+                'name')
+                ->orderBy('name', 'ASC')->get();
+            
+            $categories = Categories::select(
+                'name')
+                ->orderBy('name', 'ASC')->get();
+
+                View::share('categories', $categories);
+                View::share('job_types', $job_types);
+                View::share('brands', $brands);
                 View::share('customers', $customers);
                 View::share('types', $types);
         });

@@ -65,6 +65,15 @@ class User extends Authenticatable
             }
         }
 
-      
+    }
+
+    public function inRole($roles)
+    {
+        foreach ($roles as $role) {
+           if(Self::hasRole($role)){
+            return true;
+           }
+        }
+
     }
 }

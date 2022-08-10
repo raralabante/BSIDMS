@@ -41,8 +41,12 @@ class DashboardController extends Controller
         if ($request->ajax()) {
          
             $active_users = User::select(User::raw('CONCAT(users.first_name, " ", users.last_name) AS full_name')
-            ,'job_drafting_status.drafting_masters_id')
+            ,'job_drafting_status.drafting_masters_id'
+            ,'drafting_masters.job_number'
+            ,'drafting_masters.type'
+            )
             ->leftJoin('job_drafting_status','job_drafting_status.user_id','users.id')
+            ->leftJoin('drafting_masters','job_drafting_status.drafting_masters_id','drafting_masters.id')
             ->where('users.team','=',Auth::user()->team)
             ->where('job_drafting_status.status','=',1)->get();
 
@@ -96,6 +100,7 @@ class DashboardController extends Controller
         ->leftJoin('users','users.id','job_time_histories.user_id')
         ->where('drafting_masters.status','=','Submitted')
         ->where('job_time_histories.type','=','DRAFTING')
+        
         ->groupBy('job_time_histories.user_id')
         ->get();
 
@@ -120,6 +125,7 @@ class DashboardController extends Controller
             ->where('submitted_by','=',Auth::user()->team)->first();
             $ready_to_submit_jobs = DraftingMaster::select(DraftingMaster::raw('COUNT(status) as ready_to_submit_jobs'))->where('status','=','Ready To Submit')->first();
             $latest_job = DraftingMaster::select('customer_name as latest_job','created_at as latest_job_date')->orderBy('created_at','DESC')->limit(1)->first();
+           
             array_push($feeds_arr,$unassigned_jobs->unassigned_jobs);
             array_push($feeds_arr,$ready_to_submit_jobs->ready_to_submit_jobs);
             array_push($feeds_arr,$submitted_jobs->submitted_jobs);

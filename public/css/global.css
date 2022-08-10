@@ -80,7 +80,7 @@ body{
   margin-top: 1.5rem;
   display: inline-block;
 }
-.popover__content {
+.popover__content, .popover__content_drafting {
   opacity: 0;
   visibility: hidden;
   position: absolute;
@@ -149,3 +149,4 @@ body{
 #active_users li:hover, #inactive_users li:hover, #average_drafting:hover , #average_checking:hover{
     background-color: #f7f7f7;
 }
+

@@ -12,8 +12,6 @@
 .ui-menu{
   z-index: 10000!important;
 }
-
-
 </style>
 
 <body>
@@ -53,8 +51,6 @@
         </div>
       </div>
       
-     
-     
       <div class="popover__wrapper">
         <div class="popover__content">
           <div class=" p-2 toggle-column">
@@ -520,6 +516,7 @@
       });
 
       $("#draftingSubmenu .drafting_master").addClass("sidebar_active");
+      $("#draftingMenu").click();
       document.getElementById("eta").min = moment().format('YYYY-MM-DD');
 
       const toastLiveExample = document.getElementById('liveToast');
@@ -611,18 +608,39 @@
 
         $( "#customer_names,#edit_customer_names" ).autocomplete({
           source: company_list
+          ,minLength: 0
+          
+        }).focus(function () {
+            $(this).autocomplete("search");
         });
+                      
+        
         $( "#job_types,#edit_job_types" ).autocomplete({
           source: jobtype_list
+          ,minLength: 0
+        }).focus(function () {
+            $(this).autocomplete("search");
         });
+
         $( "#types,#edit_types" ).autocomplete({
           source: type_list
+          ,minLength: 0
+        }).focus(function () {
+            $(this).autocomplete("search");
         });
+
         $( "#categories,#edit_categories" ).autocomplete({
           source: categories_list
+          ,minLength: 0
+        }).focus(function () {
+            $(this).autocomplete("search");
         });
+        
         $( "#brands,#edit_brands" ).autocomplete({
           source: brands_list
+          ,minLength: 0
+        }).focus(function () {
+            $(this).autocomplete("search");
         });
     
       

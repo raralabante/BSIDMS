@@ -48,6 +48,7 @@
 <script>
     $(document).ready( function () {
       $("#schedulingSubmenu .my_schedules").addClass("sidebar_active");
+      $("#schedulingMenu").click();
       const successToast = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(successToast);
       const warningToast = document.getElementById('warningToast')

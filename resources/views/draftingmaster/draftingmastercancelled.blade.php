@@ -56,6 +56,7 @@
 <script>
     $(document).ready( function () {
         $("#draftingSubmenu .cancelled").addClass("sidebar_active");
+        $("#draftingMenu").click();
       const toastLiveExample = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(toastLiveExample);
       const warningToast = document.getElementById('warningToast')

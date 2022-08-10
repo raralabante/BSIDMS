@@ -30,35 +30,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $user_roles = Role::select(
 			'name',
             'id')
 			->orderBy('name', 'ASC')->get();
         
-    //     $activities_by_id = Activity::select('activities.description','activities.created_at','activities.status')
-    //     ->leftJoin('role_activities','role_activities.activity_id','activities.id')
-    //     ->where('activities.department','=', Auth::user()->department)
-    //     ->where('activities.team','=', Auth::user()->team)
-    //     ->where('role_activities.user_id','=',Auth::user()->id)
-    //     ->whereIn('role_activities.role',function($query){
-    //         $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
-    //      })
-    //    ->get();
+        $route_permissions = $request->roles;
 
-    //    $activities = Activity::select('activities.description','activities.created_at','activities.status')
-    //     ->leftJoin('role_activities','role_activities.activity_id','activities.id')
-    //     ->where('activities.department','=', Auth::user()->department)
-    //     ->where('activities.team','=', Auth::user()->team)
-    //     ->whereNull('role_activities.user_id')
-    //     ->whereIn('role_activities.role',function($query){
-    //         $query->select('role_id')->from('role_user')->where('user_id','=',Auth::user()->id)->get();
-    //      })
-    //    ->get();
-
-
-		return view('user.user', compact('user_roles'));
+		return view('user.user', compact('user_roles','route_permissions'));
             
     }
 
@@ -180,6 +161,19 @@ class UserController extends Controller
             ->where('users.team','=',Auth::user()->team)
             ->orderBy('users.first_name', 'ASC')->get();
             return $name;
+      }
+
+      public function getUsersByTeam(Request $request){
+
+        $users = User::select(
+            'users.id as value', 
+            User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+            ->leftJoin('role_user','role_user.user_id','users.id')
+            ->where('users.department','=',$request->department)
+            ->where('users.team','=',$request->team)
+            ->orderBy('users.first_name', 'ASC')
+            ->groupBy('users.id')->get();
+            return response()->json($users);
       }
       
     // public function getCheckers(){

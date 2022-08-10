@@ -150,8 +150,6 @@ class SchedulingMasterController extends Controller
                 ->where('scheduling_masters_id', '=', $schedulingmaster->id)
                 ->where('type', '=', 'SCHEDULING')->first();
 
-                
-          
                 if(empty($jobtimehistory)){
                   return "<button type='button' class='btn btn-shrimpy w-100 text-white assign_scheduler ' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#assign_scheduler_modal' ><i class='fa-solid fa-handshake-simple'></i>&nbsp;&nbsp;ASSIGN</button>";
                 }
@@ -164,9 +162,7 @@ class SchedulingMasterController extends Controller
                     return "<button type='button' class='btn btn-dark-green btn-sm w-100 text-white edit_scheduler' data-id='".$schedulingmaster->id."' data-job_number='".$schedulingmaster->job_number."' data-toggle='modal' data-target='#edit_scheduler_modal' disabled><i class='fa-solid fa-pen'></i>&nbsp;&nbsp;" . $scheduler->full_name . "</button>";
                   }
                 }
-                  
-                    
-                
+
               })
             
               ->editColumn('scheduling_hours', function (SchedulingMaster $schedulingmaster) {

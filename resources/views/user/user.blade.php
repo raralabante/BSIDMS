@@ -89,8 +89,6 @@
   
     $(document).ready( function () {
 
-     
-
       var users_table = $('#users_tbl').DataTable({
         colReorder: true,
         stateSave: true,
@@ -108,6 +106,7 @@
       });
       
       $(".users").addClass('sidebar_active');
+      $("#usersMenu").click();
       const toastLiveExample = document.getElementById('liveToast')
       const toast = new bootstrap.Toast(toastLiveExample);
       
@@ -139,9 +138,6 @@
                  }
             });
 
-           
-
-
             $.ajax({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -163,21 +159,6 @@
            
             
           });
-
-          
-
-      
-        
-      $('a.toggle-vis').on('click', function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = users_table.column($(this).attr('data-column'));
- 
-        // Toggle the visibility
-        column.visible(!column.visible());
-    });
-    
 
       $('#users_tbl').on('click', '.delete-user-btn', function (){
         var user_id = $(this).data("id");
@@ -211,17 +192,6 @@
       });
       });
 
-      Pusher.logToConsole = true;
-
-      var pusher = new Pusher('89eec464cd4d14a2238d', {
-        cluster: 'ap1'
-      });
-
-      var channel = pusher.subscribe('my-channel');
-      channel.bind('my-event', function(data) {
-        users_table.ajax.reload();
-
-      });
 
     });
 </script>
