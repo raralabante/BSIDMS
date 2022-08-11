@@ -29,10 +29,10 @@ Route::get('/draftingmaster/canceljob/{id}', [App\Http\Controllers\DraftingMaste
 Route::get('/draftingmaster/list/{status}', [App\Http\Controllers\DraftingMasterController::class, 'fetchByStatusList'])->name('drafting_master_fetch_by_status_list.list');
 
 //Drafting Master Submitted
-Route::get('/draftingmaster/submitted', [App\Http\Controllers\DraftingMasterController::class, 'index_submitted'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Manager')->name('drafting_master.submitted_jobs');
+Route::get('/draftingmaster/submitted', [App\Http\Controllers\DraftingMasterController::class, 'index_submitted'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Admin')->name('drafting_master.submitted_jobs');
 
 //Drafting Master Cancelled
-Route::get('/draftingmaster/cancelled', [App\Http\Controllers\DraftingMasterController::class, 'index_cancelled'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Manager')->name('drafting_master.cancelled_jobs');
+Route::get('/draftingmaster/cancelled', [App\Http\Controllers\DraftingMasterController::class, 'index_cancelled'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Admin')->name('drafting_master.cancelled_jobs');
 
 
 //My Drafts

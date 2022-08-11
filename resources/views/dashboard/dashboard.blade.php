@@ -7,10 +7,10 @@
     <div class="container-fluid p-5 ">
         <div class="row justify-content-center text-center ">
             <div class="col-md-12">
-                <div class="card text-center">
+                {{-- <div class="card text-center">
                     <div class="card-header btn-dark-green text-white">
                         <div class="float-start ">
-                            {{-- <i class="fa-solid fa-satellite-dish text-danger fa-xl mt-4 pulsing p-1"></i><span>&nbsp;&nbsp;Live updating</span>  --}}
+                            <i class="fa-solid fa-satellite-dish text-danger fa-xl mt-4 pulsing p-1"></i><span>&nbsp;&nbsp;Live updating</span> 
                         </div>
                         
                         <center>
@@ -39,7 +39,7 @@
                     <div class="card-footer text-muted">
                       Formula: (Total of Hours / Days)
                     </div>
-                </div>
+                </div> --}}
             </div>
 
         </div>
@@ -150,7 +150,7 @@
                     if($("#user_department").text() == "DFT"){
                         var url = '{{ route("timesheets.drafting", ":id") }}';
                         url = url.replace(':id', data[i].drafting_masters_id);
-                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <span>"+data[i].type+"</span><a href='"+url+"' class='text-primary'><u>Job No. "+data[i].job_number+"</u></a></li>");
+                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <span>"+data[i].job_type+"</span><a href='"+url+"' class='text-primary'><u>Job No. "+data[i].job_number+"</u></a></li>");
                     }
                     else{
                         var url = '{{ route("timesheets.drafting", ":id") }}';

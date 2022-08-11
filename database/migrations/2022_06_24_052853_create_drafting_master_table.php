@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('prospect')->nullable();
             $table->boolean('six_stars')->nullable();
             $table->string('status');
+            $table->string('hold_status');
             $table->dateTime('six_stars_submitted_at')->nullable();
             $table->dateTime('six_stars_received_at')->nullable();
             $table->dateTime('submitted_at')->nullable();

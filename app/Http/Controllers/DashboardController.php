@@ -44,6 +44,7 @@ class DashboardController extends Controller
             ,'job_drafting_status.drafting_masters_id'
             ,'drafting_masters.job_number'
             ,'drafting_masters.type'
+            ,'drafting_masters.job_type'
             )
             ->leftJoin('job_drafting_status','job_drafting_status.user_id','users.id')
             ->leftJoin('drafting_masters','job_drafting_status.drafting_masters_id','drafting_masters.id')

@@ -56,6 +56,16 @@
 
 
       var mydrafts_tbl = $('#mydrafts_tbl').DataTable({
+        initComplete: function(settings, json) {
+            var scrollThead = $('#mydrafts_tbl').find('thead');
+        
+            $('tr', scrollThead).clone(false).appendTo(scrollThead);
+            console.log($(scrollThead).html());
+            $('tr:eq(1) th', scrollThead).each(function() {
+              $(this).removeClass('sorting sorting_asc sorting_desc');
+              $(this).html('<input type="text" class="form-control" placeholder="Search" />');
+            });
+          },
           ajax: "{{ route('my_drafts.list') }}",
           dom: 'Bfrtip',
         //   processing: true,
@@ -102,6 +112,13 @@
       
           
       });
+
+      $( mydrafts_tbl.table().container() ).on( 'keyup', 'thead input', function () {
+        mydrafts_tbl
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    });
 
       $('#mydrafts_tbl').on('click', '.active', function (){
         var draft_id = $(this).data("id");

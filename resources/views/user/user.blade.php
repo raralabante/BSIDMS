@@ -2,6 +2,9 @@
 @extends('layouts.sidebar')
 @extends('layouts.navbar')
 @section('content')
+<style>
+
+</style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="content" class="p-4 p-md-5 pt-5">
     <div class="container-fluid">
@@ -25,6 +28,7 @@
         </div>
       @endif
       <table id="users_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
+        
       </table>
 
     
@@ -89,9 +93,20 @@
   
     $(document).ready( function () {
 
+
       var users_table = $('#users_tbl').DataTable({
+        initComplete: function(settings, json) {
+            var scrollThead = $('#users_tbl').find('thead');
+        
+            $('tr', scrollThead).clone(false).appendTo(scrollThead);
+            console.log($(scrollThead).html());
+            $('tr:eq(1) th', scrollThead).each(function() {
+              $(this).removeClass('sorting sorting_asc sorting_desc');
+              $(this).html('<input type="text" class="form-control" placeholder="Search" />');
+            });
+          },
         colReorder: true,
-        stateSave: true,
+
           ajax: "{{ route('user.list') }}",
           columns: [
             {data: 'id', title: 'USER ID', className:'dt-right'},
@@ -105,6 +120,13 @@
           order: [[0, 'desc']],
       });
       
+      $( users_table.table().container() ).on( 'keyup', 'thead input', function () {
+        users_table
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    });
+
       $(".users").addClass('sidebar_active');
       $("#usersMenu").click();
       const toastLiveExample = document.getElementById('liveToast')

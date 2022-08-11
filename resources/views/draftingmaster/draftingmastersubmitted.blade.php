@@ -63,6 +63,16 @@
       const toastWarning = new bootstrap.Toast(warningToast);
 
       var drafting_master_submitted_tbl = $('#drafting_master_submitted_tbl').DataTable({
+        initComplete: function(settings, json) {
+            var scrollThead = $('#drafting_master_submitted_tbl').find('thead');
+        
+            $('tr', scrollThead).clone(false).appendTo(scrollThead);
+            console.log($(scrollThead).html());
+            $('tr:eq(1) th', scrollThead).each(function() {
+              $(this).removeClass('sorting sorting_asc sorting_desc');
+              $(this).html('<input type="text" class="form-control" placeholder="Search" />');
+            });
+          },
           ajax:  "{{ route('drafting_master_fetch_by_status_list.list','') }}"+"/Submitted",
           dom: 'Bfrtip',
           colReorder: true,
@@ -122,6 +132,13 @@
           order: [[0, 'desc']],
           
       });
+
+      $( drafting_master_submitted_tbl.table().container() ).on( 'keyup', 'thead input', function () {
+        drafting_master_submitted_tbl
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    });
 
       Pusher.logToConsole = true;
 

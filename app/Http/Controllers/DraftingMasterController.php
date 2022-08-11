@@ -172,17 +172,7 @@ class DraftingMasterController extends Controller
       $edit_job = DraftingMaster::where('id','=',$request->edit_draft_id)->get()->first();
 
 
-      $checkers = JobTimeHistory::select('job_time_histories.type')
-      ->leftJoin('drafting_masters','drafting_masters.id','job_time_histories.drafting_masters_id')
-      ->where('job_time_histories.drafting_masters_id','=', $request->edit_draft_id)
-      ->where('job_time_histories.type','=','CHECKING')->first();
-   
-      if(!empty($checkers)){
-        if($edit_job->status == "Ready To Submit" OR $edit_job->status == "Ready For Six Stars" OR $edit_job->status == "In Six Stars"){
-          throw ValidationException::withMessages(['edit_six_stars' => 'You cannot edit six stars after checking.']);
-        }
-       
-      }
+     
 
       $edit_job->customer_name = $request->edit_customer_name;
       $edit_job->client_name = $request->edit_client_name;
@@ -195,6 +185,7 @@ class DraftingMasterController extends Controller
       $edit_job->floor_area = $request->edit_floor_area;
       $edit_job->prospect = $request->edit_prospect;
       $edit_job->six_stars = $request->edit_six_stars;
+      $edit_job->hold_status = $request->edit_hold_status;
 
       $edit_job->save();
       event(new Message(''));
@@ -404,6 +395,7 @@ class DraftingMasterController extends Controller
             'floor_area',
             'prospect',
             'status',
+            'hold_status',
             DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
             'created_at'
               )
@@ -425,6 +417,7 @@ class DraftingMasterController extends Controller
             'floor_area',
             'prospect',
             'status',
+            'hold_status',
             DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
             'created_at'
               )
@@ -507,7 +500,13 @@ class DraftingMasterController extends Controller
                   })
                 ->editColumn('status', function (DraftingMaster $draftingmaster) {
                  
-                      return $draftingmaster->status;
+                  if($draftingmaster->hold_status == 1){
+                    return "On-hold";
+                  }
+                  else{
+                    return $draftingmaster->status;
+                  }
+                      
                   })
                   ->editColumn('total_hours', function (DraftingMaster $draftingmaster) {
 

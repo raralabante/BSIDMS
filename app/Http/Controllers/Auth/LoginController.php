@@ -52,7 +52,7 @@ class LoginController extends Controller
                 return redirect()->route('my_schedules');
             }
             else{
-                return redirect()->route('dashboard');
+                return redirect()->route('my_drafts');
             }
           
         }

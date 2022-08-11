@@ -240,13 +240,21 @@
               <div class="modal-body">
 
                 <input id="edit_draft_id" type="hidden" name="edit_draft_id">
+
                 <div class="input-group mb-3">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="edit_hold_status" name="edit_hold_status" value="1">
+                    <label class="form-check-label" for="edit_hold_status">Hold Status</label>
+                  </div>
+                </div>
+
+                <div class="input-group mb-3 six_stars">
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="edit_six_stars" name="edit_six_stars" value="1">
                     <label class="form-check-label" for="edit_six_stars">Six Stars</label>
                   </div>
-
                 </div>
+
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Customer Name<span class="text-danger">*</span></span>
                   <input id="edit_customer_names" type="text" class="form-control" placeholder="Customer Name" aria-label="Customer Name" aria-describedby="basic-addon1" name="edit_customer_name" required>
@@ -591,21 +599,6 @@
                  }
           });
 
-        // $.ajax({
-        //   url:  '{{route("user.getCheckers")}}',
-        //       type:"GET",
-        //       success:function(data) {
-        //         $('#assign_checker, #edit_checker').empty();
-        //         $('#assign_checker, #edit_checker').append('<option value="" selected disabled>Select Checker</option>');
-        //         $.each(data, function (i, item) {
-        //             $('#assign_checker, #edit_checker').append($('<option>', { 
-        //                 value: item.value,
-        //                 text : item.label 
-        //             }));
-        //         });
-        //          }
-        //   });
-
         $( "#customer_names,#edit_customer_names" ).autocomplete({
           source: company_list
           ,minLength: 0
@@ -643,8 +636,6 @@
             $(this).autocomplete("search");
         });
     
-      
-
       $('#drafting_master_tbl').on('click', '.edit_job', function (){
         var draft_id = $(this).data("id");
         var job_number = $(this).data("job_number");
@@ -668,12 +659,20 @@
                 $("#edit_categories").val(response.category);
                 $("#edit_floor_area").val(response.floor_area);
                 $("#edit_prospect").val(response.prospect);
-                if(response.six_stars == 1){
-                  $( "#edit_six_stars" ).prop( "checked", true );
+           
+                (response.six_stars == 1) ? $( "#edit_six_stars" ).prop( "checked", true ) : $( "#edit_six_stars" ).prop( "checked", false );
+                (response.hold_status == 1) ? $( "#edit_hold_status" ).prop( "checked", true ) : $( "#edit_hold_status" ).prop( "checked", false );
+
+               
+                if(response.status == "Ready To Submit" || response.status == "Ready For Six Stars" || response.status == "In Six Stars"){
+                  $("div.six_stars").hide();
                 }
                 else{
-                  $( "#edit_six_stars" ).prop( "checked", false );
+                
+                  $("div.six_stars").show();
                 }
+          
+
               }
           });
       });
@@ -881,6 +880,9 @@
                   return '<span class="badge '+ color_success[4] +'">'+status+'</span>';
                 }
                 else if(status == "In Six Stars"){
+                  return '<span class="badge '+ color_success[5] +'">'+status+'</span>';
+                }
+                else{
                   return '<span class="badge '+ color_success[5] +'">'+status+'</span>';
                 }
             }

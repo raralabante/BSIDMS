@@ -29,6 +29,7 @@ class DraftingMaster extends Model
         'prospect',
         'six_stars',
         'status',
+        'hold_status',
         'six_stars_received_at',
         'six_stars_submitted_at'
     ];

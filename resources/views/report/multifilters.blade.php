@@ -100,10 +100,7 @@
         </div>
         <br>
         
-          <div class="border border-1 rounded-3 bg-light">
-            <table id="multifilters_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
-            </table>
-          </div>
+          
           
         <div class="popover__wrapper" >
           <div class="popover__content_drafting">
@@ -183,6 +180,11 @@
             </div>
           </div>
         </div>
+
+        <div class="border border-1 rounded-3 bg-light">
+          <table id="multifilters_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
+          </table>
+        </div>
     </div>
 
 </div>
@@ -220,6 +222,7 @@
                     var multifilters_tbl = $('#multifilters_tbl').DataTable({
                         scrollX: true,
                         scrollY: true,
+                        
                         ajax:{
                             headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
