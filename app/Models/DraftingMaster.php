@@ -42,4 +42,8 @@ class DraftingMaster extends Model
     public function assign_checker(){
         return $this->hasOne(JobTimeHistory::class,'drafting_masters_id');
     }
+
+    public function hold_jobs(){
+        return $this->hasMany(HoldJobs::class,'drafting_masters_id');
+    }
 }

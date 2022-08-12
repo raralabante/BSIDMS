@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('HoldJobs', function (Blueprint $table) {
+        Schema::create('Hold_Jobs', function (Blueprint $table) {
             $table->id();
             $table->integer('drafting_masters_id')->unsigned()->nullable();
             $table->integer('scheduling_masters_id')->unsigned()->nullable();
-            $table->timestamp('hold_start');
-            $table->timestamp('hold_end');
+            $table->dateTime('hold_start')->nullable();
+            $table->dateTime('hold_end')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('HoldJobs');
+        Schema::dropIfExists('Hold_Jobs');
     }
 };

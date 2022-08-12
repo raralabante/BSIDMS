@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DraftingMaster;
+use App\Models\HoldJobs;
 use App\Models\SchedulingMaster;
 use App\Models\ShiftingSchedule;
 use App\Models\Timesheet;
@@ -32,16 +33,20 @@ class TimesheetsController extends Controller
      */
     public function index_drafting(Request $request)
     {
+
         $drafting_masters = DraftingMaster::findOrFail($request->id);
+
+        $hold_jobs = DraftingMaster::select('hold_jobs.hold_start','hold_jobs.hold_end')
+        ->leftJoin('hold_jobs','drafting_masters.id','hold_jobs.drafting_masters_id')
+        ->where('hold_jobs.drafting_masters_id','=',$request->id)->get();
         
-		  return view('timesheet.timesheet_drafting',compact('drafting_masters'));
+      
+		  return view('timesheet.timesheet_drafting',compact(['drafting_masters','hold_jobs']));
     }
 
     public function index_scheduling(Request $request)
     {
         $scheduling_masters = SchedulingMaster::findOrFail($request->id);
-     
-        
 		  return view('timesheet.timesheet_scheduling',compact('scheduling_masters'));
     }
 

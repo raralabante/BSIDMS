@@ -4,19 +4,18 @@
 @section('content')
 <style>
   .job-details span{
-    
-    color:#ece7e7;
     font-size: 16px;
   }
   .bold{
     font-weight:bold;
+    letter-spacing: 1px;
   }
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
       <body class="" >
         
         <div class="container-fluid ">
-          <div class="row job-details border rounded-2 btn-dark-green">
+          <div class="row job-details border rounded-2 btn-dark-green text-white">
             <div class="col-md-6 ">
               <div class="border-bottom m-3"><span class="bold">ID: </span><span id="id">{{$drafting_masters->id}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Job Number: </span><span>{{$drafting_masters->job_number}}</span></div>
@@ -25,6 +24,37 @@
               <div class="border-bottom m-3"><span class="bold">Address: </span><span>{{$drafting_masters->address}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Type: </span><span>{{$drafting_masters->type}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Six Stars: </span><span id="six_stars">{{$drafting_masters->six_stars}}</span></div>
+              <div class="border-bottom m-3"><span class="bold">Hold Dates: </span><br>
+              <div class="row m-3">
+                <div class="col-md-6">
+                  FROM
+                </div>
+                <div class="col-md-6">
+                  TO:
+                </div>
+
+                @foreach($hold_jobs as $key=>$hold_job )
+                <div class="col-md-6">
+                 <span>•</span> <span class="hold_dates">{{$hold_job->hold_start}}</span>
+                </div>
+             
+                <div class="col-md-6">
+                  <span class="hold_dates">{{$hold_job->hold_end}}</span>
+                </div>
+                @endforeach
+
+               
+               
+
+              </div>
+              
+              
+                
+             
+               
+              </div>
+
+
             </div>
             <div class="col-md-6">
               <div class="border-bottom m-3"><span class="bold">Brand: </span><span>{{$drafting_masters->brand}}</span></div>
@@ -83,6 +113,12 @@
       else{
         $("#six_stars").text("No");
       }
+
+      $( ".hold_dates" ).each(function( index ) {
+        $(this).text(moment($($(this)).text()).format('MMMM DD, YYYY h:mm:ss a'));
+      });
+
+    
 
       $("#eta").text(moment($("#eta").text()).format('MMMM DD, YYYY'));
       $("#created_at").text(moment($("#created_at").text()).format('MMMM DD, YYYY h:mm:ss a'));

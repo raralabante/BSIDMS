@@ -18,7 +18,10 @@ use Error;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use App\Events\Message;
+use App\Models\HoldJobs;
 use Illuminate\Support\Facades\View;
+use phpDocumentor\Reflection\Types\Null_;
+
 class DraftingMasterController extends Controller
 {
     /**
@@ -172,7 +175,14 @@ class DraftingMasterController extends Controller
       $edit_job = DraftingMaster::where('id','=',$request->edit_draft_id)->get()->first();
 
 
-     
+      error_log('HOLD STATUS '. $edit_job->hold_status);
+      if(empty($edit_job->hold_status) OR $edit_job->hold_status == 0){
+        $edit_job->hold_jobs()->save(new HoldJobs(['hold_start' => now()]));
+
+      }
+      else{
+        $edit_job->hold_jobs()->whereNull('hold_end')->update(['hold_end'=> now()]);
+      }
 
       $edit_job->customer_name = $request->edit_customer_name;
       $edit_job->client_name = $request->edit_client_name;
@@ -185,9 +195,10 @@ class DraftingMasterController extends Controller
       $edit_job->floor_area = $request->edit_floor_area;
       $edit_job->prospect = $request->edit_prospect;
       $edit_job->six_stars = $request->edit_six_stars;
+     
       $edit_job->hold_status = $request->edit_hold_status;
-
       $edit_job->save();
+
       event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' has been updated.');
     }
