@@ -15,8 +15,8 @@
 </style>
 
 <body>
-  <div class="content">
-    <div class="container-fluid p-5 ">
+  <div class="content " >
+    <div class="container-fluid p-5 " style="overflow: scroll">
       @if(session()->has('success'))
       <div class="alert alert-success d-flex align-items-center" role="alert">
           <i class="fas fa-check"></i>&nbsp;
@@ -130,7 +130,7 @@
         </div>
       </div>
 
-      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%">
+      <table id="drafting_master_tbl" class="table table-bordered row-border order-column stripe hover" data-mode="columntoggle"width="100%" >
       </table>
 
 
@@ -181,8 +181,8 @@
                 </div>
 
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">ETA<span class="text-danger">*</span></span>
-                  <input id="eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="eta" required>
+                  <span class="input-group-text" id="basic-addon1">ETA</span>
+                  <input id="eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="eta">
                 </div>
 
                 <div class="input-group mb-3">
@@ -280,10 +280,10 @@
                   <input id="edit_types" type="text" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_type" required>
                 </div>
 
-                {{-- <div class="input-group mb-3">
+                <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">ETA</span>
-                  <input id="edit_eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_eta" required>
-                </div> --}}
+                  <input id="edit_eta" type="date" class="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" name="edit_eta">
+                </div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Brands</span>
@@ -453,13 +453,42 @@
 <script>
     $(document).ready( function () {
 
+
       var drafting_master_tbl = $('#drafting_master_tbl').DataTable({
-        scrollX: true,
-        scrollY: true,
+        initComplete: function(settings, json) {
+            var scrollThead = $('#drafting_master_tbl').find('thead');
+        
+            $('tr', scrollThead).clone(false).appendTo(scrollThead);
+            console.log($(scrollThead).html());
+            $('tr:eq(1) th', scrollThead).each(function() {
+              $(this).removeClass('sorting sorting_asc sorting_desc');
+              $(this).html('<input type="text" class="form-control search_filter" placeholder="Search" />');
+            });
+
+            
+            var state = drafting_master_tbl.state.loaded();
+              if ( state ) {
+                $.each( drafting_master_tbl.columns().visible(),function ( colIdx,value ) {
+                  
+                var colSearch = state.columns[colIdx].search;
+              
+                if ( colSearch.search ) {
+                
+                 
+                 $(".search_filter:eq("+colIdx+")").val(colSearch.search);
+                }
+              });
+              drafting_master_tbl.draw();
+              }
+
+          },
+        // scrollX: true,
+        // scrollY: true,
           ajax: "{{ route('drafting_master.list') }}",
           dom: 'Bfrtip',
           // colReorder: true,
           stateSave: true,
+
         //   processing: true,
         // serverSide: true,
         buttons: [
@@ -467,6 +496,11 @@
             'excelHtml5',
             'csvHtml5',
             'pdfHtml5',
+           
+            {
+                className:    'btn-dark-green clear_filters border-0',
+                text:     'Clear Filters',
+            },
             {
                 className:    'column-toggle',
                 text:     '<button class="btn btn-light popover__title"><i class=" fa-solid fa-ellipsis-vertical"></i></button>',
@@ -522,6 +556,13 @@
           order: [[0, 'desc']],
           
       });
+
+      $( drafting_master_tbl.table().container() ).on( 'keyup', 'thead input', function () {
+        drafting_master_tbl
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    });
 
       $("#draftingSubmenu .drafting_master").addClass("sidebar_active");
       $("#draftingMenu").click();
@@ -767,6 +808,10 @@
                     $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " is not yet ready for submission.");
                     toastWarning.show();
                   }
+                  else if(response == "ETA ERROR"){
+                    $("#warningToast .toast-body").html("<i class='fa-solid fa-ban'></i> Client Job Number# " + job_number + " ETA cannot be empty.");
+                    toastWarning.show();
+                  }
                   else{
                     $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been submitted.");
                     toast.show();
@@ -862,6 +907,13 @@
             }
           }); 
 
+          $(".clear_filters").click(function(){
+            
+            // $(".search_filter").val("");
+            drafting_master_tbl.state.clear();
+            window.location.reload();
+           
+          });
          function getStatusColor(status){
               color_success = ['bg-secondary','bg-warning text-dark','bg-primary','bg-info','bg-light text-dark','bg-dark', 'bg-success'];
                 if(status == "Unassigned"){

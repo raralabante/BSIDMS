@@ -54,6 +54,7 @@ return array(
     'App\\Models\\Categories' => $baseDir . '/app/Models/Categories.php',
     'App\\Models\\Customer' => $baseDir . '/app/Models/Customer.php',
     'App\\Models\\DraftingMaster' => $baseDir . '/app/Models/DraftingMaster.php',
+    'App\\Models\\HoldJobs' => $baseDir . '/app/Models/HoldJobs.php',
     'App\\Models\\JobDraftingStatus' => $baseDir . '/app/Models/JobDraftingStatus.php',
     'App\\Models\\JobTimeHistory' => $baseDir . '/app/Models/JobTimeHistory.php',
     'App\\Models\\JobType' => $baseDir . '/app/Models/JobType.php',

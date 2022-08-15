@@ -68,7 +68,7 @@ class DraftingMasterController extends Controller
         'client_name' => 'required|max:255',
         'address' => 'required|max:255',
         'type' => 'required|max:255|exists:App\Models\Type,name',
-        'eta' => 'required|max:255|date',
+        'eta' => 'max:255|date|nullable',
         'floor_area' => 'nullable|numeric',
         'brand' => 'nullable|exists:App\Models\Brand,name',
         'job_type' => 'nullable|exists:App\Models\JobType,name',
@@ -110,14 +110,6 @@ class DraftingMasterController extends Controller
         if(!empty($drafters)){
           $drafters_arr = explode (",", $drafters); 
           foreach($drafters_arr as $draft){
-            // JobTimeHistory::insert(
-            //   array(
-            //     'user_id' => $draft,
-            //     'drafting_masters_id' => $newJob->id,
-            //     'type' => 'DRAFTING',
-            //     'created_at' => now(),
-            //   )
-            // );
             $newJob->assigns()->save(new JobTimeHistory(['user_id' => $draft,'type' => 'DRAFTING']));
             Self::addActivityById($description,$draft,10); //10=DRAFTER
           }
@@ -160,7 +152,7 @@ class DraftingMasterController extends Controller
         'edit_client_name' => 'required|max:255',
         'edit_address' => 'required|max:255',
         'edit_type' => 'required|max:255|exists:App\Models\Type,name',
-        // 'edit_eta' => 'required|max:255|date',
+        'edit_eta' => 'max:255|date|nullable',
         'edit_floor_area' => 'nullable|numeric',
         'edit_brand' => 'nullable|exists:App\Models\Brand,name',
         'edit_job_type' => 'nullable|exists:App\Models\JobType,name',
@@ -175,9 +167,13 @@ class DraftingMasterController extends Controller
       $edit_job = DraftingMaster::where('id','=',$request->edit_draft_id)->get()->first();
 
 
-      error_log('HOLD STATUS '. $edit_job->hold_status);
+      
       if(empty($edit_job->hold_status) OR $edit_job->hold_status == 0){
-        $edit_job->hold_jobs()->save(new HoldJobs(['hold_start' => now()]));
+        if($request->edit_hold_status == 1){
+          error_log('HOLD STATUS '. $edit_job->hold_status);
+          $edit_job->hold_jobs()->save(new HoldJobs(['hold_start' => now()]));
+        }
+      
 
       }
       else{
@@ -188,7 +184,7 @@ class DraftingMasterController extends Controller
       $edit_job->client_name = $request->edit_client_name;
       $edit_job->address = $request->edit_address;
       $edit_job->type = $request->edit_type;
-      // $edit_job->eta = $request->edit_eta;
+      $edit_job->eta = $request->edit_eta;
       $edit_job->brand = $request->edit_brand;
       $edit_job->job_type = $request->edit_job_type;
       $edit_job->category = $request->edit_category;
@@ -547,7 +543,7 @@ class DraftingMasterController extends Controller
                 })
                 ->editColumn('job_number', function (DraftingMaster $draftingmaster) {
                   
-                  return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets.drafting', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
+                  return '<a  class="text-primary" href="' . route('timesheets.drafting', $draftingmaster->id) .'"><u>'. $draftingmaster->job_number.'</u></a>'; 
                   
                 })
                 ->rawColumns(['drafters','drafting_hours','checker','checking_hours','checking_hours','status','total_hours','edit_job','submit_job','job_number','cancel_job'])
@@ -569,29 +565,44 @@ class DraftingMasterController extends Controller
                     $total_time += $data->difference;
                   }
     
-                  $active_job = Timesheet::select('timesheets.job_start', Timesheet::raw('SUM(TIMESTAMPDIFF(SECOND, timesheets.job_start, now())) AS difference '))
-                  ->leftJoin('job_drafting_status','timesheets.drafting_masters_id','job_drafting_status.drafting_masters_id')
-                  // ->where('job_drafting_status.user_id', '=', Auth::user()->id)
-                  ->where('timesheets.type', '=' , $type)
-                  ->where('job_drafting_status.status', '=' , '1')
-                  ->where('timesheets.drafting_masters_id', '=' , $draftingmaster->id)
+                  // $active_job = Timesheet::select('timesheets.job_start', Timesheet::raw('SUM(TIMESTAMPDIFF(SECOND, timesheets.job_start, now())) AS difference '))
+                  // ->leftJoin('job_drafting_status','timesheets.drafting_masters_id','job_drafting_status.drafting_masters_id')
+                  // // ->where('job_drafting_status.user_id', '=', Auth::user()->id)
+                  // ->where('job_drafting_status.type', '=' , $type)
+                  // ->where('job_drafting_status.status', '=' , '1')
+                  // ->where('timesheets.drafting_masters_id', '=' , $draftingmaster->id)
+                  // ->whereNull('timesheets.job_stop')
+                  // ->first();
+  
+                  $active_job = Timesheet::select(Timesheet::raw('SUM(TIMESTAMPDIFF(SECOND, job_start, now())) AS difference '))
+                  ->where('type', '=' , $type)
+                  ->where('drafting_masters_id', '=' , $draftingmaster->id)
                   ->whereNull('timesheets.job_stop')
                   ->first();
   
+
                   return $total_time + $active_job->difference;
                   
    }
    
    public function submitJob(Request $request){
     $drafting_masters = DraftingMaster::find($request->id);
-            if($drafting_masters->status == "Ready To Submit"){
-              $description = "(COMPLETED) Job# " . $drafting_masters->job_number . " has been submitted.";
-              Self::addActivity($description,3 );
-              Self::addActivity($description,4 );
-              Self::addActivity($description,9 );
-              event(new Message(''));
-              return DraftingMaster::where('id','=', $request->id)
-              ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
+    error_log($drafting_masters->ETA);
+            if($drafting_masters->status == "Ready To Submit" ){
+              if($drafting_masters->ETA != "0000-00-00" AND !empty($drafting_masters->ETA)){
+                $description = "(COMPLETED) Job# " . $drafting_masters->job_number . " has been submitted.";
+                  Self::addActivity($description,3 );
+                  Self::addActivity($description,4 );
+                  Self::addActivity($description,9 );
+                  event(new Message(''));
+                  return DraftingMaster::where('id','=', $request->id)
+                  ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
+              }
+              else{
+              
+                return "ETA ERROR";
+              }
+              
             }
             else{
               return 0;
@@ -736,7 +747,7 @@ class DraftingMasterController extends Controller
                   })
                   ->editColumn('job_number', function (DraftingMaster $draftingmaster) {
                   
-                    return '<a role="button" class="btn btn-dark-green text-white " href="' . route('timesheets.drafting', $draftingmaster->id) .'">'. $draftingmaster->job_number.'</a>'; 
+                    return '<a  class="text-primary " href="' . route('timesheets.drafting', $draftingmaster->id) .'"><u>'. $draftingmaster->job_number.'</u></a>'; 
                     
                   })
               ->rawColumns(['drafters','drafting_hours','checker','checking_hours','total_hours','job_number'])

@@ -477,12 +477,9 @@ class SchedulingMasterController extends Controller
           $total_time += $data->difference;
         }
 
-        $active_job = Timesheet::select('timesheets.job_start', Timesheet::raw('SUM(TIMESTAMPDIFF(SECOND, timesheets.job_start, now())) AS difference '))
-        ->leftJoin('job_drafting_status','timesheets.scheduling_masters_id','job_drafting_status.scheduling_masters_id')
-        // ->where('job_drafting_status_status.user_id', '=', Auth::user()->id)
-        ->where('timesheets.type', '=' , $type)
-        ->where('job_drafting_status.status', '=' , '1')
-        ->where('timesheets.scheduling_masters_id', '=' , $schedulingmaster->id)
+        $active_job = Timesheet::select(Timesheet::raw('SUM(TIMESTAMPDIFF(SECOND, job_start, now())) AS difference '))
+        ->where('type', '=' , $type)
+        ->where('scheduling_masters_id', '=' , $schedulingmaster->id)
         ->whereNull('timesheets.job_stop')
         ->first();
 

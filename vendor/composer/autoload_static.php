@@ -578,6 +578,7 @@ class ComposerStaticInitd6bd59d4917d232d588e6e843abcde05
         'App\\Models\\Categories' => __DIR__ . '/../..' . '/app/Models/Categories.php',
         'App\\Models\\Customer' => __DIR__ . '/../..' . '/app/Models/Customer.php',
         'App\\Models\\DraftingMaster' => __DIR__ . '/../..' . '/app/Models/DraftingMaster.php',
+        'App\\Models\\HoldJobs' => __DIR__ . '/../..' . '/app/Models/HoldJobs.php',
         'App\\Models\\JobDraftingStatus' => __DIR__ . '/../..' . '/app/Models/JobDraftingStatus.php',
         'App\\Models\\JobTimeHistory' => __DIR__ . '/../..' . '/app/Models/JobTimeHistory.php',
         'App\\Models\\JobType' => __DIR__ . '/../..' . '/app/Models/JobType.php',

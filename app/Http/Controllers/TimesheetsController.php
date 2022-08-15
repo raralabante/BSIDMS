@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DraftingMaster;
 use App\Models\HoldJobs;
+use App\Models\RejectedJobs;
 use App\Models\SchedulingMaster;
 use App\Models\ShiftingSchedule;
 use App\Models\Timesheet;
@@ -40,8 +41,18 @@ class TimesheetsController extends Controller
         ->leftJoin('hold_jobs','drafting_masters.id','hold_jobs.drafting_masters_id')
         ->where('hold_jobs.drafting_masters_id','=',$request->id)->get();
         
-      
-		  return view('timesheet.timesheet_drafting',compact(['drafting_masters','hold_jobs']));
+        $rejected_jobs = RejectedJobs::select('rejected_by')
+        ->where('drafting_masters_id',$request->id)
+        ->latest()->first();
+        $rejected_by = "";
+
+        if(!empty($rejected_jobs)){
+            $rejected_by = User::select(User::raw('CONCAT(first_name, " ", last_name) as full_name'))->where('id',$rejected_jobs->rejected_by)->first();
+        
+        }
+       
+        
+		  return view('timesheet.timesheet_drafting',compact(['drafting_masters','hold_jobs','rejected_by']));
     }
 
     public function index_scheduling(Request $request)

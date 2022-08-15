@@ -28,10 +28,6 @@ Route::get('/reports/usertimesheets/generate', [App\Http\Controllers\ReportsCont
 
 //DASHBOARD
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware('role:Administrator,Drafting Manager,Scheduling Manager,Drafting Admin')->name('dashboard');
-Route::post('/dashboard/getactiveusers', [App\Http\Controllers\DashboardController::class, 'getActiveUsers'])->name('dashboard.getActiveUsers');
-Route::post('/dashboard/getinactiveusers', [App\Http\Controllers\DashboardController::class, 'getInactiveUsers'])->name('dashboard.getInactiveUsers');
-Route::post('/dashboard/getfeeds', [App\Http\Controllers\DashboardController::class, 'getFeeds'])->name('dashboard.getFeeds');
-Route::post('/dashboard/getaveragedraftinghours', [App\Http\Controllers\DashboardController::class, 'getAverageDraftingHours'])->name('dashboard.getAverageDraftingHours');
 
 //USER
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->middleware('role:Administrator')->name('user');

@@ -46,4 +46,9 @@ class DraftingMaster extends Model
     public function hold_jobs(){
         return $this->hasMany(HoldJobs::class,'drafting_masters_id');
     }
+
+    public function reject_jobs(){
+        return $this->hasMany(RejectedJobs::class,'drafting_masters_id');
+    }
+
 }

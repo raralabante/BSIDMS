@@ -42,19 +42,8 @@
                   <span class="hold_dates">{{$hold_job->hold_end}}</span>
                 </div>
                 @endforeach
-
-               
-               
-
               </div>
-              
-              
-                
-             
-               
               </div>
-
-
             </div>
             <div class="col-md-6">
               <div class="border-bottom m-3"><span class="bold">Brand: </span><span>{{$drafting_masters->brand}}</span></div>
@@ -63,6 +52,7 @@
               <div class="border-bottom m-3"><span class="bold">ETA: </span><span id="eta">{{$drafting_masters->ETA}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Floor Area: </span><span>{{$drafting_masters->floor_area}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Prospect: </span><span>{{$drafting_masters->prospect}}</span></div>
+              <div class="border-bottom m-3"><span class="bold">Rejected By: </span><span class="text-danger">{{$rejected_by->full_name ?? ''}}</span></div>
               <div class="border-bottom m-3"><span class="bold">Created At: </span><span id="created_at">{{$drafting_masters->created_at}}</span></div>
             </div>
           </div>

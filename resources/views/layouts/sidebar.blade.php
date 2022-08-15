@@ -12,7 +12,7 @@
     </h3>
 
   
-      <div class="user-details ">
+      <div class="user-details m-3">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
           <span><i class="fa-solid fa-earth-africa"></i>  <span id="user_department">{{Auth::user()->department}}</span> ({{Auth::user()->team}})</span><br>
           <span><i class="fa-solid fa-envelope"></i>  {{Auth::user()->email}}</span><br>
@@ -20,7 +20,7 @@
        
               @foreach (Auth::user()->permissions as $permission) 
                   &lt;{{
-                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->orderBy('priority','ASC')->first()->name;
+                     $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
                   }}&gt;
               
               @endforeach

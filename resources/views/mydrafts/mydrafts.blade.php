@@ -92,9 +92,9 @@
               {data: 'brand', title: 'Brand'},
               {data: 'job_type', title: 'Job Type'},
               {data: 'category', title: 'Category'},
-              {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
-              {data: 'prospect', title: 'Prospect'},
-              {data: 'six_stars', title: 'Six Stars'},
+              // {data: 'floor_area', title: 'Floor Area', className: "dt-right"},
+              // {data: 'prospect', title: 'Prospect'},
+              // {data: 'six_stars', title: 'Six Stars'},
               {data: 'drafting_hours', title: 'Drafting Hours',
               render: function (data, type) {
                 const duration = moment.duration(data, 'seconds').format("HH:mm:ss", { trim: false });
@@ -105,6 +105,7 @@
                     return moment(data).format('MMM DD, YYYY');
                 },},
                 {data: 'for_checking', title: 'Action', className: "dt-center" },
+                {data: 'completed', title: 'Action', className: "dt-center" },
                 
           ],
           order: [[0, 'desc']],
@@ -159,7 +160,7 @@
           closeIcon: true,
           backgroundDismiss: true,
           type: 'green',
-          title: 'SUBMIT CLIENT JOB # ' + job_number + "?",
+          title: 'SUBMIT CLIENT JOB # ' + job_number + " to checker?",
           buttons: {
               text: 'SUBMIT',
               btnClass: 'btn-green',
@@ -180,10 +181,42 @@
           }
       });
 
-          
       });
 
-      
+      $('#mydrafts_tbl').on('click', '.completed', function (){
+        var draft_id = $(this).data("id");
+        var job_number = $(this).data("job_number");
+        
+        $.confirm({
+          icon: 'fa-solid fa-warning',
+          draggable: false,
+          closeIcon: true,
+          backgroundDismiss: true,
+          type: 'orange',
+          title: 'SUBMIT CLIENT JOB # ' + job_number + "?",
+          content: 'This action will skip the checking part of the process and will proceed for submission . Are you sure you want to continue?',
+          buttons: {
+              text: 'SUBMIT',
+              btnClass: 'btn-green',
+              confirm: function(){
+                $.ajax({
+                  
+                  url:  "{{route('my_drafts.complete','')}}"+"/"+draft_id,
+                type:"GET",
+                success:function(response){
+                  $("#liveToast .toast-body").html("<i class='fa-solid fa-check'></i> Client Job Number# " + job_number + " has been completed.");
+                    toast.show();
+                  mydrafts_tbl.ajax.reload();
+                }
+              });
+              },
+              cancel: function () {
+              },
+          }
+      });
+
+      });
+
       Pusher.logToConsole = true;
 
       var pusher = new Pusher('89eec464cd4d14a2238d', {

@@ -46,6 +46,7 @@
         </div>
         <br> --}}
         <div class="row">
+
           <div class="col-md-12">
             <div class="input-group p-2 float-end " style="width:30%" style="text-align:center!important">
               <span class="input-group-text realcognita ">FROM</span>
@@ -70,9 +71,9 @@
                                   &nbsp;<i class="fa-solid fa-user-pen fa-xl text-white" ></i>
                                 </button>
                                 <div class="ps-3">
-                                  <h3 id="unassigned_count" class="text-muted">(0)</h3>
-                                  <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-            
+                                  <h3 id="unassigned_count" class="text-muted">({{$unassigned_count}})</h3>
+                                  {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+             --}}
                                 </div>
                               </div>
                             </div>
@@ -90,9 +91,9 @@
                                   &nbsp;<i class="fa-solid fa-r fa-xl text-dark"></i>
                               </button>
                                 <div class="ps-3">
-                                  <h3 id="ready_to_submit_count" class="text-muted">(0)</h3>
-                                  <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-            
+                                  <h3 id="ready_to_submit_count" class="text-muted">({{$ready_to_submit_count}})</h3>
+                                  {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+             --}}
                                 </div>
                               </div>
                             </div>
@@ -110,9 +111,9 @@
                                 <i class="fa-solid fa-paper-plane fa-xl text-white"></i>
                             </button>
                               <div class="ps-3">
-                                <h3 id="submitted_count" class="text-muted">(0)</h3>
-                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-          
+                                <h3 id="submitted_count" class="text-muted">({{$submitted_count}})</h3>
+                                {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+           --}}
                               </div>
                             </div>
                           </div>
@@ -132,8 +133,8 @@
                            
 
                               <div class="ps-3 " style=" overflow: hidden;">
-                                <h6><a href="#" id="latest_job" class="small text-primary">JOB#12412421412ASDASDD</a></h6>
-                               <span id="latest_job_date" class="text-muted small pt-2 ps-1">A few minutes ago</span>
+                                <h6><a href="{{route('timesheets.drafting',$latest_job->id)}}" id="latest_job" class="small text-primary">{{$latest_job->job_number}}</a></h6>
+                               <span id="latest_job_date" class="text-muted small pt-2 ps-1">{{$latest_job->created_at}}</span>
           
                               </div>
                             </div>
@@ -148,16 +149,28 @@
                         <div class="card shadow p-3">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item active" aria-current="true"><i class="fas fa-toggle-on"></i>&nbsp;&nbsp;Active Users <span id="active_users_count"></span></li>
-                                            <div id="active_users"> </div>
+                                            <li class="list-group-item active" aria-current="true"><i class="fas fa-toggle-on"></i>&nbsp;&nbsp;Active Users <span id="active_users_count">({{$active_users_count}})</span></li>
+                                            <div id="active_users">
+                                              @foreach ($active_users as $user)
+                                                <li class='list-group-item d-flex justify-content-between align-items-center'>
+                                                  {{$user->full_name}}<small>{{$user->job_type}}</small>
+                                                  <a href="{{route('timesheets.drafting',$user->drafting_masters_id)}}" class='text-primary'><u>{{$user->job_number}}</u></a>
+                                                </li>
+                                                                                        
+                                              @endforeach
+                                            </div>
                                         </ul>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item bg-secondary text-white" aria-current="true"><i class="fa-solid fa-toggle-off"></i>&nbsp;&nbsp;Inactive Users <span id="inactive_users_count"></span></li>
-                                            <div id="inactive_users"></div>
+                                            <li class="list-group-item bg-secondary text-white" aria-current="true"><i class="fa-solid fa-toggle-off"></i>&nbsp;&nbsp;Inactive Users <span id="inactive_users_count">({{$inactive_users_count}})</span></li>
+                                            <div id="inactive_users">
+                                              @foreach($inactive_users as $user)
+                                                <li class='list-group-item d-flex justify-content-between align-items-center text-muted'>{{$user}}</li>
+                                              @endforeach
+                                            </div>
                                         </ul>
                                     </div>
                                 </div>
@@ -304,86 +317,7 @@
         const warningToast = document.getElementById('warningToast');
         const toastWarning = new bootstrap.Toast(warningToast);
 
-      
-
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               url:  "{{route('dashboard.getActiveUsers')}}",
-               success:function(data) {
-                $("#active_users_count").text("(" + data.length + ")");
-                $("#active_users").empty();
-                $.each(data, function(i, item) {
-                    if($("#user_department").text() == "DFT"){
-                        var url = '{{ route("timesheets.drafting", ":id") }}';
-                        url = url.replace(':id', data[i].drafting_masters_id);
-                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <span>"+data[i].job_type+"</span><a href='"+url+"' class='text-primary'><u>Job No. "+data[i].job_number+"</u></a></li>");
-                    }
-                    else{
-                        var url = '{{ route("timesheets.drafting", ":id") }}';
-                        url = url.replace(':id', data[i].drafting_masters_id);
-                        $("#active_users").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+data[i].full_name+" <a href='"+url+"' class='text-primary'><u>VIEW JOB ID No. "+data[i].drafting_masters_id+"</u></a></li>");
-                    }
-                    
-                });
-                 }
-            });
-
-            $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               url:  "{{route('dashboard.getInactiveUsers')}}",
-               success:function(data) {
-                $("#inactive_users_count").text("(" + data.length + ")");
-                $("#inactive_users").empty();
-                
-                $.each(data, function(i, item) {
-                    
-                    $("#inactive_users").append("<li class='list-group-item d-flex justify-content-between align-items-center text-muted'>"+data[i]+"</li>");
-                });
-                 }
-            });
-
-            $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               url:  "{{route('dashboard.getFeeds')}}",
-               success:function(data) {
-                // $("#unassigned_count").text(data[0]);
-                // $("#ready_to_submit_count").text(data[1]);
-                // $("#submitted_count").text(data[2]);
-                // $("#latest_job").text(data[3]);
-                // $("#latest_job_date").text(moment(data[4]).format('MMM DD, YYYY hh:mm A'));
-
-                 }
-            });
-
-
-            $("#from,#to").change(function(){
-                $.ajax({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type:'POST',
-                    url:  "{{route('dashboard.getAverageDraftingHours')}}",
-                    data:{from:$("#from").val(),to:$("#to").val(),test:"test"},
-                    success:function(data) {
-                        //  alert(data);
-
-                        }
-                });
-
-            });
-
-           
-   
-      
+       $("#latest_job_date").text(moment(moment($("#latest_job_date").text()).format()).fromNow());
     });
 </script>
 

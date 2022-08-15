@@ -12,6 +12,8 @@ use App\Models\Timesheet;
 use Carbon\Carbon;
 use Error;
 use App\Events\Message;
+use App\Models\RejectedJobs;
+
 class MyDraftsCheckController extends Controller
 {
     /**
@@ -129,9 +131,9 @@ class MyDraftsCheckController extends Controller
                 ->where('timesheets.type','=','CHECKING')->first();
 
                 if(empty($timesheet)){
-                  return '<button class="btn btn-success submit" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" data-six_stars="' . $draftingmaster->six_stars . '" disabled>Submit</button>';
+                  return '<button class="btn btn-success submit" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" data-six_stars="' . $draftingmaster->six_stars . '" disabled>Completed</button>';
                 }else{
-                  return '<button class="btn btn-success submit" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" data-six_stars="' . $draftingmaster->six_stars . '" >Submit</button>';
+                  return '<button class="btn btn-success submit" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" data-six_stars="' . $draftingmaster->six_stars . '" >Completed</button>';
                 }
 
                
@@ -260,10 +262,13 @@ class MyDraftsCheckController extends Controller
     
     public function rejectCheck(Request $request) {
       $draft = DraftingMaster::findOrFail($request->id);
-      $draft->status = 'Unassigned';
+      $draft->reject_jobs()->save(new RejectedJobs(['rejected_by' => Auth::user()->id]));
+
+      $draft->status = 'Assigned';
       $draft->save();
+      
+      JobTimeHistory::where('drafting_masters_id','=',$request->id)->where('type','=','CHECKING')->delete();
       Self::jobStopper();
-      JobTimeHistory::where('drafting_masters_id','=',$request->id)->delete();
       
       $description = "Job# " . $draft->job_number . " has been rejected.";
       app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );

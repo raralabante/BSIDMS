@@ -11,6 +11,9 @@ use App\Models\Timesheet;
 use Carbon\Carbon;
 use Error;
 use App\Events\Message;
+use App\Models\RejectedJobs;
+use App\Models\JobTimeHistory;
+
 class MyDraftsController extends Controller
 {
     /**
@@ -91,6 +94,11 @@ class MyDraftsController extends Controller
             </div>';
              }
             })
+            ->editColumn('job_number', function (DraftingMaster $draftingmaster) {
+                  
+              return '<a  class="text-primary" href="' . route('timesheets.drafting', $draftingmaster->id) .'"><u>'. $draftingmaster->job_number.'</u></a>'; 
+              
+            })
             ->editColumn('drafting_hours', function (DraftingMaster $draftingmaster) {
               $difference = 0;
               $total_time = 0;
@@ -139,22 +147,33 @@ class MyDraftsController extends Controller
                 
                 if(empty($timesheet)){
                   error_log("1");
-                  return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" disabled><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submit</button>';
+                  return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" disabled><i class="fa-solid fa-share"></i>&nbsp;&nbsp;Submit For Checking </button>';
                 }
                 else{
                   if(empty($job_drafting_status)){
                     error_log("2");
-                    return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" ><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submit</button>';
+                    return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" ><i class="fa-solid fa-share"></i>&nbsp;&nbsp;Submit For Checking </button>';
                   }
                   else{
                     error_log("3");
-                    return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" disabled><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submit</button>';
+                    return '<button class="btn btn-success for_checking" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '" disabled><i class="fa-solid fa-share"></i>&nbsp;&nbsp;Submit For Checking </button>';
                   }
                 }
-               
+              })
+              ->editColumn('completed', function (DraftingMaster $draftingmaster) {
+
+                $rejected_jobs = RejectedJobs::where('drafting_masters_id',$draftingmaster->id)->first();
+
+                if(!empty($rejected_jobs) AND $draftingmaster->six_stars == "No"){
+                    return '<button class="btn btn-warning completed" data-id="'.$draftingmaster->id.'" data-job_number="' . $draftingmaster->job_number . '"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Completed</button>';
+                }
+                else{
+                  return '';
+                }
                 
               })
-            ->rawColumns(['active','drafting_hours','for_checking'])
+
+            ->rawColumns(['active','job_number','drafting_hours','for_checking','completed'])
             ->toJson();
       }
     }
@@ -259,12 +278,16 @@ class MyDraftsController extends Controller
       ->where('status','=',1)
       ->where('drafting_masters_id','=',$request->id)->first();
 
-      
       if(empty($job_drafting_status)){
         $draft = DraftingMaster::findOrFail($request->id);
         $draft->status = 'Ready For Check';
         $draft->save();
 
+        $rejected_jobs = RejectedJobs::where('drafting_masters_id','=',$request->id)->latest('id')->first();
+        if(!empty($rejected_jobs->rejected_by)){
+          $draft->assign_checker()->save(new JobTimeHistory(['user_id'=> $rejected_jobs->rejected_by, 'type' => 'CHECKING']));
+        }
+        
         $description = "Job# " . $draft->job_number . " is now ready for checking.";
 
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
@@ -275,4 +298,30 @@ class MyDraftsController extends Controller
       }
  
     }
+
+    public function complete(Request $request) {
+
+      $draft = DraftingMaster::findOrFail($request->id);
+      
+      $job_drafting_status = JobDraftingStatus::select('type')
+      ->where('type','=','DRAFTING')
+      ->where('status','=',1)
+      ->where('drafting_masters_id','=',$request->id)->first();
+
+      if(empty($job_drafting_status) AND $draft->six_stars == 0){
+        $draft->status = 'Ready To Submit';
+        $description = "Job# " . $draft->job_number . " is now ready to submit.";
+          app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
+          app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
+          app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
+  
+        $draft->save();
+          Self::jobStopper();
+          event(new Message(''));
+      }
+
+     
+ 
+    
+}
 }
