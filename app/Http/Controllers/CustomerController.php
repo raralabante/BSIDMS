@@ -8,7 +8,7 @@ use App\Models\Customer;
 use Error;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use App\Events\Message;
+
 class CustomerController extends Controller
 {
     /**
@@ -50,7 +50,6 @@ class CustomerController extends Controller
 
         if($newCustomer->id == null){
           $newCustomer->save();
-          event(new Message(''));
           return redirect()->back()->with('success', $newCustomer->name . ' has been added.');
         }
         else{
@@ -78,7 +77,6 @@ class CustomerController extends Controller
     }
 
     public function deleteCustomer(Request $request){
-      event(new Message(''));
      Customer::find($request->id)->delete();
     //   
     }

@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use Error;
-use App\Events\Message;
+
 class CategoriesController extends Controller
 {
     /**
@@ -37,7 +37,7 @@ class CategoriesController extends Controller
 
         if($newcategories->id == null){
           $newcategories->save();
-          event(new Message(''));
+
           return redirect()->back()->with('success', $newcategories->name . ' has been added.');
         }
         else{
@@ -64,7 +64,7 @@ class CategoriesController extends Controller
     }
 
     public function deleteCategories(Request $request){
-      event(new Message(''));
+
         Categories::find($request->id)->delete();
     //   
     }
