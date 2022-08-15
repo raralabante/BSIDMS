@@ -50,7 +50,7 @@ class SchedulingMasterController extends Controller
         'category' => 'nullable|exists:App\Models\Categories,name',
       ]);
 
-    //   event(new Message(''));
+    //   //event(new Message(''));
 
       $status = "";
 
@@ -299,7 +299,7 @@ class SchedulingMasterController extends Controller
       $edit_job->hitlist = $request->edit_hitlist;
 
       $edit_job->save();
-      event(new Message(''));
+      //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' has been updated.');
     }
 
@@ -322,7 +322,7 @@ class SchedulingMasterController extends Controller
         Self::addActivityById($description,$request->scheduler,20); //20=SCHEDULER
       
     }
-        event(new Message(''));
+        //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' scheduler has been assigned.');
     }
 
@@ -381,7 +381,7 @@ class SchedulingMasterController extends Controller
          $description = "(SCHEDULING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->edit_scheduler,20); //20 SCHEDULER
             
-            event(new Message(''));
+            //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' scheduler has been updated.');
       }
 
@@ -398,7 +398,7 @@ class SchedulingMasterController extends Controller
         $scheduling_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'SCHEDULE CHECKING']));
         $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,12); //12=SCHEDULE CHECKER
-            event(new Message(''));
+            //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' checker has been assigned.');
     }
 
@@ -457,7 +457,7 @@ class SchedulingMasterController extends Controller
          $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
             
-            event(new Message(''));
+            //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
       }
 

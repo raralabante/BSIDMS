@@ -61,7 +61,7 @@ class DraftingMasterController extends Controller
 
     protected function insert(Request $request)
     {
-      
+
        $request->validate([
         'customer_name' => 'required|max:255|exists:customers,name',
         'job_number' => 'required|max:255',
@@ -75,7 +75,7 @@ class DraftingMasterController extends Controller
         'category' => 'nullable|exists:App\Models\Categories,name',
       ]);
 
-      event(new Message(''));
+      //event(new Message(''));
 
       $status = "";
 
@@ -195,7 +195,7 @@ class DraftingMasterController extends Controller
       $edit_job->hold_status = $request->edit_hold_status;
       $edit_job->save();
 
-      event(new Message(''));
+      //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' has been updated.');
     }
 
@@ -223,7 +223,7 @@ class DraftingMasterController extends Controller
             
 
     }
-        event(new Message(''));
+        //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' drafters has been assigned.');
     }
 
@@ -238,7 +238,7 @@ class DraftingMasterController extends Controller
         $drafting_master->assign_checker()->save(new JobTimeHistory(['user_id'=> $request->checker, 'type' => 'CHECKING']));
         $description = "(CHECKING) Job# " . $request->job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10=DRAFTER
-            event(new Message(''));
+            //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->job_number . ' checker has been assigned.');
     }
 
@@ -297,7 +297,7 @@ class DraftingMasterController extends Controller
             Self::addActivityById($description,$user_id,10); //10=DRAFTER
 
         }
-        event(new Message(''));
+        //event(new Message(''));
           return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
         }
        
@@ -319,7 +319,7 @@ class DraftingMasterController extends Controller
         }
     }
         
-        event(new Message(''));
+        //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' drafters has been updated.');
       }
     }
@@ -378,7 +378,7 @@ class DraftingMasterController extends Controller
          $description = "(CHECKING) Job# " . $request->edit_job_number . " has been assigned to you.";
             Self::addActivityById($description,$request->checker,11); //10 DRAFTER, 11=CHECKER
             
-            event(new Message(''));
+            //event(new Message(''));
         return redirect()->back()->with('success', 'Client Job# ' . $request->edit_job_number . ' checker has been updated.');
       }
 
@@ -594,7 +594,7 @@ class DraftingMasterController extends Controller
                   Self::addActivity($description,3 );
                   Self::addActivity($description,4 );
                   Self::addActivity($description,9 );
-                  event(new Message(''));
+                  //event(new Message(''));
                   return DraftingMaster::where('id','=', $request->id)
                   ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
               }
@@ -618,7 +618,7 @@ class DraftingMasterController extends Controller
           Self::addActivity($description,3 );
           Self::addActivity($description,4 );
           Self::addActivity($description,9 );
-          event(new Message(''));
+          //event(new Message(''));
           return DraftingMaster::where('id','=', $request->id)
           ->update(['status' => "Cancelled"]);
         }

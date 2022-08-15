@@ -272,7 +272,7 @@ class MySchedulesController extends Controller
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
         app('App\Http\Controllers\DraftingMasterController')->addActivity($description,9 );
-        event(new Message(''));
+        //event(new Message(''));
         // Self::jobStopper();
       }
  

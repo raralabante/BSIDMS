@@ -145,8 +145,6 @@
         $("#add_six_stars").click(function(){
             var job_number = $("#job_number").val();
             $.ajax({
-              
-
               url:  "{{route('sixstars.add_six_stars','')}}"+"/"+job_number,
                 type:"GET",
                 success:function(response){
@@ -196,17 +194,6 @@
       });
       });
       
-      Pusher.logToConsole = true;
-
-          var pusher = new Pusher('89eec464cd4d14a2238d', {
-            cluster: 'ap1'
-          });
-
-          var channel = pusher.subscribe('my-channel');
-          channel.bind('my-event', function(data) {
-            sixstars_tbl.ajax.reload();
-
-          });
 
     });
 </script>
