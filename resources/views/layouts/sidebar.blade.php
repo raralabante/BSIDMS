@@ -90,13 +90,13 @@
                 
                 @if(Auth::user()->inRole(['Administrator','Drafter']))
                     <li>
-                        <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Drafts</a>
+                        <a class="my_drafts" href="{{route('my_drafts')}}"><i class="fa-solid fa-compass-drafting"></i>&nbsp;&nbsp;My Drafts ({{$mydrafts_count}})</a>
                     </li>
                 @endif
 
                 @if(Auth::user()->inRole(['Administrator','Drafting Checker']))
                     <li>
-                        <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Drafts Check</a>
+                        <a class="my_drafts_check" href="{{route('my_drafts_check')}}"><i class="fa-solid fa-check-double"></i>&nbsp;&nbsp;My Drafts Check ({{$mydraftscheck_count}})</a>
                     </li>
                 @endif
 

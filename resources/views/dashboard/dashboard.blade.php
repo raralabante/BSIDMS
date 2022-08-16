@@ -47,14 +47,14 @@
         <br> --}}
         <div class="row">
 
-          <div class="col-md-12">
+          {{-- <div class="col-md-12">
             <div class="input-group p-2 float-end " style="width:30%" style="text-align:center!important">
               <span class="input-group-text realcognita ">FROM</span>
               <input id="from" type="date" class="form-control">
               <span class="input-group-text realcognita">TO</span>
               <input id="to" type="date" class="form-control">
             </div>
-          </div>
+          </div> --}}
         </div>
         <div class="row">
                 <div class="col-md-8 ">
@@ -185,7 +185,7 @@
               
                 <div class="col-md-4">
                    <!-- Recent Activity -->
-                   <div class="card shadow">
+                   {{-- <div class="card shadow">
                     <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -255,7 +255,7 @@
                     </div>
 
                     </div>
-                </div><!-- End Recent Activity -->
+                </div><!-- End Recent Activity --> --}}
                     {{-- <div class="card shadow p-3">
                         <ul class="list-group">
                             <li class="list-group-item border-0" aria-current="true"><h3>Feeds</h3></li>

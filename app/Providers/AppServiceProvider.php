@@ -12,6 +12,7 @@ use App\Models\JobType;
 use App\Models\Pivot;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\DraftingMaster;
 use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
 {
@@ -161,10 +162,28 @@ class AppServiceProvider extends ServiceProvider
             View::share('notification_count', $notification_count);
             // View::share('activities', $activities);
             
-        }
-      
-    });
-
+            $mydrafts = DraftingMaster::select(
+                DraftingMaster::raw('COUNT(drafting_masters.id) as count'),
+                )->leftJoin('job_time_histories', 'drafting_masters.id', '=', 'job_time_histories.drafting_masters_id')
+                ->where('job_time_histories.user_id','=', Auth::user()->id)
+                ->where('job_time_histories.type','=', 'DRAFTING')
+                ->where('drafting_masters.status','=', 'Assigned')->first();
+                View::share('mydrafts_count',$mydrafts->count);
     
+            $mydraftscheck = DraftingMaster::select(
+                DraftingMaster::raw('COUNT(drafting_masters.id) as count'),
+                )->leftJoin('job_time_histories', 'drafting_masters.id', '=', 'job_time_histories.drafting_masters_id')
+                ->where('job_time_histories.user_id','=', Auth::user()->id)
+                ->where('job_time_histories.type','=', 'CHECKING')
+                ->where('drafting_masters.status','=', 'Ready For Check')->first();
+        
+                View::share('mydraftscheck_count',$mydraftscheck->count);
+        }
+
+       
+        });
+        
+
+
     }
 }

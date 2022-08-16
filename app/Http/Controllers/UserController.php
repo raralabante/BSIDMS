@@ -121,7 +121,7 @@ class UserController extends Controller
             }
 
             User::where('id','=',$request->user_id)->update(['team' => $request->team]);
-            event(new Message(''));
+            //event(new Message(''));
             return redirect()->back()->with('success', 'User ID #' . $request->user_id . ' has been edited.');
         }
     }
@@ -134,7 +134,7 @@ class UserController extends Controller
         // delete related   
         $user->permissions()->delete();
         $user->delete();
-        event(new Message(''));
+        //event(new Message(''));
        return redirect()->back()->with('success', 'User ID #' . $id. ' has been deleted.');
     //   
     }

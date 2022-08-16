@@ -76,6 +76,7 @@ class MyDraftsController extends Controller
         ->where('job_time_histories.type','=', 'DRAFTING')
         ->where('drafting_masters.status','=', 'Assigned')
         ->groupBy('drafting_masters.id');
+        
         return datatables()->eloquent($query)
           ->editColumn('active', function (DraftingMaster $draftingmaster) {
             $drafting_status = JobDraftingStatus::select('type','status')
