@@ -6,31 +6,29 @@
      
           <img src="{{ asset('images/realcognita-gif-logo.gif') }}" width="200px">
       </div> --}}
-
-      <h3>
-      
-    </h3>
-
-  
       <div class="user-details m-3">
           <span><i class="fa-solid fa-user-astronaut"></i>  {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span><br>
-          <span><i class="fa-solid fa-earth-africa"></i>  <span id="user_department">{{Auth::user()->department}}</span> ({{Auth::user()->team}})</span><br>
           <span><i class="fa-solid fa-envelope"></i>  {{Auth::user()->email}}</span><br>
+          <span><i class="fa-solid fa-earth-africa"></i>  <span id="user_department">{{Auth::user()->department}}</span></span><br>
+          <i class="fa-solid fa-users"></i>
+            @foreach (Auth::user()->teams as $team) 
+                  &lt;{{
+                    $team->team
+                  }}&gt;
+              
+              @endforeach
+            <br>
           <i class="fa-solid fa-briefcase"></i>
        
               @foreach (Auth::user()->permissions as $permission) 
                   &lt;{{
                      $role_name[] = \App\Models\Role::select('name')->where('id','=',$permission->role_id)->first()->name;
                   }}&gt;
-              
               @endforeach
       </div>
       <hr>
       <ul class="list-unstyled components">
-
-        
         @if(Auth::user()->inRole(['Administrator','Drafting Manager','Scheduling Manager','Drafting Admin']))
-        
             <li>
                 <a class="dashboard" href="{{ route('dashboard') }}">
                 <i class="fa-solid fa-chart-pie"></i>&nbsp;&nbsp;Dashboard

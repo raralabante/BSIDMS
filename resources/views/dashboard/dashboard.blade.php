@@ -184,7 +184,7 @@
                 </div>
               
                 <div class="col-md-4">
-                   <!-- Recent Activity -->
+                   {{-- <!-- Recent Activity -->
                    {{-- <div class="card shadow">
                     <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>

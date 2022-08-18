@@ -43,8 +43,9 @@ class AppServiceProvider extends ServiceProvider
                 View::share('departments', $departments);
         });
 
-        View::composer(['customer.customer','report.multifilters','report.usertimesheets'],function($view){
+        View::composer(['auth.register','user.user','customer.customer','report.multifilters','report.usertimesheets'],function($view){
             $teams = Pivot::select(
+                'id',
                 'code_value',
                 'desc1')
                 ->where('code_name','=','TEAM')
@@ -81,18 +82,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        View::composer('draftingmaster.draftingmaster',function($view){
-            $drafting_checkers = User::select(
-                'users.id as value', 
-                User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
-                ->leftJoin('role_user','role_user.user_id','users.id')
-                ->where('role_user.role_id','=',11)
-                ->where('users.department','=',Auth::user()->department)
-                ->where('users.team','=',Auth::user()->team)
-                ->orderBy('users.first_name', 'ASC')->get();
-                
-                View::share('drafting_checkers', $drafting_checkers);
-        });
+        
 
         View::composer('schedulingmaster.schedulingmaster',function($view){
             $scheduling_checkers = User::select(

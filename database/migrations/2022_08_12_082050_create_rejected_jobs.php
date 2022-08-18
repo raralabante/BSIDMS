@@ -14,6 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if(!Schema::hasTable('hold_jobs')){
         Schema::create('rejected_jobs', function (Blueprint $table) {
             $table->id();
             $table->integer('drafting_masters_id')->unsigned()->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('rejected_by')->nullable();
             $table->timestamps();
         });
+    }
     }
 
     /**

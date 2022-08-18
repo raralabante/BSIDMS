@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if(!Schema::hasTable('hold_jobs')){
         Schema::create('Hold_Jobs', function (Blueprint $table) {
             $table->id();
             $table->integer('drafting_masters_id')->unsigned()->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->dateTime('hold_end')->nullable();
             $table->timestamps();
         });
+    }
     }
 
     /**

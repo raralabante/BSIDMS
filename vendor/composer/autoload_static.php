@@ -585,6 +585,7 @@ class ComposerStaticInitd6bd59d4917d232d588e6e843abcde05
         'App\\Models\\Permission' => __DIR__ . '/../..' . '/app/Models/Permission.php',
         'App\\Models\\Pivot' => __DIR__ . '/../..' . '/app/Models/Pivot.php',
         'App\\Models\\Prestart' => __DIR__ . '/../..' . '/app/Models/Prestart.php',
+        'App\\Models\\RejectedJobs' => __DIR__ . '/../..' . '/app/Models/RejectedJobs.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\RoleActivity' => __DIR__ . '/../..' . '/app/Models/RoleActivity.php',
         'App\\Models\\SchedulingMaster' => __DIR__ . '/../..' . '/app/Models/SchedulingMaster.php',

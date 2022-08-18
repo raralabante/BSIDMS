@@ -81,10 +81,14 @@
                             <label for="department" class="col-md-4 col-form-label text-md-end  ">{{ __('Department') }}</label>
                             <div class="col-md-6">
                                 <select class="form-select col-md-6 @error('department') is-invalid @enderror" name="department" id="department">
-                                    <option value="" disabled selected>Select Department</option>
                                     @foreach($departments as $dept)
+                                    @if($dept->code_value == "DRAFTING")
+                                    <option value="{{$dept->desc1}}" selected>{{$dept->code_value}}</option>
+                                    @else
                                     <option value="{{$dept->desc1}}">{{$dept->code_value}}</option>
-                                @endforeach
+                                    @endif
+                                    
+                                    @endforeach
                                 </select>
                                 @error('department')
                                     <span class="invalid-feedback" role="alert">
@@ -93,21 +97,23 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <label for="team" class="col-md-4 col-form-label text-md-end ">{{ __('Team') }}</label>
                             <div class="col-md-6">
-                                <select class="form-select col-md-6 @error('team') is-invalid @enderror" name="team" id="team">
-                                    <option value="" disabled selected>Select Team</option>
-                                </select>
-                                @error('team')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <div class="teams">
+                                    @foreach($teams as $team)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{$team->code_value}}" id="{{$team->id}}" data-department="{{$team->desc1}}" name="teams[]">
+                                        <label class="form-check-label" for="{{$team->id}}">
+                                            {{$team->code_value}}
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
-
                         </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -128,24 +134,12 @@ $( document ).ready(function() {
     $(".register").addClass('sidebar_active');
     $("#usersMenu").click();
     $( "#department" ).change(function() {
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               url:  "{{route('register.loadTeam')}}",
-               data:{department:$(this).val()},
-               success:function(data) {
-                var team = $("#team");
-                    team.empty();
-                    team.append($("<option selected disabled/>").text("Select Team"));
-                    $.each(data, function(i, item) {
-                        team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
-                    });
 
-                 }
-            });
-    });
+            
+            $(".form-check-input").parent().hide();
+            $("input[data-department='"+$(this).val()+"']").parent().show();
+
+    }).change();
 });
 
    

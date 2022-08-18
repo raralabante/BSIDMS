@@ -34,14 +34,26 @@ class DashboardController extends Controller
      */
     public function index()
     {
-    
+        $user_teams = [];
+     
+        foreach (Auth::user()->teams as $team) {
+          array_push($user_teams,$team->team);
+        }
 
         $unassigned_count = Self::countJobByStatus('Unassigned')->count;
         $ready_to_submit_count = Self::countJobByStatus('Ready To Submit')->count;;
         $submitted_count = DraftingMaster::select(DraftingMaster::raw('COUNT(status) as count'))->where('status','=','Submitted')
-        ->where('submitted_by','=',Auth::user()->team)->first()->count;
+        ->whereIn('customer_name',function($query) use($user_teams){
+            $query->select('name')->from('customers')->whereIn('team',$user_teams);
+        })->first()->count;
         
-        $latest_job = DraftingMaster::select('id','job_number','created_at')->orderBy('created_at','DESC')->limit(1)->first();
+
+
+        $latest_job = DraftingMaster::select('id','job_number','created_at')
+        ->whereIn('customer_name',function($query) use($user_teams){
+            $query->select('name')->from('customers')->whereIn('team',$user_teams);
+        })
+        ->orderBy('created_at','DESC')->limit(1)->first();
            
         $active_users = Self::getActiveUsers();
         $active_users_count = count(Self::getActiveUsers());
@@ -56,7 +68,12 @@ class DashboardController extends Controller
 
     public function getActiveUsers(){
         
-         
+        $user_teams = [];
+     
+        foreach (Auth::user()->teams as $team) {
+          array_push($user_teams,$team->team);
+        }
+
             $active_users = User::select(User::raw('CONCAT(users.first_name, " ", users.last_name) AS full_name')
             ,'job_drafting_status.drafting_masters_id'
             ,'drafting_masters.job_number'
@@ -65,7 +82,10 @@ class DashboardController extends Controller
             )
             ->leftJoin('job_drafting_status','job_drafting_status.user_id','users.id')
             ->leftJoin('drafting_masters','job_drafting_status.drafting_masters_id','drafting_masters.id')
-            ->where('users.team','=',Auth::user()->team)
+            ->leftJoin('user_teams','users.id','user_teams.user_id')
+            ->whereIn('user_teams.team',function($query) use($user_teams){
+                $query->select('team')->from('user_teams')->whereIn('team',$user_teams);
+            })
             ->where('job_drafting_status.status','=',1)->get();
 
             return $active_users;
@@ -74,19 +94,31 @@ class DashboardController extends Controller
 
     public function getInactiveUsers(){
       
+        $user_teams = [];
+     
+        foreach (Auth::user()->teams as $team) {
+          array_push($user_teams,$team->team);
+        }
+
             $active_user_arr = array();
             $all_users_arr = array();
 
 
             $active_users = User::select(User::raw('CONCAT(users.first_name, " ", users.last_name) AS full_name'))
             ->leftJoin('job_drafting_status','job_drafting_status.user_id','users.id')
-            ->where('users.team','=',Auth::user()->team)
+            ->leftJoin('user_teams','users.id','user_teams.user_id')
+            ->whereIn('user_teams.team',function($query) use($user_teams){
+                $query->select('team')->from('user_teams')->whereIn('team',$user_teams);
+            })
             ->where('job_drafting_status.status','=',1)->get();
 
            
 
             $all_users = User::select(User::raw('CONCAT(users.first_name, " ", users.last_name) AS full_name'))
-            ->where('users.team','=',Auth::user()->team)
+            ->leftJoin('user_teams','users.id','user_teams.user_id')
+            ->whereIn('user_teams.team',function($query) use($user_teams){
+                $query->select('team')->from('user_teams')->whereIn('team',$user_teams);
+            })
             ->get();
 
             foreach ($active_users as $key) {
@@ -107,9 +139,17 @@ class DashboardController extends Controller
 
 
     public function countJobByStatus($status){
+
+        $user_teams = [];
+        foreach (Auth::user()->teams as $team) {
+            array_push($user_teams,$team->team);
+        
+        }
+        
          return DraftingMaster::select(DraftingMaster::raw('COUNT(status) as count'))->where('status','=',$status)
-         ->whereIn('customer_name',function($query){
-            $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+         ->whereIn('customer_name',function($query) use($user_teams){
+            $query->select('name')->from('customers')->whereIn('team',$user_teams);
+          
         })->first();
         
     }

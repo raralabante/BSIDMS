@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Team;
 use App\Models\Activity;
 
 use App\Models\Pivot;
@@ -34,7 +35,8 @@ class UserController extends Controller
     {
         $user_roles = Role::select(
 			'name',
-            'id')
+            'id',
+            'department')
 			->orderBy('name', 'ASC')->get();
         
         $route_permissions = $request->roles;
@@ -45,35 +47,43 @@ class UserController extends Controller
 
     public function userList(Request $request) {
 		if ($request->ajax()) {
-           
-            $sub = Pivot::select('code_value')->where('code_name','=','DEPARTMENT')->where('desc1','=','users.department');
+
 			$query = User::select(
                 'users.id',
 				'users.first_name',
                 'users.last_name',
                 'users.email',
-                'users.team',
                 'users.department',
                 // Pivot::select('code_value')->where('code_name','=','DEPARTMENT')->where('desc1','=','users.department'),
-                Role::raw('group_concat(roles.name SEPARATOR ", ") as the_role')
+                Role::raw('group_concat(DISTINCT (roles.name) SEPARATOR ", ") as the_roles'),
+                Role::raw('group_concat(DISTINCT (user_teams.team) SEPARATOR ", ") as the_teams')
             )
             ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
             ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
+            ->leftJoin('user_teams', 'users.id', '=', 'user_teams.user_id')
+          
             ->groupBy('users.id');
 
 
 			return datatables()->eloquent($query)
-            ->editColumn('edit_role', function (User $user) {
+            ->editColumn('edit_user', function (User $user) {
                 // return '<a href="#" class="view-summary" data-id="' . $joborder->id . '" data-company="' . $joborder->company_name . '" data-toggle="modal" data-target="#viewSummary">VIEW</a>';
-                return '<button class="btn btn-primary edit-role-btn btn-sm" data-toggle="modal" data-target="#edit_role_modal" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
-                data-last_name="'. $user->last_name .'" data-department="'. $user->department .'" data-team="'. $user->team .'">
-                <i class="fa-solid fa-user-pen"></i>&nbsp;&nbsp;EDIT
+                return '<button class="btn btn-primary edit-role-btn" data-toggle="modal" data-target="#edit_role_modal" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
+                data-last_name="'. $user->last_name .'" data-department="'. $user->department .'" data-teams="'. $user->the_teams .'" data-roles="'. $user->the_roles .'">
+                <i class="fa-solid fa-user-pen"></i>
               </button>
-              <button class="btn btn-danger delete-user-btn btn-sm" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
-              data-last_name="'. $user->last_name .'">
-              <i class="fa-solid fa-trash-can"></i>&nbsp;&nbsp;DELETE
-              </button>';
+             ';
             })
+            ->editColumn('delete_user', function (User $user) {
+                // return '<a href="#" class="view-summary" data-id="' . $joborder->id . '" data-company="' . $joborder->company_name . '" data-toggle="modal" data-target="#viewSummary">VIEW</a>';
+                return '<button class="btn btn-danger delete-user-btn" data-id="'. $user->id .'" data-first_name="'. $user->first_name .'"
+                data-last_name="'. $user->last_name .'">
+                <i class="fa-solid fa-trash-can"></i>
+                </button>
+             ';
+            })
+
+            
             ->editColumn('full_name', function (User $user) {
                 
                 return $user->first_name . " " . $user->last_name;
@@ -82,36 +92,49 @@ class UserController extends Controller
                 $pivot = Pivot::select('code_value')->where('code_name','=','DEPARTMENT')->where('desc1','=', $user->department)->first();
                 return $pivot->code_value;
             })
-            ->rawColumns(['edit_role','full_name','department'])
+            ->rawColumns(['edit_user','delete_user','full_name','department'])
             ->toJson();
 		}
 	}
 
-    public function loadRoles(Request $request){
-        if ($request->ajax()) {
+    // public function loadRoles(Request $request){
+    //     if ($request->ajax()) {
            
-			$query = User::select(
-                'roles.id',
-                'roles.name',
-            )
-            ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
-            ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
-			->where('role_user.user_id', '=', $request->id)->get();
+	// 		$query = User::select(
+    //             'roles.id',
+    //             'roles.name',
+    //         )
+    //         ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
+    //         ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
+	// 		->where('role_user.user_id', '=', $request->id)->get();
 
-            return response()->json($query);
-		}
-    }
+    //         return response()->json($query);
+	// 	}
+    // }loadrouserRole
 
     public function updateroles(Request $request){
-        // error_log(dd($request));
-        $userRole = $request->input('rolename');
+
+        $newRoles = $request->rolenames;
+        $newTeams = $request->teams;
         
-        if(empty($userRole)){
-            return redirect()->back()->with('error', 'Role cannot be empty' . $request->user_id . '.');
+        if(empty($newRoles) OR empty($newTeams)){
+            return redirect()->back()->with('error', 'Role/Team cannot be empty' . $request->user_id . '.');
         }
         else{
             Permission::where(['user_id'=>$request->user_id])->delete();
-            foreach($userRole as $role){
+            Team::where(['user_id'=>$request->user_id])->delete();
+
+
+            foreach($newTeams as $team){
+                Team::insert(
+                   array(
+                     'user_id' => $request->user_id,
+                     'team' => $team
+                   )
+                );
+            }
+
+            foreach($newRoles as $role){
                 Permission::insert(
                    array(
                      'user_id' => $request->user_id,
@@ -120,7 +143,7 @@ class UserController extends Controller
                 );
             }
 
-            User::where('id','=',$request->user_id)->update(['team' => $request->team]);
+            // User::where('id','=',$request->user_id)->update(['team' => $request->team]);
             //event(new Message(''));
             return redirect()->back()->with('success', 'User ID #' . $request->user_id . ' has been edited.');
         }
@@ -140,41 +163,52 @@ class UserController extends Controller
     }
 
     public function getDrafters(){
+
+        $user_teams = [];
+     
+      foreach (Auth::user()->teams as $team) {
+        array_push($user_teams,$team->team);
+      }
+     
+
         $name = User::select(
             'users.id as value', 
             User::raw('CONCAT(users.first_name, " ", users.last_name) AS tag'))
             ->leftJoin('role_user','role_user.user_id','users.id')
+            ->leftJoin('user_teams','users.id','user_teams.user_id')
             ->where('role_user.role_id','=',10)
             ->where('users.department','=',Auth::user()->department)
-            ->where('users.team','=',Auth::user()->team)
+            ->whereIn('user_teams.team',function($query) use($user_teams){
+                $query->select('team')->from('user_teams')->whereIn('team',$user_teams);
+            })
             ->orderBy('users.first_name', 'ASC')->get();
             return $name;
       }
       
-      public function getSchedulers(){
-        $name = User::select(
-            'users.id as value', 
-            User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
-            ->leftJoin('role_user','role_user.user_id','users.id')
-            ->where('role_user.role_id','=',20)
-            ->where('users.department','=',Auth::user()->department)
-            ->where('users.team','=',Auth::user()->team)
-            ->orderBy('users.first_name', 'ASC')->get();
-            return $name;
-      }
+    //   public function getSchedulers(){
+    //     $name = User::select(
+    //         'users.id as value', 
+    //         User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+    //         ->leftJoin('role_user','role_user.user_id','users.id')
+    //         ->where('role_user.role_id','=',20)
+    //         ->where('users.department','=',Auth::user()->department)
+    //         ->where('users.team','=',Auth::user()->team)
+    //         ->orderBy('users.first_name', 'ASC')->get();
+    //         return $name;
+    //   }
 
-      public function getUsersByTeam(Request $request){
+    //   public function getUsersByTeam(Request $request){
 
-        $users = User::select(
-            'users.id as value', 
-            User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
-            ->leftJoin('role_user','role_user.user_id','users.id')
-            ->where('users.department','=',$request->department)
-            ->where('users.team','=',$request->team)
-            ->orderBy('users.first_name', 'ASC')
-            ->groupBy('users.id')->get();
-            return response()->json($users);
-      }
+    //     $users = User::select(
+    //         'users.id as value', 
+    //         User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+    //         ->leftJoin('role_user','role_user.user_id','users.id')
+    //         ->where('users.department','=',$request->department)
+    //         ->where('users.team','=',$request->team)
+    //         ->orderBy('users.first_name', 'ASC')
+    //         ->groupBy('users.id')->get();
+    //         return response()->json($users);
+    //   }
       
     // public function getCheckers(){
     //     $name = User::select(

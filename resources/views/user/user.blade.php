@@ -27,7 +27,8 @@
           </div>
         </div>
       @endif
-      <table id="users_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
+
+      <table id="users_tbl" class="table table-bordered row-border order-column stripe hover" width="100%" >
         
       </table>
 
@@ -35,7 +36,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="edit_role_modal" tabindex="-1" aria-labelledby="edit_role_modal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header real-cognita-teal">
           <h5 class="modal-title" id="edit_role_modal"><i class="fa-solid fa-pen"></i>&nbsp;&nbsp;EDIT ROLES</h5>
@@ -46,36 +47,48 @@
         <div class="modal-body">
           <i class="fa-solid fa-hashtag"></i>&nbsp;<span id="user_id">USER ID</span><br>
             <i class="fa-solid fa-user-tie"></i>&nbsp;&nbsp;<label id="user_fullname">USER FULLNAME</label><br>
-            <i class="fa-solid fa-earth-africa"></i>&nbsp;&nbsp;<label id="user_department">DEPARTMENT</label>
-            <hr>
+            <i class="fa-solid fa-earth-africa "></i>&nbsp;&nbsp;<label id="user_department" >DEPARTMENT</label>
 
             <div class="mb-3">
               <div class="form-floating">
                 <input type="hidden" name="edit_draft_id" id="edit_draft_id">
                 <input type="hidden" name="edit_job_number" id="edit_job_number">
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">Team</span>
-                  <select class="form-select col-md-6 @error('team') is-invalid @enderror" name="team" id="team">
-                    <option value="" disabled selected>Select Team</option>
-                </select>
+                  
+              </div>
+            </div>
+            <hr>
+            <div class="row m-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <Strong>Teams</Strong>
+                  @foreach($teams as $team)
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{ $team->code_value }}" id="team{{ $team->id }}" data-department="{{$team->desc1}}"name="teams[]">
+                    <label class="form-check-label" for="team{{ $team->id }}">
+                      {{ $team->code_value }}
+                    </label>
+                  </div>
+                  @endforeach
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div id="roles_div mb-3">
+                  <Strong>Roles</Strong>
+                  <input type="hidden" id="user_id_val" name="user_id">
+                  @foreach($user_roles as $roles)
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{ $roles->id }}" id="role_{{ $roles->id }}" name="rolenames[]" data-role="{{$roles->name}}" data-department={{$roles->department}}>
+                    <label class="form-check-label" for="role_{{ $roles->id }}">
+                      {{ $roles->name }}
+                    </label>
+                  </div>
+                  @endforeach
                 </div>
               </div>
             </div>
-            
-            <div id="roles_div mb-3">
-              <input type="hidden" id="user_id_val" name="user_id">
-              @foreach($user_roles as $roles)
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="{{ $roles->id }}" id="role_{{ $roles->id }}" name="rolename[]">
-                <label class="form-check-label" for="role_{{ $roles->id }}">
-                  {{ $roles->name }}
-                </label>
-              </div>
-              @endforeach
-            </div>
+           
 
-              
-
+           
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -93,6 +106,15 @@
   
     $(document).ready( function () {
 
+      $(".users").addClass('sidebar_active');
+      $("#usersMenu").click();
+      const toastLiveExample = document.getElementById('liveToast')
+      const toast = new bootstrap.Toast(toastLiveExample);
+      
+     
+     
+
+      // $("input[data-department='"+$(this).val()+"']").parent().show();
 
       var users_table = $('#users_tbl').DataTable({
         initComplete: function(settings, json) {
@@ -102,20 +124,41 @@
             console.log($(scrollThead).html());
             $('tr:eq(1) th', scrollThead).each(function() {
               $(this).removeClass('sorting sorting_asc sorting_desc');
-              $(this).html('<input type="text" class="form-control" placeholder="Search" />');
+              $(this).html('<input type="text" class="form-control search_filter" placeholder="Search" />');
             });
-          },
-        colReorder: true,
 
+            var state = users_table.state.loaded();
+              if (state) {
+                $.each( users_table.columns().visible(),function ( colIdx,value ) {
+                var colSearch = state.columns[colIdx].search;
+                if ( colSearch.search ) {
+                 $(".search_filter:eq("+colIdx+")").val(colSearch.search);
+                }
+              });
+              // users_table.draw();
+            }
+          },
+          dom: 'Bfrtip',
+          buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+        ],
+        colReorder: true,
+        stateSave: true,
           ajax: "{{ route('user.list') }}",
           columns: [
             {data: 'id', title: 'USER ID', className:'dt-right'},
               {data: 'full_name', title: 'Full Name'},
               {data: 'email', title: 'Email'},
-              {data: 'the_role', title: 'Roles'},
+              {data: 'the_roles', title: 'Roles'},
               {data: 'department', title: 'Department'},
-              {data: 'team', title: 'Team'},
-              {data: 'edit_role', title: 'Action'},
+              // {data: 'team', title: 'OLD TEAM'},
+              {data: 'the_teams', title: 'Team'},
+              {data: 'edit_user', title: 'Action',className:'dt-center'},
+              {data: 'delete_user', title: 'Action',className:'dt-center'},
+              
           ],
           order: [[0, 'desc']],
       });
@@ -127,16 +170,26 @@
             .draw();
     });
 
-      $(".users").addClass('sidebar_active');
-      $("#usersMenu").click();
-      const toastLiveExample = document.getElementById('liveToast')
-      const toast = new bootstrap.Toast(toastLiveExample);
       
+
       $('#users_tbl').on('click', '.edit-role-btn', function (){
         var user_id = $(this).data("id");
         var user_fullname = $(this).data("first_name") + " " + $(this).data("last_name");
         var user_department = $(this).data("department");
-        var user_team = $(this).data("team");
+
+        var user_teams = $(this).data("teams");
+        var user_roles = $(this).data("roles");
+
+        var user_teams_arr = user_teams.split(',');
+        var user_roles_arr = user_roles.split(',');
+    
+        
+       $(".form-check-input[name='teams[]']").parent().hide();
+       $(".form-check-input[name='rolenames[]']").parent().hide();
+       $(".form-check-input[data-department='"+user_department+"']").parent().show();
+
+       
+       $(".form-check-input[data-role='"+user_department+"']").parent().show();
 
         $("#edit_role_modal #user_id").text(user_id);
         $("#edit_role_modal #user_id_val").val(user_id);
@@ -144,41 +197,36 @@
         $("#edit_role_modal #user_fullname").text(user_fullname);
         $("#edit_role_modal #user_department").text(user_department);
 
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
+        $(".form-check-input[name='teams[]']").prop("checked",false);
+        $(".form-check-input[name='rolenames[]']").prop("checked",false);
 
-               
-               url:  "{{route('user.loadRoles')}}",
-               data:{id:user_id},
-               success:function(data) {
-                $.each(data, function(i, item) {
-                  $("#role_" + data[i].id).prop("checked",true);
-                });
-                 }
-            });
-
-            $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               
-               url:  "{{route('register.loadTeam')}}",
-               async: true,
-               data:{department:user_department},
-               success:function(data) {
-                var team = $("#team");
-                    team.empty();
-                    $.each(data, function(i, item) {
-                        team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
-                    });
-                    $("#team").val(user_team).change();
-                 }
-            });
+        $.each(user_teams_arr, function (i, item) { 
+          var team = item.replace(/^\s+|\s+$/gm,'');
+          $(".form-check-input[value='"+team+"']").prop("checked",true);
            
+        });
+
+        $.each(user_roles_arr, function (i, item) { 
+          var role_name = item.replace(/^\s+|\s+$/gm,'');
+          $(".form-check-input[data-role='"+role_name+"']").prop("checked",true);
+           
+        });
+      
+      //  {{-- $.ajax({
+      //       headers: {
+      //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      //        },
+      //          type:'POST',
+      //          url:  "{{route('user.loadRoles')}}",
+      //          data:{id:user_id},
+      //          success:function(data) {
+      //           $(".form-check-input").prop("checked",false);
+      //           $.each(data, function(i, item) {
+      //             $("#role_" + data[i].id).prop("checked",true);
+      //           });
+      //            }
+      //       }); --}}
+
             
           });
 

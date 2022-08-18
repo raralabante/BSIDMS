@@ -61,6 +61,7 @@ return array(
     'App\\Models\\Permission' => $baseDir . '/app/Models/Permission.php',
     'App\\Models\\Pivot' => $baseDir . '/app/Models/Pivot.php',
     'App\\Models\\Prestart' => $baseDir . '/app/Models/Prestart.php',
+    'App\\Models\\RejectedJobs' => $baseDir . '/app/Models/RejectedJobs.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
     'App\\Models\\RoleActivity' => $baseDir . '/app/Models/RoleActivity.php',
     'App\\Models\\SchedulingMaster' => $baseDir . '/app/Models/SchedulingMaster.php',

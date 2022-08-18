@@ -41,7 +41,26 @@ class DraftingMasterController extends Controller
      */
     public function index(Request $request)
     {
-      return view('draftingmaster.draftingmaster');
+      $user_teams = [];
+     
+      foreach (Auth::user()->teams as $team) {
+        array_push($user_teams,$team->team);
+      }
+
+      $drafting_checkers = User::select(
+        'users.id as value', 
+        User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+        ->leftJoin('role_user','role_user.user_id','users.id')
+        ->leftJoin('user_teams','users.id','user_teams.user_id')
+        ->where('role_user.role_id','=',11)
+        ->where('users.department','=',Auth::user()->department)
+        ->whereIn('user_teams.team',function($query) use($user_teams){
+          $query->select('team')->from('user_teams')->whereIn('team',$user_teams);
+      })
+        ->orderBy('users.first_name', 'ASC')->get();
+        
+     
+      return view('draftingmaster.draftingmaster',compact('drafting_checkers','drafting_checkers'));
     }
 
     public function index_submitted(Request $request)
@@ -166,15 +185,11 @@ class DraftingMasterController extends Controller
 
       $edit_job = DraftingMaster::where('id','=',$request->edit_draft_id)->get()->first();
 
-
-      
       if(empty($edit_job->hold_status) OR $edit_job->hold_status == 0){
         if($request->edit_hold_status == 1){
           error_log('HOLD STATUS '. $edit_job->hold_status);
           $edit_job->hold_jobs()->save(new HoldJobs(['hold_start' => now()]));
         }
-      
-
       }
       else{
         $edit_job->hold_jobs()->whereNull('hold_end')->update(['hold_end'=> now()]);
@@ -385,9 +400,13 @@ class DraftingMasterController extends Controller
     }
         
     public function draftingMasterList(Request $request) {
+      $user_teams = [];
+     
+      foreach (Auth::user()->teams as $team) {
+        array_push($user_teams,$team->team);
+      }
+     
       if ($request->ajax()) {
-        $query = "";
-        if(Auth::user()->hasRole('Administrator')){
           $query = DraftingMaster::select(
             'id',
             'customer_name',
@@ -406,35 +425,15 @@ class DraftingMasterController extends Controller
             DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
             'created_at'
               )
-              ->where('status','!=','Submitted')
-              ->where('status','!=','Cancelled');
-                    }
-        else{
-          $query = DraftingMaster::select(
-            'id',
-            'customer_name',
-            'client_name',
-            'job_number',
-            'address',
-            'type',
-            'ETA',
-            'brand',
-            'job_type',
-            'category',
-            'floor_area',
-            'prospect',
-            'status',
-            'hold_status',
-            DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
-            'created_at'
-              )
-              ->whereIn('customer_name',function($query){
-                $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+              ->whereIn('customer_name',function($query) use ($user_teams){
+                $query->select('name')->from('customers')->whereIn('team', $user_teams);
+                
+                // $query2->select('team')->from('user_teams')->where('user_id','=',Auth::user()->id);
             })
+            
               ->where('status','!=','Submitted')
               ->where('status','!=','Cancelled');
-        }
-
+        
         return datatables()->eloquent($query)
             ->editColumn('drafters', function (DraftingMaster $draftingmaster) {
               $drafters_arr = [];
@@ -596,7 +595,7 @@ class DraftingMasterController extends Controller
                   Self::addActivity($description,9 );
                   //event(new Message(''));
                   return DraftingMaster::where('id','=', $request->id)
-                  ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->team]);
+                  ->update(['status' => "Submitted",'submitted_at' => now(),'submitted_by' => Auth::user()->id]);
               }
               else{
               
@@ -629,10 +628,13 @@ class DraftingMasterController extends Controller
 
    public function fetchByStatusList(Request $request) {
 
+    $user_teams = [];
+     
+    foreach (Auth::user()->teams as $team) {
+      array_push($user_teams,$team->team);
+    }
+
     if ($request->ajax()) {
-      $query = "";
-      
-      if(Auth::user()->hasRole('Administrator')){
         $query = DraftingMaster::select(
           'id',
           'customer_name',
@@ -651,35 +653,12 @@ class DraftingMasterController extends Controller
           'created_at',
           'submitted_at'
           )
-          ->where('status','=',$request->status);
-      }
-      else{
-       
-        $query = DraftingMaster::select(
-          'id',
-          'customer_name',
-          'client_name',
-          'job_number',
-          'address',
-          'type',
-          'ETA',
-          'brand',
-          'job_type',
-          'category',
-          'floor_area',
-          'prospect',
-          'status',
-          DraftingMaster::raw("(CASE WHEN six_stars='0' THEN 'No' ELSE 'Yes' END) as six_stars"),
-          'created_at',
-          'submitted_at'
-          )
-          ->whereIn('customer_name',function($query){
-            $query->select('name')->from('customers')->where('team','=',Auth::user()->team);
+          ->whereIn('customer_name',function($query) use($user_teams){
+            $query->select('name')->from('customers')->whereIn('team', $user_teams);
           })
+          
           ->where('status','=',$request->status);
-      }
-      
-               
+
       return datatables()->eloquent($query)
           ->editColumn('drafters', function (DraftingMaster $draftingmaster) {
             $drafters_arr = [];

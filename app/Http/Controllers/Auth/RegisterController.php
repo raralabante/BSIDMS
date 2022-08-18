@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -61,7 +62,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'department' => ['required', 'string', 'max:255'],
-            'team' => ['required', 'string', 'max:255'],
+            
         ]);
     }
 
@@ -73,25 +74,44 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // error_log("test");
+        // return User::create([
+        //     'first_name' => $data['first_name'],
+        //     'last_name' => $data['last_name'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        //     'department' => $data['department'],
+            
+        // ]);
+
+        // // error_log("test");
+
+        $create_user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'department' => $data['department'],
-            'team' => $data['team'],
+            
         ]);
+
+        foreach ($data['teams'] as $team) {
+            
+            $create_user->teams()->save(new Team(['user_id' => $create_user->id,'team' => $team]));
+        }
+       
+        return $create_user;
     }
 
-    protected function loadTeam(Request $request){
-        // error_log($request->department);
-        $team = Pivot::select('code_value')
-        ->where( 'code_name', '=', 'TEAM' )
-        ->where( 'desc1', '=', $request->department )
-        ->orderBy('code_value','ASC')->get();
+    // protected function loadTeam(Request $request){
+    //     // error_log($request->department);
+    //     $team = Pivot::select('code_value')
+    //     ->where( 'code_name', '=', 'TEAM' )
+    //     ->where( 'desc1', '=', $request->department )
+    //     ->orderBy('code_value','ASC')->get();
 
-        return response()->json($team);
-    }
+    //     return response()->json($team);
+    // }
 
     public function register(Request $request)
     {

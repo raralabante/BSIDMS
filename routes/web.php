@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::post('/register/loadteam', [App\Http\Controllers\Auth\RegisterController::class, 'loadTeam'])->name('register.loadTeam');
+// Route::post('/register/loadteam', [App\Http\Controllers\Auth\RegisterController::class, 'loadTeam'])->name('register.loadTeam');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //REPORTS
@@ -32,7 +32,7 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 //USER
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->middleware('role:Administrator')->name('user');
 Route::get('/users/list', [App\Http\Controllers\UserController::class, 'userList'])->name('user.list');
-Route::post('/users/list/loadroles', [App\Http\Controllers\UserController::class, 'loadRoles'])->name('user.loadRoles');
+// Route::post('/users/list/loadroles', [App\Http\Controllers\UserController::class, 'loadRoles'])->name('user.loadRoles');
 Route::post('/users/list/updateroles', [App\Http\Controllers\UserController::class, 'updateRoles'])->name('user.updateRoles');
 Route::get('/users/list/deleteuser/{id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('user.deleteUser');
 Route::GET('/users/getdrafters', [App\Http\Controllers\UserController::class, 'getDrafters'])->name('user.getDrafters');
@@ -86,7 +86,7 @@ Route::get('/prestarts/list/deleteprestart/{id}', [App\Http\Controllers\Prestart
 Route::GET('/prestarts/getprestarts', [App\Http\Controllers\PrestartController::class, 'getPrestarts'])->name('prestart.getPrestarts');
 
 //Timesheets
-Route::get('/draftingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index_drafting'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Checker,Drafter')->name('timesheets.drafting');
+Route::get('/draftingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index_drafting'])->middleware('role:Administrator,Drafting Manager,Drafting TL,Drafting Admin,Drafting Checker,Drafter')->name('timesheets.drafting');
 Route::get('/draftingmaster/timesheets/fetch/{id}', [App\Http\Controllers\TimesheetsController::class, 'timeSheetListDrafting'])->name('timesheets.fetchDrafting');
 Route::get('/schedulingmaster/timesheets/id/{id}', [App\Http\Controllers\TimesheetsController::class, 'index_scheduling'])->middleware('role:Administrator,Scheduling Manager,Scheduling Admin,Senior Scheduler')->name('timesheets.scheduling');
 Route::get('/schedulingmaster/timesheets/fetch/{id}', [App\Http\Controllers\TimesheetsController::class, 'timeSheetListScheduling'])->name('timesheets.fetchScheduling');

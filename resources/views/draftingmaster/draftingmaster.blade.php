@@ -478,7 +478,7 @@
                  $(".search_filter:eq("+colIdx+")").val(colSearch.search);
                 }
               });
-              drafting_master_tbl.draw();
+              // drafting_master_tbl.draw();
               }
 
           },
@@ -580,7 +580,8 @@
               $('.amsify').amsifySuggestags({
                 suggestions: data,
                 whiteList: true,
-                showAllSuggestions: false,
+                showAllSuggestions: true,
+                keepLastOnHoverTag: false,
               });
             }
         });
@@ -758,7 +759,8 @@
                         $('.amsify').amsifySuggestags({
                           suggestions: data,
                           whiteList: true,
-                          showAllSuggestions: false,
+                          showAllSuggestions: true,
+                          keepLastOnHoverTag: false,
                         });
                       }
                   });

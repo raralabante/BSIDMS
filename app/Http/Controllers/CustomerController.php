@@ -84,7 +84,9 @@ class CustomerController extends Controller
     public function getCustomers(){
       $name = Customer::select(
         'name')
-        ->where('team','=',Auth::user()->team)
+        ->whereIn('team',function($query) {
+          $query->select('team')->from('user_teams')->where('user_id',Auth::user()->id);
+      })
         ->orderBy('name', 'ASC')->get();
         return response()->json($name);
     }
