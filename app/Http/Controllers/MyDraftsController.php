@@ -311,6 +311,8 @@ class MyDraftsController extends Controller
 
       if(empty($job_drafting_status) AND $draft->six_stars == 0){
         $draft->status = 'Ready To Submit';
+        $previous_checker = RejectedJobs::select('rejected_by')->where('drafting_masters_id',$request->id)->latest('id')->first();
+        $draft->assign_checker()->save(new JobTimeHistory(['user_id'=> $previous_checker->rejected_by, 'type' => 'CHECKING']));
         $description = "Job# " . $draft->job_number . " is now ready to submit.";
           app('App\Http\Controllers\DraftingMasterController')->addActivity($description,3 );
           app('App\Http\Controllers\DraftingMasterController')->addActivity($description,4 );
