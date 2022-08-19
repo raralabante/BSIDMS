@@ -47,7 +47,7 @@
                         <a class="users" href="{{route('user')}}"><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Users</a>
                     </li>
                     <li>
-                        <a class="users" href="{{route('user.activity')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;User Activity</a>
+                        {{-- <a class="users" href="{{route('user.activity')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;User Activity</a> --}}
                     </li>
                 </ul>
             </li>
