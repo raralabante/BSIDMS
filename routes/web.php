@@ -17,6 +17,14 @@ Route::get('/', function () {
 });
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('user.logout');
 
+Route::group([
+    'namespace' => '\Haruncpi\LaravelUserActivity\Controllers',
+    'middleware' => config('user-activity.middleware')
+    ], function () {
+    Route::get(config('user-activity.route_path'), 'ActivityController@getIndex')->middleware('role:Administrator')->name('user.activity');
+    Route::post(config('user-activity.route_path'), 'ActivityController@handlePostRequest');
+});
+
 Auth::routes();
 // Route::post('/register/loadteam', [App\Http\Controllers\Auth\RegisterController::class, 'loadTeam'])->name('register.loadTeam');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
