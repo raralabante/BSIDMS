@@ -18,14 +18,14 @@ Route::get('/', function () {
 });
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('user.logout');
 
-Route::group([
-    'namespace' => '\Haruncpi\LaravelUserActivity\Controllers',
-    'middleware' => config('user-activity.middleware')
-    ], function () {
-        Route::get('/user-activity',  [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'getIndex'])->middleware('role:Administrator')->name('user.activity');
-        Route::post('/user-activity', [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'handlePostRequest']);
+// Route::group([
+//     'namespace' => '\Haruncpi\LaravelUserActivity\Controllers',
+//     'middleware' => config('user-activity.middleware')
+//     ], function () {
+//         Route::get('/user-activity',  [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'getIndex'])->middleware('role:Administrator')->name('user.activity');
+//         Route::post('/user-activity', [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'handlePostRequest']);
         
-});
+// });
 
 // Route::get('/user-activity',  [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'getIndex'])->middleware('role:Administrator')->name('user.activity');
 // Route::post('/user-activity', [Haruncpi\LaravelUserActivity\Controllers\ActivityController::class, 'handlePostRequest']);

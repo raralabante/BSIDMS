@@ -752,18 +752,18 @@
               success:function(response){
                 $('#edit_drafter_modal #edit_drafters').val(response.users_id);
               
-                // $.ajax({
-                //   url:  '{{route("user.getDrafters")}}',
-                //       type:"GET",
-                //       success:function(data) {
-                //         $('.amsify').amsifySuggestags({
-                //           suggestions: data,
-                //           whiteList: true,
-                //           showAllSuggestions: true,
-                //           keepLastOnHoverTag: false,
-                //         });
-                //       }
-                //   });
+                $.ajax({
+                  url:  '{{route("user.getDrafters")}}',
+                      type:"GET",
+                      success:function(data) {
+                        $('.amsify').amsifySuggestags({
+                          suggestions: data,
+                          whiteList: true,
+                          showAllSuggestions: true,
+                          keepLastOnHoverTag: false,
+                        });
+                      }
+                  });
                     
               }
           });
