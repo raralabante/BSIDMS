@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 class Role
 {
     /**
@@ -30,7 +31,7 @@ class Role
                 
         }
 
-        return abort(404);
+        return Redirect::to(url()->previous());
         }
 
         

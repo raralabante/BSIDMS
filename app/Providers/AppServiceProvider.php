@@ -82,8 +82,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        
-
         View::composer('schedulingmaster.schedulingmaster',function($view){
             $scheduling_checkers = User::select(
                 'users.id as value', 
@@ -168,6 +166,16 @@ class AppServiceProvider extends ServiceProvider
                 ->where('drafting_masters.status','=', 'Ready For Check')->first();
         
                 View::share('mydraftscheck_count',$mydraftscheck->count);
+
+            $six_stars = DraftingMaster::select(
+                DraftingMaster::raw('COUNT(id) as count'))
+                ->where('status','=', 'In Six Stars')
+                ->where('six_stars','=','1')->first();
+        
+                View::share('six_stars_count',$six_stars->count);
+                
+
+
         }
 
        

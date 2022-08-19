@@ -168,6 +168,7 @@ class DraftingMasterController extends Controller
 
       $request->validate([
         'edit_customer_name' => 'required|max:255|exists:customers,name',
+        'edit_job_number' => 'required|max:255',
         'edit_client_name' => 'required|max:255',
         'edit_address' => 'required|max:255',
         'edit_type' => 'required|max:255|exists:App\Models\Type,name',
@@ -197,6 +198,7 @@ class DraftingMasterController extends Controller
 
       $edit_job->customer_name = $request->edit_customer_name;
       $edit_job->client_name = $request->edit_client_name;
+      $edit_job->job_number = $request->edit_job_number;
       $edit_job->address = $request->edit_address;
       $edit_job->type = $request->edit_type;
       $edit_job->eta = $request->edit_eta;

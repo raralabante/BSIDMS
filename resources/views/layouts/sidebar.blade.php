@@ -46,6 +46,9 @@
                     <li>
                         <a class="users" href="{{route('user')}}"><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Users</a>
                     </li>
+                    <li>
+                        <a class="users" href="{{route('user.activity')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;User Activity</a>
+                    </li>
                 </ul>
             </li>
             <li class="active">
@@ -109,7 +112,7 @@
 
                 @if(Auth::user()->inRole(['Administrator','Six Stars']))
                     <li>
-                        <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars</a>
+                        <a class="six_stars" href="{{route('sixstars')}}"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;Six Stars ({{$six_stars_count}})</a>
                     </li>
                 @endif
              

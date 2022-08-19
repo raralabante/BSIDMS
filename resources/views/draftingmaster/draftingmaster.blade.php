@@ -260,7 +260,7 @@
                   <input id="edit_customer_names" type="text" class="form-control" placeholder="Customer Name" aria-label="Customer Name" aria-describedby="basic-addon1" name="edit_customer_name" required>
                 </div>
 
-                <div class="input-group mb-3 hidden">
+                <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Client Job Number<span class="text-danger">*</span></span>
                   <input id="edit_job_number" type="text" class="form-control" placeholder="Job Number" aria-label="Job Number" aria-describedby="basic-addon1" name="edit_job_number" autocomplete="off" required>
                 </div>
@@ -751,19 +751,19 @@
               type:"GET",
               success:function(response){
                 $('#edit_drafter_modal #edit_drafters').val(response.users_id);
-                
-                $.ajax({
-                  url:  '{{route("user.getDrafters")}}',
-                      type:"GET",
-                      success:function(data) {
-                        $('.amsify').amsifySuggestags({
-                          suggestions: data,
-                          whiteList: true,
-                          showAllSuggestions: true,
-                          keepLastOnHoverTag: false,
-                        });
-                      }
-                  });
+              
+                // $.ajax({
+                //   url:  '{{route("user.getDrafters")}}',
+                //       type:"GET",
+                //       success:function(data) {
+                //         $('.amsify').amsifySuggestags({
+                //           suggestions: data,
+                //           whiteList: true,
+                //           showAllSuggestions: true,
+                //           keepLastOnHoverTag: false,
+                //         });
+                //       }
+                //   });
                     
               }
           });
