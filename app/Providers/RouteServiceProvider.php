@@ -44,7 +44,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
             ->group(base_path('routes/scheduling.php'));
 
-            $this->loadViewsFrom(base_path('vendor/haruncpi/laravel-user-activity/views'), 'user-activity'); 
+            $this->loadViewsFrom(base_path('vendor/haruncpi/laravel-user-activity/views'), 'LaravelUserActivity'); 
           
             
         });
