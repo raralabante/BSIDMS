@@ -18,6 +18,8 @@ class ActivityController extends Controller
         if (!empty($userInstance)) $this->userInstance = $userInstance;
     }
 
+
+
     private function handleData(Request $request)
     {
         $this->validate($request, [
@@ -30,6 +32,7 @@ class ActivityController extends Controller
         ]);
 
         $data = Log::with('user')->orderBy('id', 'desc');
+
         if ($request->has('user_id')) {
             $data = $data->where('user_id', request('user_id'));
         }

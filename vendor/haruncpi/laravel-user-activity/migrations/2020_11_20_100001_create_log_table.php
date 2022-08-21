@@ -18,8 +18,10 @@ class CreateLogTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->dateTime('log_date');
             $table->string('table_name',50)->nullable();
+            $table->integer('foreign_id')->nullable();
             $table->string('log_type',50);
             $table->longText('data');
+            $table->timestamps();
         });
     }
 

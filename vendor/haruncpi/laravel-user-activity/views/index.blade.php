@@ -6,6 +6,248 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 <head>
+    <style>
+
+
+
+.log_data_wrapper {
+    position: relative;
+    min-height: calc(100vh - 205px);
+    overflow-y: auto;
+}
+.log_data_wrapper::-webkit-scrollbar {
+    width: 2px;
+}
+
+footer {
+    background: #f4f4f4;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 10px;
+}
+footer .footer_right .btn {
+    background: #ef5b50;
+    color: white;
+    cursor: pointer;
+}
+table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%}
+table tr {
+    border: 1px solid #e8e8e8;
+    padding: 5px;
+}
+table tr:hover {
+    background: #f4f4f4;
+}
+thead tr td {
+    background: #181818;
+    color: #fff;
+}
+table th, table td {
+    padding: 6px 6px;
+    font-size: 15px;
+    color: rgb(0, 0, 0)
+}
+table th {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.lbl_table {
+    margin-top: 4px;
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.changed {
+    background: rgb(238, 147, 29);
+}
+
+.popup_wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+}
+.popup {
+    width: 50%;
+    background: #fff;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 20%;
+    z-index: 200;
+    box-shadow: 1px 0 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    max-height: calc(100vh - 35%);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.popup::-webkit-scrollbar {
+    width: 3px;
+}
+.popup .header {
+    display: flex;
+    background: whitesmoke;
+    justify-content: space-between;
+    height: 35px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+.popup .header .title {
+    margin-left: 15px;
+    font-weight: 700;
+}
+.popup .header .close {
+    width: 30px;
+    background: #333;
+    color: #fff;
+    text-align: center;
+    line-height: 35px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+}
+.popup .popup_content {
+    min-height: 100px;
+    width: 100%;
+    padding: 15px;
+}
+.popup .popup_content .form-group {
+    margin-bottom: 10px;
+}
+.popup .popup_content label {
+    display: block;
+    color: #777;
+}
+.popup .popup_content input {
+    border: 0;
+    padding: 5px;
+    border: 1px solid #ddd;
+    width: 100%;
+    margin-top: 5px;
+}
+.popup .popup_content input:focus {
+    outline: none;
+    border-bottom: 1px solid #666;
+}
+.popup .footer {
+    padding: 0 15px;
+    display: flex;
+    background: whitesmoke;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+    border-top: 1px solid #ddd;
+}
+.pagination_wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+.pagination_wrapper ul.pagination {
+    display: flex;
+    padding: 0;
+    margin-right: 5px;
+}
+.pagination_wrapper ul.pagination li {
+    list-style-type: none;
+}
+.pagination_wrapper ul.pagination li a {
+    padding: 5px 8px;
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    display: inline-block;
+    text-decoration: none;
+    color: #000;
+    margin-right: 3px;
+}
+.pagination_wrapper ul.pagination li a:hover {
+    background: #222;
+    color: #fff;
+}
+.pagination_wrapper ul.pagination li .active {
+    background: #222;
+    color: #fff;
+}
+.pagination_wrapper ul.pagination li.active a {
+    background: #222;
+    color: #fff;
+}
+/* @media screen and (max-width:600px) {
+    .top_content {
+    flex-direction: column-reverse;
+}
+.top_content_right {
+    flex-wrap: wrap;
+}
+.top_content_right .filter_item {
+    min-width: 48%;
+    margin-bottom: 8px;
+}
+.top_content_right .full_width_param {
+    min-width: 98%;
+    max-width: 98%}
+.pagination_wrapper {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: scroll;
+}
+
+.dt_box, .selected_date {
+    text-align: center;
+}
+.responsive_table {
+    max-width: 100%;
+    overflow-x: auto;
+}
+.popup {
+    width: 96%!important;
+}
+.popup .popup_content table {
+    width: 93% !important;
+}
+.popup .popup_content table td {
+    width: 96%}
+table {
+    border: 0;
+}
+table thead {
+    display: none;
+}
+table tr {
+    border-bottom: 2px solid #ddd;
+    display: block;
+    margin-bottom: 10px;
+}
+table td {
+    border-bottom: 1px dotted #ccc;
+    display: block;
+    font-size: 15px;
+}
+table td:last-child {
+    border-bottom: 0;
+}
+table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+} */
+
+
+
+
+
+
+
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -412,80 +654,74 @@
     </script>
 
     <!-- inject:style:css -->
-    <style>body{margin:0;padding:0;background:#f4f4f4;font-family:sans-serif}.btn{text-decoration:none;background:white;padding:5px 12px;border-radius:25px}header{min-height:30px;display:flex;justify-content:space-between;align-items:center;padding:15px;background:#2e2e2f;position:fixed;left:0;right:0;top:0;box-shadow:0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24)}header a{color:#333}header .btn_clear_all{background:#de4f4f;color:#fff}header .name{font-size:25px;font-weight:500;color:white;position:relative}header .name span:nth-child(1){position:absolute;font-size:13px;left:28px;top:-3px}header .name span:nth-child(3){position:absolute;left:28px;top:7px;font-size:22px}.letter_a{background:#FFC107;border-radius:4px;color:#333;padding:0px 3px;margin-right:3px;font-weight:600}.content{margin-top:65px;padding:15px;background:#fff;min-height:100px}.content select,.content input,.content button{box-sizing:border-box;min-height:28px;max-height:28px;min-width:120px;border:1px solid #ddd;border-radius:4px;padding:2px 5px}.content input{padding:2px 7px}.top_content{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.top_content .top_content_left{display:flex}.top_content .top_content_left .log_filter{display:flex;align-items:center;margin-left:15px}.top_content .top_content_left .log_filter .log_type_item{margin-right:4px;background:#eae9e9;max-height:20px;font-size:11px;box-sizing:border-box;padding:4px 6px;cursor:pointer}.top_content .top_content_left .log_filter .log_type_item.active{background:#2f2e2f;color:white!important}.top_content .top_content_left .log_filter .log_type_item.clear{background:#607D8B;color:white}.top_content .top_content_right{display:flex}.top_content .top_content_right .user_list_box{position:relative}.top_content .top_content_right .user_list_box #user_list{box-shadow:0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);position:absolute;z-index:10;max-height:200px;border:1px solid #f4f4f4;max-width:100%;min-width:100%;overflow:hidden;box-sizing:border-box;background:white;top:45px;overflow-y:scroll}.top_content .top_content_right .user_list_box #user_list::-webkit-scrollbar{width:3px}.top_content .top_content_right .user_list_box #user_list .single_user{margin-bottom:8px;cursor:pointer;padding:7px}.top_content .top_content_right .user_list_box #user_list .single_user:hover{background:#f4f4f4}.top_content .top_content_right .user_list_box #user_list .single_user p{margin:0}.top_content .top_content_right .user_list_box #user_list .single_user p span{font-size:12px}.top_content .top_content_right .btn_filter{min-width:70px;background:#FFC107;color:#2b2b28;cursor:pointer;border:1px solid #af8300}.top_content .top_content_right .btn_filter_active{background:#F44336;color:#fff;border:1px solid #a51208}.top_content .top_content_right .btn_reset{min-width:70px;cursor:pointer}.top_content .top_content_right .filter_item{margin-right:5px;display:flex;flex-direction:column}.top_content .top_content_right .filter_item label{font-size:13px;margin-bottom:3px;color:#555}.action_column button{min-width:70px;cursor:pointer}.action_column .btn_delete{background:#ef5b50;color:white}.log_data_wrapper{position:relative;min-height:calc(100vh - 205px);overflow-y:auto}.log_data_wrapper::-webkit-scrollbar{width:2px}.log_data_wrapper .loader{position:absolute;z-index:10;top:0;left:0;background:rgba(0,0,0,0.5);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#fff}footer{background:#f4f4f4;display:flex;justify-content:space-between;box-sizing:border-box;padding:10px}footer .footer_right .btn{background:#ef5b50;color:white;cursor:pointer}table{border:1px solid #ccc;border-collapse:collapse;margin:0;padding:0;width:100%}table tr{border:1px solid #e8e8e8;padding:5px}table tr:hover{background:#f4f4f4}thead tr td{background:#717171;color:#fff}table th,table td{padding:6px 6px;font-size:15px;color:#666}table th{font-size:14px;letter-spacing:1px;text-transform:uppercase}.lbl_table{margin-top:4px;display:inline-block;margin-left:3px;color:#777}.field_cell{background:#f4f4f4;width:150px}.changed{background:antiquewhite}.edit_badge{width:33px;display:inline-block;text-align:center}@media screen and (max-width:700px){.top_content{flex-direction:column}.top_content .top_content_left{flex-direction:column}.top_content .log_filter{flex-wrap:wrap}.top_content .log_filter .log_type_item{margin-bottom:3px}}.popup_wrapper{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.5)}.popup{width:50%;background:#fff;position:absolute;margin:0 auto;left:0;right:0;top:20%;z-index:200;box-shadow:1px 0 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);max-height:calc(100vh - 35%);overflow-x:hidden;overflow-y:scroll}.popup::-webkit-scrollbar{width:3px}.popup .header{display:flex;background:whitesmoke;justify-content:space-between;height:35px;align-items:center;border-bottom:1px solid #ddd}.popup .header .title{margin-left:15px;font-weight:700}.popup .header .close{width:30px;background:#333;color:#fff;text-align:center;line-height:35px;border-bottom:1px solid #333;cursor:pointer}.popup .popup_content{min-height:100px;width:100%;padding:15px}.popup .popup_content .form-group{margin-bottom:10px}.popup .popup_content label{display:block;color:#777}.popup .popup_content input{border:0;padding:5px;border:1px solid #ddd;width:100%;margin-top:5px}.popup .popup_content input:focus{outline:none;border-bottom:1px solid #666}.popup .footer{padding:0 15px;display:flex;background:whitesmoke;justify-content:space-between;height:40px;align-items:center;border-top:1px solid #ddd}.pagination_wrapper{display:flex;justify-content:flex-end}.pagination_wrapper ul.pagination{display:flex;padding:0;margin-right:5px}.pagination_wrapper ul.pagination li{list-style-type:none}.pagination_wrapper ul.pagination li a{padding:5px 8px;background:#f4f4f4;border:1px solid #ddd;display:inline-block;text-decoration:none;color:#000;margin-right:3px}.pagination_wrapper ul.pagination li a:hover{background:#222;color:#fff}.pagination_wrapper ul.pagination li .active{background:#222;color:#fff}.pagination_wrapper ul.pagination li.active a{background:#222;color:#fff}@media screen and (max-width:600px){.top_content{flex-direction:column-reverse}.top_content_right{flex-wrap:wrap}.top_content_right .filter_item{min-width:48%;margin-bottom:8px}.top_content_right .full_width_param{min-width:98%;max-width:98%}.pagination_wrapper{display:flex;justify-content:flex-start;overflow-x:scroll}.btn{font-size:13px}.dt_box,.selected_date{text-align:center}.responsive_table{max-width:100%;overflow-x:auto}.popup{width:96%!important}.popup .popup_content table{width:93% !important}.popup .popup_content table td{width:96%}table{border:0}table thead{display:none}table tr{border-bottom:2px solid #ddd;display:block;margin-bottom:10px}table td{border-bottom:1px dotted #ccc;display:block;font-size:15px}table td:last-child{border-bottom:0}table td:before{content:attr(data-label);float:left;font-weight:bold;text-transform:uppercase}}.badge{padding:3px 8px;-webkit-border-radius:25px;-moz-border-radius:25px;border-radius:25px;font-size:12px}.badge.primary{background:#4ba4ea;color:white}.badge.info{background:#6bb5b5;color:#fff}.badge.warning{background:#f7be57}.badge.critical{background:#de4f4f;color:#fff}.badge.emergency{background:#ff6060;color:white}.badge.notice{background:bisque}.badge.debug{background:#8e8c8c;color:white}.badge.alert{background:#4ba4ea;color:white}.badge.error{background:#c36a6a;color:white}.text_center{text-align:center}.text_right{text-align:right}.text_left{text-align:left}.text_light{color:#888}.spinner{margin:100px auto 0;width:70px;text-align:center}.spinner>div{width:18px;height:18px;background-color:#fff;border-radius:100%;display:inline-block;-webkit-animation:sk-bouncedelay 1.4s infinite ease-in-out both;animation:sk-bouncedelay 1.4s infinite ease-in-out both}.spinner .bounce1{-webkit-animation-delay:-0.32s;animation-delay:-0.32s}.spinner .bounce2{-webkit-animation-delay:-0.16s;animation-delay:-0.16s}@-webkit-keyframes sk-bouncedelay{0%,80%,100%{-webkit-transform:scale(0)}40%{-webkit-transform:scale(1)}}@keyframes sk-bouncedelay{0%,80%,100%{-webkit-transform:scale(0);transform:scale(0)}40%{-webkit-transform:scale(1);transform:scale(1)}}</style>
+    {{-- <style>header{min-height:30px;display:flex;justify-content:space-between;align-items:center;padding:15px;background:#2e2e2f;position:fixed;left:0;right:0;top:0;box-shadow:0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24)}header a{color:#333}header .btn_clear_all{background:#de4f4f;color:#fff}header .name{font-size:25px;font-weight:500;color:white;position:relative}header .name span:nth-child(1){position:absolute;font-size:13px;left:28px;top:-3px}header .name span:nth-child(3){position:absolute;left:28px;top:7px;font-size:22px}.letter_a{background:#FFC107;border-radius:4px;color:#333;padding:0px 3px;margin-right:3px;font-weight:600}.content{margin-top:65px;padding:15px;background:#fff;min-height:100px}.content select,.content input,.content button{box-sizing:border-box;min-height:28px;max-height:28px;min-width:120px;border:1px solid #ddd;border-radius:4px;padding:2px 5px}.content input{padding:2px 7px}.top_content{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.top_content .top_content_left{display:flex}.top_content .top_content_left .log_filter{display:flex;align-items:center;margin-left:15px}.top_content .top_content_left .log_filter .log_type_item{margin-right:4px;background:#eae9e9;max-height:20px;font-size:11px;box-sizing:border-box;padding:4px 6px;cursor:pointer}.top_content .top_content_left .log_filter .log_type_item.active{background:#2f2e2f;color:white!important}.top_content .top_content_left .log_filter .log_type_item.clear{background:#607D8B;color:white}.top_content .top_content_right{display:flex}.top_content .top_content_right .user_list_box{position:relative}.top_content .top_content_right .user_list_box #user_list{box-shadow:0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);position:absolute;z-index:10;max-height:200px;border:1px solid #f4f4f4;max-width:100%;min-width:100%;overflow:hidden;box-sizing:border-box;background:white;top:45px;overflow-y:scroll}.top_content .top_content_right .user_list_box #user_list::-webkit-scrollbar{width:3px}.top_content .top_content_right .user_list_box #user_list .single_user{margin-bottom:8px;cursor:pointer;padding:7px}.top_content .top_content_right .user_list_box #user_list .single_user:hover{background:#f4f4f4}.top_content .top_content_right .user_list_box #user_list .single_user p{margin:0}.top_content .top_content_right .user_list_box #user_list .single_user p span{font-size:12px}.top_content .top_content_right .btn_filter{min-width:70px;background:#FFC107;color:#2b2b28;cursor:pointer;border:1px solid #af8300}.top_content .top_content_right .btn_filter_active{background:#F44336;color:#fff;border:1px solid #a51208}.top_content .top_content_right .btn_reset{min-width:70px;cursor:pointer}.top_content .top_content_right .filter_item{margin-right:5px;display:flex;flex-direction:column}.top_content .top_content_right .filter_item label{font-size:13px;margin-bottom:3px;color:#555}.action_column button{min-width:70px;cursor:pointer}.action_column .btn_delete{background:#ef5b50;color:white}.log_data_wrapper{position:relative;min-height:calc(100vh - 205px);overflow-y:auto}.log_data_wrapper::-webkit-scrollbar{width:2px}.log_data_wrapper .loader{position:absolute;z-index:10;top:0;left:0;background:rgba(0,0,0,0.5);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#fff}footer{background:#f4f4f4;display:flex;justify-content:space-between;box-sizing:border-box;padding:10px}footer .footer_right .btn{background:#ef5b50;color:white;cursor:pointer}table{border:1px solid #ccc;border-collapse:collapse;margin:0;padding:0;width:100%}table tr{border:1px solid #e8e8e8;padding:5px}table tr:hover{background:#f4f4f4}thead tr td{background:#717171;color:#fff}table th,table td{padding:6px 6px;font-size:15px;color:#666}table th{font-size:14px;letter-spacing:1px;text-transform:uppercase}.lbl_table{margin-top:4px;display:inline-block;margin-left:3px;color:#777}.field_cell{background:#f4f4f4;width:150px}.changed{background:antiquewhite}.edit_badge{width:33px;display:inline-block;text-align:center}@media screen and (max-width:700px){.top_content{flex-direction:column}.top_content .top_content_left{flex-direction:column}.top_content .log_filter{flex-wrap:wrap}.top_content .log_filter .log_type_item{margin-bottom:3px}}.popup_wrapper{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.5)}.popup{width:50%;background:#fff;position:absolute;margin:0 auto;left:0;right:0;top:20%;z-index:200;box-shadow:1px 0 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);max-height:calc(100vh - 35%);overflow-x:hidden;overflow-y:scroll}.popup::-webkit-scrollbar{width:3px}.popup .header{display:flex;background:whitesmoke;justify-content:space-between;height:35px;align-items:center;border-bottom:1px solid #ddd}.popup .header .title{margin-left:15px;font-weight:700}.popup .header .close{width:30px;background:#333;color:#fff;text-align:center;line-height:35px;border-bottom:1px solid #333;cursor:pointer}.popup .popup_content{min-height:100px;width:100%;padding:15px}.popup .popup_content .form-group{margin-bottom:10px}.popup .popup_content label{display:block;color:#777}.popup .popup_content input{border:0;padding:5px;border:1px solid #ddd;width:100%;margin-top:5px}.popup .popup_content input:focus{outline:none;border-bottom:1px solid #666}.popup .footer{padding:0 15px;display:flex;background:whitesmoke;justify-content:space-between;height:40px;align-items:center;border-top:1px solid #ddd}.pagination_wrapper{display:flex;justify-content:flex-end}.pagination_wrapper ul.pagination{display:flex;padding:0;margin-right:5px}.pagination_wrapper ul.pagination li{list-style-type:none}.pagination_wrapper ul.pagination li a{padding:5px 8px;background:#f4f4f4;border:1px solid #ddd;display:inline-block;text-decoration:none;color:#000;margin-right:3px}.pagination_wrapper ul.pagination li a:hover{background:#222;color:#fff}.pagination_wrapper ul.pagination li .active{background:#222;color:#fff}.pagination_wrapper ul.pagination li.active a{background:#222;color:#fff}@media screen and (max-width:600px){.top_content{flex-direction:column-reverse}.top_content_right{flex-wrap:wrap}.top_content_right .filter_item{min-width:48%;margin-bottom:8px}.top_content_right .full_width_param{min-width:98%;max-width:98%}.pagination_wrapper{display:flex;justify-content:flex-start;overflow-x:scroll}.btn{font-size:13px}.dt_box,.selected_date{text-align:center}.responsive_table{max-width:100%;overflow-x:auto}.popup{width:96%!important}.popup .popup_content table{width:93% !important}.popup .popup_content table td{width:96%}table{border:0}table thead{display:none}table tr{border-bottom:2px solid #ddd;display:block;margin-bottom:10px}table td{border-bottom:1px dotted #ccc;display:block;font-size:15px}table td:last-child{border-bottom:0}table td:before{content:attr(data-label);float:left;font-weight:bold;text-transform:uppercase}}.badge{padding:3px 8px;-webkit-border-radius:25px;-moz-border-radius:25px;border-radius:25px;font-size:12px}.badge.primary{background:#4ba4ea;color:white}.badge.info{background:#6bb5b5;color:#fff}.badge.warning{background:#f7be57}.badge.critical{background:#de4f4f;color:#fff}.badge.emergency{background:#ff6060;color:white}.badge.notice{background:bisque}.badge.debug{background:#8e8c8c;color:white}.badge.alert{background:#4ba4ea;color:white}.badge.error{background:#c36a6a;color:white}.text_center{text-align:center}.text_right{text-align:right}.text_left{text-align:left}.text_light{color:#888}.spinner{margin:100px auto 0;width:70px;text-align:center}.spinner>div{width:18px;height:18px;background-color:#fff;border-radius:100%;display:inline-block;-webkit-animation:sk-bouncedelay 1.4s infinite ease-in-out both;animation:sk-bouncedelay 1.4s infinite ease-in-out both}.spinner .bounce1{-webkit-animation-delay:-0.32s;animation-delay:-0.32s}.spinner .bounce2{-webkit-animation-delay:-0.16s;animation-delay:-0.16s}@-webkit-keyframes sk-bouncedelay{0%,80%,100%{-webkit-transform:scale(0)}40%{-webkit-transform:scale(1)}}@keyframes sk-bouncedelay{0%,80%,100%{-webkit-transform:scale(0);transform:scale(0)}40%{-webkit-transform:scale(1);transform:scale(1)}}</style> --}}
     <!-- endinject -->
 </head>
-<body ng-controller="LogCtrl">
-{{-- <header>
-    <div class="name">
-        <span>user</span>
-        <span class="letter_a">A</span> <span>ctivity</span>
-    </div>
-    <div class="actions">
-        <a class="btn" href="{{url(config('user-activity.admin_panel_path'))}}">Goto Admin Panel</a>
-        <a class="btn" href="https://laravelarticle.com/laravel-user-activity" title="Laravel User Activity">Doc</a>
-    </div>
-</header> --}}
-<section class="content">
+<body ng-controller="LogCtrl" >
+
+<div class="content">
+    <div class="container-fluid p-5 " style="overflow: scroll">
     <div class="top_content">
         <div class="top_content_left">
             <p class="text_light">Showing @{{response.from}} to @{{response.to}} of @{{response.total}} records</p>
         </div>
 
-        <div class="top_content_right">
-            <div class="filter_item full_width_param user_list_box">
-                <label>USER</label>
-                <input type="text"
-                       ng-model="filter.user_id"
-                       ng-model-options="{debounce:500}"
-                       ng-change="getUsers(filter.user_id)"
-                       placeholder="Type name or id">
+        <div class="row">
+            <div class="col-md-12 float-end">
+                <div class="input-group m-2 float-end" style="width:30%">
+                    <span class="input-group-text btn-dark-green text-white">FROM</span>
+                    <date-input class="form-control" ng-model="filter.from_date"></date-input>
+                   
+                    <span class="input-group-text btn-dark-green text-white">TO</span>
+                    <date-input class="form-control" ng-model="filter.to_date"></date-input>
+                  
+                    <div class="invalid-feedback">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Date range cannot be empty.
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="input-group p-2 float-end" style="width: 50%">
+                    <span class="input-group-text btn-dark-green text-white">User</span>
+                    <input class="form-control" type="text"
+                           ng-model="filter.user_id"
+                           ng-model-options="{debounce:500}"
+                           ng-change="getUsers(filter.user_id)"
+                           placeholder="Type name or id">
+                           
+                    <span class="input-group-text btn-dark-green text-white">Log Type</span>
+                  
+                        <select class="form-select form-select-sm input-group-sm" ng-model="filter.log_type">
+                            <option value="" selected>Select Log Type</option>
+                            @foreach(['create','edit','delete','login','lockout'] as $type)
+                                <option value="{{ $type}}">{{ $type}}</option>
+                            @endforeach
+                        </select>
+                   
+                    <span class="input-group-text btn-dark-green text-white">Table</span>
+                   
+                    <select class="form-select form-select-sm input-group-sm" ng-model="filter.table">
+                        <option value="" selected>Select Table</option>
+                        @foreach($tables as $table)
+                            <option value="{{ $table}}">{{ $table}}</option>
+                        @endforeach
+                    </select>
 
-                <div id="user_list" ng-show="userList.length && filter.user_id">
-                    <!---->
-                    <div class="single_user" ng-repeat="user in userList" ng-click="onUserSelect(user)">
-                        <p>@{{ user.name }} <br>
-                            <span class="text_light">@{{ user.email }}</span>
-                        </p>
-                    </div>
-                    <!---->
+                    <button class="btn btn_filter btn-success" ng-class="{btn_filter_active : activeFilter == true}"
+                    ng-click="filterData(filter)"><i class="fa-solid fa-arrows-rotate"></i>&nbsp;&nbsp;GENERATE
+            </button>
+                    <button class="btn btn_reset btn-warning" ng-click="resetParam()"><i class="fa-solid fa-filter-circle-xmark"></i>&nbsp;&nbsp;RESET</button>
+
                 </div>
 
             </div>
-            <div class="filter_item">
-                <label>LOG TYPE</label>
 
-                <select ng-model="filter.log_type">
-                    @foreach(['create','edit','delete','login','lockout'] as $type)
-                        <option value="{{ $type}}">{{ $type}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="filter_item">
-                <label>TABLE</label>
-                <select ng-model="filter.table">
-                    @foreach($tables as $table)
-                        <option value="{{ $table}}">{{ $table}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="filter_item">
-                <label>FROM DATE</label>
-                <date-input ng-model="filter.from_date"></date-input>
-            </div>
-            <div class="filter_item">
-                <label>TO DATE</label>
-                <date-input ng-model="filter.to_date"></date-input>
-            </div>
-            <div class="filter_item" style="justify-content: flex-end;">
-                <button class="btn_reset" ng-show="activeFilter" ng-click="resetParam()">RESET</button>
-            </div>
-            <div class="filter_item" style="justify-content: flex-end;">
-                <button class="btn_filter" ng-class="{btn_filter_active : activeFilter == true}"
-                        ng-click="filterData(filter)">FILTER
-                </button>
-            </div>
+               
+                
+                
+            
         </div>
+       
     </div>
 
     <div class="log_data_wrapper">
@@ -496,43 +732,52 @@
                 <div class="bounce3"></div>
             </div>
         </div>
+        
         <div class="responsive_table">
-            <table>
+            {{-- <table id="user_activities_tbl" class="table table-bordered row-border order-column stripe hover " data-mode="columntoggle"width="100%" >
+            </table> --}}
+            <table  >
                 <thead>
                 <tr>
                     <td width="30">ID</td>
                     <td width="260">DATE</td>
                     <td width="170">LOG TYPE</td>
+                    <td width="170">FOREIGN ID</td>
                     <td>DONE BY</td>
-                    <td class="text_right" style="padding-right: 10px;">ACTION</td>
+                    <td class="" style="padding-right: 10px;">ACTION</td>
                 </tr>
                 </thead>
 
                 <tr ng-repeat="log in data |filter: selectedType track by $index">
                     <td style="border-right: 1px solid #ddd;">@{{ log.id }}</td>
                     <td>
-                        @{{ log.log_date }} - @{{log.dateHumanize}}
+                        <span class="log_date">@{{ log.log_date }}</span>  <br> <span class="text-primary small">@{{log.dateHumanize}}</span> 
                     </td>
                     <td ng-switch="log.log_type">
                         <span ng-switch-when="delete|lockout"
                               ng-switch-when-separator="|" class="badge emergency">@{{log.log_type}}</span>
 
-                        <span ng-switch-when="create" class="badge info">@{{log.log_type}}</span>
+                        <span ng-switch-when="create" class="badge bg-success">@{{log.log_type}}</span>
                         <span ng-switch-when="create" class="lbl_table">to @{{log.table_name}}</span>
-                        <span ng-switch-when="edit" class="badge warning edit_badge">@{{log.log_type}}</span>
+                        <span ng-switch-when="edit" class="badge bg-info">@{{log.log_type}}</span>
 
                         <span ng-switch-when="edit|delete"
                               ng-switch-when-separator="|" class="lbl_table">from @{{ log.table_name }}</span>
 
                         <span ng-switch-default class="badge debug">@{{log.log_type}}</span>
                     </td>
-
+                    <td ng-switch="log.foreign_id">
+                  
+                    
+                        <a href="#" class="foreign_key text-primary"><u>@{{ log.foreign_id }}</u></a>
+                     
+                    </td>
                     <td>
                         <strong>@{{ log.user.name }}</strong><br>
                         <span class="text_light">@{{ log.user.email }}</span>
                     </td>
-                    <td class="action_column text_right">
-                        <button class="btn_show" ng-click="showPopup(log)">SHOW</button>
+                    <td class="action_column float-end">
+                        <button class="btn btn-primary btn_show " ng-click="showPopup(log)"><i class="fa-solid fa-eye"></i>&nbsp;&nbsp;VIEW</button>
                     </td>
                 </tr>
             </table>
@@ -580,7 +825,7 @@
                                   ng-switch-when-separator="|" class="badge emergency">@{{selected.log_type}}</span>
 
                             <span ng-switch-when="create" class="badge info">@{{selected.log_type}}</span>
-                            <span ng-switch-when="edit" class="badge warning edit_badge">@{{selected.log_type}}</span>
+                            <span ng-switch-when="edit" class="badge bg-info">@{{selected.log_type}}</span>
                             <span ng-switch-default class="badge debug">@{{selected.log_type}}</span>
                         </td>
                     </tr>
@@ -590,7 +835,7 @@
                     </tr>
                     <tr>
                         <td class="field_cell">Time</td>
-                        <td>@{{ selected.dateHumanize }} - @{{ selected.log_date }}</td>
+                        <td><span class="text-primary">(@{{ selected.dateHumanize }})</span> - @{{ selected.log_date }}</td>
                     </tr>
                     <tr>
                         <td class="field_cell">Done by</td>
@@ -657,8 +902,22 @@
         </div>
     </div>
     @include('LaravelUserActivity::partials.script')
-</section>
+</div>
+</div>
 @endsection
 </body>
+<script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
+<script>
 
+$('body').on('click', '.foreign_key', function() {
+    let url = "{{ route('timesheets.drafting', ':id') }}";
+    url = url.replace(':id', $(this).text());
+
+    window.location.href =url;
+});
+
+
+
+
+</script>
 </html>

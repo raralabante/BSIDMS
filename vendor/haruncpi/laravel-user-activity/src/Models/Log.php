@@ -5,7 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     public $timestamps = false;
-    public $dates = ['log_date'];
+
+    protected $casts = [
+        'log_date'  => 'datetime:M d, Y h:m a',
+   
+    ];
+
     protected $appends = ['dateHumanize','json_data'];
 
     private $userInstance = "\App\User";
@@ -15,6 +20,7 @@ class Log extends Model
         if(!empty($userInstance)) $this->userInstance = $userInstance;
     }
 
+    
     public function getDateHumanizeAttribute()
     {
         return $this->log_date->diffForHumans();

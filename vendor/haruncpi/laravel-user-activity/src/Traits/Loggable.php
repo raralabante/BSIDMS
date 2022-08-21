@@ -27,8 +27,10 @@ trait Loggable
             'user_id'    => $userId,
             'log_date'   => $dateTime,
             'table_name' => $tableName,
+            'foreign_id'       => $model->id,
             'log_type'   => $logType,
-            'data'       => $originalData
+            'data'       => $originalData,
+
         ]);
     }
 
