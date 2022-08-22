@@ -197,18 +197,22 @@ class UserController extends Controller
     //         return $name;
     //   }
 
-    //   public function getUsersByTeam(Request $request){
-
-    //     $users = User::select(
-    //         'users.id as value', 
-    //         User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
-    //         ->leftJoin('role_user','role_user.user_id','users.id')
-    //         ->where('users.department','=',$request->department)
-    //         ->where('users.team','=',$request->team)
-    //         ->orderBy('users.first_name', 'ASC')
-    //         ->groupBy('users.id')->get();
-    //         return response()->json($users);
-    //   }
+      public function getUsersByTeam(Request $request){
+        $team = $request->team;
+        
+        $users = User::select(
+            'users.id as value', 
+            User::raw('CONCAT(users.first_name, " ", users.last_name) AS label'))
+            ->leftJoin('role_user','role_user.user_id','users.id')
+            ->leftJoin('user_teams','users.id','user_teams.user_id')
+            ->where('users.department','=',$request->department)
+            ->whereIn('user_teams.team',function($query) use($team) {
+                $query->select('team')->from('user_teams')->where('team',$team);
+            })
+            ->orderBy('users.first_name', 'ASC')
+            ->groupBy('users.id')->get();
+            return response()->json($users);
+      }
       
     // public function getCheckers(){
     //     $name = User::select(

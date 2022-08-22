@@ -34,10 +34,11 @@ class ReportsController extends Controller
     }
 
     public function multifiltersGenerate(Request $request){
-        if($request->department == "Drafting"){
+      error_log($request->department);
+        if($request->department == "DFT"){
             return Self::generateDrafting($request);
         }
-        else if($request->department == "Scheduling"){
+        else if($request->department == "SCHEDES"){
             
         }
         
@@ -59,7 +60,7 @@ class ReportsController extends Controller
                     'timesheets.drafting_masters_id',
                     'timesheets.scheduling_masters_id',
                     'timesheets.created_at',
-                    'users.team',
+                    'user_teams.team',
                     Timesheet::raw('CASE WHEN TIME(job_start) BETWEEN "00:01" AND "'.$shifting_schedule->morning_end.'" THEN TIME_FORMAT(job_start, "%r")
                     WHEN TIME(job_start) BETWEEN "'.$shifting_schedule->morning_end.'" AND "'.$shifting_schedule->afternoon_start.'" THEN TIME_FORMAT(job_start, "%r") 
                     ELSE null
@@ -77,8 +78,9 @@ class ReportsController extends Controller
                   ELSE null
                   END as afternoon_stop'),
                   Timesheet::raw('TIMESTAMPDIFF(SECOND, job_start, job_stop) AS hours '))
-                  ->leftJoin('users','timesheets.user_id','users.id');
-                  
+                  ->leftJoin('users','timesheets.user_id','users.id')
+                  ->leftJoin('user_teams','users.id','user_teams.user_id');
+
                   if ( $request->from AND $request->to ) {
                     $query = $query->whereDate('timesheets.created_at', '>=', $request->from)
                     ->whereDate('timesheets.created_at', '<=', $request->to);
@@ -92,7 +94,10 @@ class ReportsController extends Controller
                   }
 
                   if(!empty($request->team)){
-                    $query = $query->where('users.team','=',$request->team);
+                    $team = $request->team;
+                    $query = $query->whereIn('user_teams.team',function($query) use($team){
+                      $query->select('team')->from('user_teams')->where('team',$team);
+                  });
                   }
 
                   if(!empty($request->user_id)){

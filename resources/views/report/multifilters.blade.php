@@ -29,14 +29,14 @@
                     <span class="input-group-text">Department</span>
                     <select class="form-select form-select-sm input-group-sm" id="department" >
                       <option value=""  >Select Department</option>
-                        <option value="Drafting" selected>Drafting</option>
-                        <option value="Scheduling">Scheduling</option>
+                        <option value="DFT" selected>Drafting</option>
+                        <option value="SCHEDES">Scheduling</option>
                     </select>
                     <span class="input-group-text">TEAM</span>
                     <select class="form-select form-select-sm input-group-sm" id="team" >
                         <option value=""  selected>Select Team</option>
                         @foreach($teams as $team)
-                        <option value="{{$team->code_value}}">{{$team->code_value}}</option>
+                        <option value="{{$team->code_value}}" data-department="{{$team->desc1}}">{{$team->code_value}}</option>
                         @endforeach
                     </select>
                     <span class="input-group-text">Status</span>
@@ -56,7 +56,7 @@
                     <select class="form-select form-select-sm " id="customer" >
                         <option value=""  selected>Select Customer</option>
                         @foreach($customers as $customer)
-                        <option value="{{$customer->name}}">{{$customer->name}}</option>
+                        <option value="{{$customer->name}}" data-team="{{$customer->team}}">{{$customer->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -205,6 +205,28 @@
         $("#from").val(moment().startOf('month').format('YYYY-MM-DD'));
         $("#to").val(moment().endOf('month').format('YYYY-MM-DD'));
 
+
+        $( "#department" ).change(function() {
+          
+          $("#team option").hide();
+          $("[data-department='"+$(this).val()+"']").show();
+          $("[data-department='"+$(this).val()+"']").eq(0).prop('selected', true).parent().change();
+          $("#team").append("<option selected value=''>Select Team</option>");
+          }).change();
+
+          $("#team").change(function(){
+            if($(this).val() != ""){
+              $("#customer option").hide();
+              $("[data-team='"+$(this).val()+"']").show();
+              $("[data-team='"+$(this).val()+"']").eq(0).prop('selected', true).parent().change();
+              $("#customer").append("<option selected value=''>Select Customer</option>");
+            }
+            else{
+              $("#customer option").show();
+            }
+          
+        });
+
         $("#generate_btn").click(function(){
  
             if($("#from").val() == "" || $("#to").val() == ""){
@@ -214,7 +236,7 @@
                     $( "#from" ).focus();
             }
             else{
-                if($("#department").val() == "Drafting"){
+                if($("#department").val() == "DFT"){
                     if ($.fn.DataTable.isDataTable('#multifilters_tbl')) {
                         $('#multifilters_tbl').dataTable().fnClearTable();
                         $('#multifilters_tbl').dataTable().fnDestroy();
@@ -306,7 +328,7 @@
                         
                     });
                 }
-                else if($("#department").val() == "Scheduling"){
+                else if($("#department").val() == "SCHEDES"){
 
                 }
 
@@ -346,6 +368,7 @@
                     btnClass: 'btn-warning',
                     confirm: function(){
                       $(".filters select, .filters input").val("");
+                      $("#team option").hide();
                     },
                     cancel: function () {
                     },

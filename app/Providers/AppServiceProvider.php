@@ -55,7 +55,8 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('report.multifilters',function($view){
             $customers = Customer::select(
-                'name')
+                'name'
+                ,'team')
                 ->orderBy('name', 'ASC')->get();
             
             $types = Type::select(

@@ -34,7 +34,10 @@
                     </select>
                     <span class="input-group-text">TEAM</span>
                     <select class="form-select form-select-sm input-group-sm" id="team" >
-                        
+                        @foreach($teams as $team)
+                        <option value="{{$team->code_value}}" data-department="{{$team->desc1}}" >{{$team->code_value}}</option>
+                     
+                        @endforeach
                     </select>
                     <span class="input-group-text">USER</span>
                     <select class="form-select form-select-sm input-group-sm" id="user" >
@@ -78,26 +81,12 @@
         
         $("#from").val(moment().format('YYYY-MM-DD'));
         $("#to").val(moment().format('YYYY-MM-DD'));
-
+       
         $( "#department" ).change(function() {
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-               type:'POST',
-               url:  "{{route('register.loadTeam')}}",
-               data:{department:$(this).val()},
-               success:function(data) {
-                var team = $("#team");
-                    team.empty();
-                    team.append($("<option value='' selected />").text("Select Team"));
-                    $.each(data, function(i, item) {
-                        team.append($("<option />").val(data[i].code_value).text(data[i].code_value));
-                    });
-                
-
-                 }
-            });
+            $("#team option").hide();
+            $("[data-department='"+$(this).val()+"']").show();
+            $("[data-department='"+$(this).val()+"']").eq(0).prop('selected', true).parent().change();
+           
         }).change();
       
         $( "#team" ).change(function() {
@@ -120,7 +109,7 @@
                     });
                  }
             });
-        });
+        }).change();
     
         $("#generate_btn").click(function(){
           
@@ -213,6 +202,7 @@
                             btnClass: 'btn-warning',
                             confirm: function(){
                                 $(".filters select, .filters input").val("");
+                                $("#team option , #user option").hide();
                             },
                             cancel: function () {
                             },
