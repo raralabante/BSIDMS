@@ -201,3 +201,8 @@ body{
    .activity .activity-item:last-child .activity-content {
     padding-bottom: 0;
   }
+
+  .nav-link:hover{
+    background-color: #DD6838!important;
+    color: #fff!important;
+  }

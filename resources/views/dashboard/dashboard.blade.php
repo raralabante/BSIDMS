@@ -2,11 +2,10 @@
 @extends('layouts.sidebar')
 @extends('layouts.navbar')
 @section('content')
-
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="content">
-    <div class="container-fluid p-3">
-        {{-- <div class="row justify-content-center text-center ">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="content">
+        <div class="container-fluid p-3">
+            {{-- <div class="row justify-content-center text-center ">
             <div class="col-md-12">
                 <div class="card text-center">
                     <div class="card-header btn-dark-green text-white">
@@ -45,9 +44,9 @@
 
         </div>
         <br> --}}
-        <div class="row">
+            <div class="row">
 
-          {{-- <div class="col-md-12">
+                {{-- <div class="col-md-12">
             <div class="input-group p-2 float-end " style="width:30%" style="text-align:center!important">
               <span class="input-group-text realcognita ">FROM</span>
               <input id="from" type="date" class="form-control">
@@ -55,121 +54,129 @@
               <input id="to" type="date" class="form-control">
             </div>
           </div> --}}
-        </div>
-        <div class="row">
+            </div>
+            <div class="row">
                 <div class="col-md-8 ">
                     <div class="row mb-3 ">
-                       <div class="col-md-3 " style="padding-left:0px">
-                        <div class="card info-card revenue-card shadow">
+                        <div class="col-md-3 " style="padding-left:0px">
+                            <div class="card info-card revenue-card shadow">
 
-                            <div class="card-body">
-                              <h5 class="card-title">Unassigned <span class="text-muted"></span></h5>
-            
-                              <div class="d-flex align-items-center">
-                                
-                                <button class="btn-circle bg-secondary m-2">
-                                  &nbsp;<i class="fa-solid fa-user-pen fa-xl text-white" ></i>
-                                </button>
-                                <div class="ps-3">
-                                  <h3 id="unassigned_count" class="text-muted">({{$unassigned_count}})</h3>
-                                  {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-             --}}
+                                <div class="card-body">
+                                    <h5 class="card-title">Unassigned <span class="text-muted"></span></h5>
+
+                                    <div class="d-flex align-items-center">
+
+                                        <button class="btn-circle bg-secondary m-2">
+                                            &nbsp;<i class="fa-solid fa-user-pen fa-xl text-white"></i>
+                                        </button>
+                                        <div class="ps-3">
+                                            <h3 id="unassigned_count" class="text-muted">({{ $unassigned_count }})</h3>
+                                            {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </div>
-            
-                          </div>
-                       </div>
-                       <div class="col-md-3 ">
-                        <div class="card info-card revenue-card shadow">
 
-                            <div class="card-body">
-                              <h5 class="card-title">Ready To Submit</h5>
-            
-                              <div class="d-flex align-items-center">
-                                <button class="btn-circle bg-warning m-2">
-                                  &nbsp;<i class="fa-solid fa-r fa-xl text-dark"></i>
-                              </button>
-                                <div class="ps-3">
-                                  <h3 id="ready_to_submit_count" class="text-muted">({{$ready_to_submit_count}})</h3>
-                                  {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-             --}}
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="card info-card revenue-card shadow">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Ready To Submit</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn-circle bg-warning m-2">
+                                            &nbsp;<i class="fa-solid fa-r fa-xl text-dark"></i>
+                                        </button>
+                                        <div class="ps-3">
+                                            <h3 id="ready_to_submit_count" class="text-muted">({{ $ready_to_submit_count }})
+                                            </h3>
+                                            {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </div>
-            
-                          </div>
-                       </div>
-                       <div class="col-md-3 " >
-                        <div class="card info-card revenue-card shadow">
 
-                          <div class="card-body">
-                            <h5 class="card-title">Submitted</h5>
-          
-                            <div class="d-flex align-items-center">
-                              <button class="btn-circle bg-success m-2">
-                                <i class="fa-solid fa-paper-plane fa-xl text-white"></i>
-                            </button>
-                              <div class="ps-3">
-                                <h3 id="submitted_count" class="text-muted">({{$submitted_count}})</h3>
-                                {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-           --}}
-                              </div>
                             </div>
-                          </div>
-          
                         </div>
-                       </div>
-                       <div class="col-md-3 " style="padding-right:0px;">
-                        <div class="card info-card revenue-card shadow">
+                        <div class="col-md-3 ">
+                            <div class="card info-card revenue-card shadow">
 
-                          <div class="card-body">
-                            <h5 class="card-title">Latest Job Added</h5>
-          
-                            <div class="d-flex align-items-center ">
-                              <button class="btn-circle bg-primary m-2">
-                                <i class="fa-solid fa-briefcase fa-xl text-white"></i>
-                            </button>
-                           
+                                <div class="card-body">
+                                    <h5 class="card-title">Submitted</h5>
 
-                              <div class="ps-3 " style=" overflow: hidden;">
-                                <h6><a href="{{route('timesheets.drafting',$latest_job->id)}}" id="latest_job" class="small text-primary">{{$latest_job->job_number}}</a></h6>
-                               <span id="latest_job_date" class="text-muted small pt-2 ps-1">{{$latest_job->created_at}}</span>
-          
-                              </div>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn-circle bg-success m-2">
+                                            <i class="fa-solid fa-paper-plane fa-xl text-white"></i>
+                                        </button>
+                                        <div class="ps-3">
+                                            <h3 id="submitted_count" class="text-muted">({{ $submitted_count }})</h3>
+                                            {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                          </div>
-          
                         </div>
-                       </div>
+                        <div class="col-md-3 " style="padding-right:0px;">
+                            <div class="card info-card revenue-card shadow">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Latest Job Added</h5>
+
+                                    <div class="d-flex align-items-center ">
+                                        <button class="btn-circle bg-primary m-2">
+                                            <i class="fa-solid fa-briefcase fa-xl text-white"></i>
+                                        </button>
+
+
+                                        <div class="ps-3 " style=" overflow: hidden;">
+                                            <h6><a href="{{ route('timesheets.drafting', $latest_job->id) }}"
+                                                    id="latest_job"
+                                                    class="small text-primary">{{ $latest_job->job_number }}</a></h6>
+                                            <span id="latest_job_date"
+                                                class="text-muted small pt-2 ps-1">{{ $latest_job->created_at }}</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
-                    
+
                     <div class="row mb-3">
                         <div class="card shadow p-3">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item active" aria-current="true"><i class="fas fa-toggle-on"></i>&nbsp;&nbsp;Active Users <span id="active_users_count">({{$active_users_count}})</span></li>
-                                            <div id="active_users">
-                                              @foreach ($active_users as $user)
-                                                <li class='list-group-item d-flex justify-content-between align-items-center'>
-                                                  {{$user->full_name}}<small>{{$user->job_type}}</small>
-                                                  <a href="{{route('timesheets.drafting',$user->drafting_masters_id)}}" class='text-primary'><u>{{$user->job_number}}</u></a>
-                                                </li>
-                                                                                        
-                                              @endforeach
+                                            <li class="list-group-item active" aria-current="true"><i
+                                                    class="fas fa-toggle-on"></i>&nbsp;&nbsp;Active Users <span
+                                                    id="active_users_count">({{ $active_users_count }})</span></li>
+                                            <div id="active_users" style="height:400px; overflow:auto">
+                                                @foreach ($active_users as $user)
+                                                    <li
+                                                        class='list-group-item d-flex justify-content-between align-items-center'>
+                                                        {{ $user->full_name }}<small>{{ $user->job_type }}</small>
+                                                        <a href="{{ route('timesheets.drafting', $user->drafting_masters_id) }}"
+                                                            class='text-primary'><u>{{ $user->job_number }}</u></a>
+                                                    </li>
+                                                @endforeach
                                             </div>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item bg-secondary text-white" aria-current="true"><i class="fa-solid fa-toggle-off"></i>&nbsp;&nbsp;Inactive Users <span id="inactive_users_count">({{$inactive_users_count}})</span></li>
-                                            <div id="inactive_users">
-                                              @foreach($inactive_users as $user)
-                                                <li class='list-group-item d-flex justify-content-between align-items-center text-muted'>{{$user}}</li>
-                                              @endforeach
+                                            <li class="list-group-item bg-secondary text-white" aria-current="true"><i
+                                                    class="fa-solid fa-toggle-off"></i>&nbsp;&nbsp;Inactive Users <span
+                                                    id="inactive_users_count">({{ $inactive_users_count }})</span></li>
+                                            <div id="inactive_users" style="height:400px; overflow:auto">
+                                                @foreach ($inactive_users as $user)
+                                                    <li
+                                                        class='list-group-item d-flex justify-content-between align-items-center text-muted'>
+                                                        {{ $user }}</li>
+                                                @endforeach
                                             </div>
                                         </ul>
                                     </div>
@@ -177,14 +184,14 @@
                             </div>
                         </div>
                     </div>
-                   <div class="row mb-3">
-                   
-                   </div>
-                        
+                    <div class="row mb-3">
+
+                    </div>
+
                 </div>
-              
+
                 <div class="col-md-4">
-                   {{-- <!-- Recent Activity -->
+                    {{-- <!-- Recent Activity -->
                    {{-- <div class="card shadow">
                     <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -302,23 +309,21 @@
                         </ul>
                     </div> --}}
                 </div>
+            </div>
         </div>
-</div>
-@endsection
+    @endsection
 </div>
 <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
 <script src="{{ asset('chart-js/chart-js.js') }}"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         $(".dashboard").addClass("sidebar_active");
-    
+
         const toastLiveExample = document.getElementById('liveToast');
         const toast = new bootstrap.Toast(toastLiveExample);
         const warningToast = document.getElementById('warningToast');
         const toastWarning = new bootstrap.Toast(warningToast);
 
-       $("#latest_job_date").text(moment(moment($("#latest_job_date").text()).format()).fromNow());
+        $("#latest_job_date").text(moment(moment($("#latest_job_date").text()).format()).fromNow());
     });
 </script>
-
-

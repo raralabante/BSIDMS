@@ -764,7 +764,7 @@ table td:before {
                         <span ng-switch-when="edit|delete"
                               ng-switch-when-separator="|" class="lbl_table">from @{{ log.table_name }}</span>
 
-                        <span ng-switch-default class="badge debug">@{{log.log_type}}</span>
+                        <span ng-switch-default class="badge bg-dark debug">@{{log.log_type}}</span>
                     </td>
                     <td ng-switch="log.foreign_id">
                   
@@ -807,10 +807,10 @@ table td:before {
 
     <div class="popup_wrapper" ng-show="popup">
         <div class="popup" style="width: 60%">
-            <div class="header">
-                <div class="title">Log Preview</div>
-                <div class="close" ng-click="popup=false">x</div>
-            </div>
+                <div class="header">
+                    <div class="title">Log Preview</div>
+                    <div class="close" ng-click="popup=false">x</div>
+                </div>
             <div class="popup_content">
                 <table style="width: 96%;">
                     <thead>
