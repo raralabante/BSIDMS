@@ -104,6 +104,12 @@ class ReportsController extends Controller
       $query = $query->where('users.id', '=', $request->user_id);
     }
 
+    if (!empty($request->type)) {
+      error_log($request->type);
+      $query = $query->where('timesheets.type', $request->type);
+    }
+
+
 
     return datatables()->eloquent($query)
       ->editColumn('user_id', function (Timesheet $timesheet) {

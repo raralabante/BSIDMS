@@ -45,6 +45,12 @@
                         <select class="form-select form-select-sm input-group-sm" id="user">
                             <option value="">Select User</option>
                         </select>
+                        <span class="input-group-text">TYPE</span>
+                        <select class="form-select form-select-sm input-group-sm" id="type">
+                            <option value="">Select Type</option>
+                            <option value="DRAFTING">DRAFTING</option>
+                            <option value="CHECKING">CHECKING</option>
+                        </select>
 
                     </div>
 
@@ -64,7 +70,7 @@
                     data-mode="columntoggle"width="100%">
                     <tfoot>
                         <tr>
-                            <th colspan="5" style="text-align:right">Total Hours:</th>
+                            <th colspan="11" style="text-align:right">Total Hours:</th>
                             <th id="total"></th>
                         </tr>
                     </tfoot>
@@ -79,6 +85,12 @@
 <script src="{{ asset('jquery/jquery-3.6.0.js') }}"></script>
 <script>
     $(document).ready(function() {
+        jQuery.fn.dataTable.Api.register('sum()', function() {
+            return this.flatten().reduce(function(a, b) {
+                return (a * 1) + (b *
+                    1); // cast values in-case they are strings
+            });
+        });
         $(".usertimesheets").addClass("sidebar_active");
         $("#reportsSubmenu").click();
         const toastLiveExample = document.getElementById('liveToast');
@@ -94,7 +106,7 @@
             $("[data-department='" + $(this).val() + "']").show();
             $("[data-department='" + $(this).val() + "']").eq(0).prop('selected', true).parent()
                 .change();
-
+            $("#team").append("<option selected value=''>Select Team</option>");
         }).change();
 
         $("#team").change(function() {
@@ -187,8 +199,8 @@
                             to: $("#to").val(),
                             user_id: $("#user").val(),
                             department: $("#department").val(),
-                            team: $("#team").val()
-
+                            team: $("#team").val(),
+                            type: $("#type").val()
                         },
                     },
                     dom: 'Bfrtip',
@@ -196,12 +208,22 @@
                     // stateSave: true,
                     //   processing: true,
                     // serverSide: true,
-                    buttons: [
-                        'copyHtml5',
-                        'excelHtml5',
-                        'csvHtml5',
-                        'pdfHtml5',
-
+                    buttons: [{
+                            extend: 'copyHtml5',
+                            footer: true
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            footer: true
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            footer: true
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            footer: true
+                        }
                     ],
                     columns: [
 
@@ -285,8 +307,14 @@
                 });
 
 
+
+
             }
         });
+
+
+
+
 
 
         $("#clear_filter_btn").click(function() {

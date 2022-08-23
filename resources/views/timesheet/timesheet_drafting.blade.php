@@ -17,7 +17,7 @@
     <body class="">
 
         <div class="container-fluid ">
-            <div class="row job-details border rounded-2 btn-dark-green text-white">
+            <div class="row job-details  rounded-2 btn-dark-green text-white">
                 <div class="col-md-6 ">
                     <div class="border-bottom m-3"><span class="bold">ID: </span><span
                             id="id">{{ $drafting_masters->id }}</span></div>
@@ -105,8 +105,14 @@
                     </ul>
                 </div>
             @endif
-            <div class="border border-1 rounded-3 bg-light p-3">
+            <div class="">
                 <table id="timesheets_tbl" class="table table-bordered row-border order-column stripe hover" width="100%">
+                    <tfoot>
+                        <tr>
+                            <th colspan="8" style="text-align:right">Total Hours:</th>
+                            <th id="total"></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -138,14 +144,62 @@
             const toastWarning = new bootstrap.Toast(warningToast);
             var id = $("#id").text();
             var timesheets_tbl = $('#timesheets_tbl').DataTable({
+                footerCallback: function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ? i : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                        .column(8)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total over this page
+                    pageTotal = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Update footer
+
+
+
+                    const duration = moment.duration(total, 'seconds')
+                        .format("HH:mm:ss", {
+                            trim: false
+                        });
+                    $("#total").text(duration);
+                },
                 ajax: "{{ route('timesheets.fetchDrafting', '') }}" + "/" + id,
                 dom: 'Bfrtip',
 
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
+                buttons: [{
+                        extend: 'copyHtml5',
+                        footer: true
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        footer: true
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        footer: true
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        footer: true
+                    }
                 ],
                 columns: [
 
